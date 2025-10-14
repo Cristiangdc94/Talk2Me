@@ -218,41 +218,41 @@ export function ChatArea({
       )}
 
       <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
-          <div className="p-4">
-            <div className="space-y-4">
-                {messages.map((message) => {
-                  const isSentByCurrentUser = message.user.id === currentUser.id;
+        <div className="p-4">
+          <div className="space-y-4">
+            {messages.map((message) => {
+              const isSentByCurrentUser = message.user.id === currentUser.id;
+              
+              if (message.type === 'call') {
+                return (
+                  <div key={message.id} className="flex justify-center">
+                    {renderMessageContent(message, isSentByCurrentUser)}
+                  </div>
+                );
+              }
+
+              return (
+                <div 
+                  key={message.id} 
+                  className={cn(
+                    "flex items-end gap-3 w-full",
+                    isSentByCurrentUser ? "justify-end" : "justify-start"
+                  )}
+                >
+                  {!isSentByCurrentUser && (
+                    <UserAvatarWithStatus user={message.user} className="shrink-0" />
+                  )}
                   
-                  if (message.type === 'call') {
-                    return (
-                      <div key={message.id} className="flex justify-center">
-                        {renderMessageContent(message, isSentByCurrentUser)}
-                      </div>
-                    );
-                  }
+                  {renderMessageContent(message, isSentByCurrentUser)}
 
-                  return (
-                    <div 
-                      key={message.id} 
-                      className={cn(
-                        "flex items-end gap-3 w-full",
-                        isSentByCurrentUser ? "justify-end" : "justify-start"
-                      )}
-                    >
-                      {!isSentByCurrentUser && (
-                        <UserAvatarWithStatus user={message.user} className="shrink-0" />
-                      )}
-                      
-                      {renderMessageContent(message, isSentByCurrentUser)}
-
-                      {isSentByCurrentUser && (
-                        <UserAvatarWithStatus user={message.user} className="shrink-0" />
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
+                  {isSentByCurrentUser && (
+                    <UserAvatarWithStatus user={message.user} className="shrink-0" />
+                  )}
+                </div>
+              );
+            })}
           </div>
+        </div>
       </ScrollArea>
       
       <footer className="p-4 border-t shrink-0 space-y-2 bg-background">
