@@ -23,7 +23,7 @@ import { ChatProvider, useChat } from '@/hooks/use-chat';
 import { cn } from '@/lib/utils';
 import { MainNav } from './main-nav';
 import { HeaderActions } from './header-actions';
-import { Card, CardContent, CardHeader } from './ui/card';
+import { Card, CardHeader } from './ui/card';
 import { ChatArea } from './chat/chat-area';
 import { users } from '@/lib/mock-data';
 import { Button } from './ui/button';
