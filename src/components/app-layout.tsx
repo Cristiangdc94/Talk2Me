@@ -35,7 +35,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <header className="flex items-center h-14 px-4">
           <SidebarTrigger className="md:hidden" />
         </header>
-        <main className="flex-1 overflow-auto p-4 pt-0">{children}</main>
+        <main className="flex-1 overflow-auto px-4 pb-4">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
