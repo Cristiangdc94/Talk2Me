@@ -128,7 +128,7 @@ function ChatWidget() {
         top: `${position.y}px`,
       }}
     >
-       <Card className="w-96 h-[32rem] flex flex-col shadow-2xl">
+       <Card className="w-96 h-[32rem] flex flex-col shadow-2xl overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between p-2 border-b">
           <div className="flex items-center gap-3 p-2 flex-1">
             {activeChat.icon}
@@ -145,18 +145,16 @@ function ChatWidget() {
             <span className="sr-only">Cerrar chat</span>
           </Button>
         </CardHeader>
-        <CardContent className="p-0 flex-1 flex flex-col">
-          <ChatArea
-            key={activeChat.id}
-            chatId={activeChat.id}
-            title={activeChat.title}
-            icon={activeChat.icon}
-            initialMessages={activeChat.messages}
-            currentUser={users[0]}
-            chatType={activeChat.type}
-            showHead={false}
-          />
-        </CardContent>
+        <ChatArea
+          key={activeChat.id}
+          chatId={activeChat.id}
+          title={activeChat.title}
+          icon={activeChat.icon}
+          initialMessages={activeChat.messages}
+          currentUser={users[0]}
+          chatType={activeChat.type}
+          showHead={false}
+        />
       </Card>
     </div>
   )

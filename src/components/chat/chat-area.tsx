@@ -184,7 +184,7 @@ export function ChatArea({
 
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-background">
       {showHead && (
         <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
           {chatType === "dm" && (
