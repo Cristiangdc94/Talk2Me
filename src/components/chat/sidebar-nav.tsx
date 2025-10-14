@@ -1,3 +1,4 @@
+
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -50,18 +51,16 @@ export function SidebarNav() {
         <SidebarMenu>
           {channels.map((channel) => (
             <SidebarMenuItem key={channel.id}>
-              <Link href={`/channel/${channel.id}`} legacyBehavior passHref>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname === `/channel/${channel.id}`}
-                  tooltip={channel.name}
-                >
-                  <a>
-                    {channel.type === 'private' ? <Lock /> : <Hash />}
-                    <span>{channel.name}</span>
-                  </a>
-                </SidebarMenuButton>
-              </Link>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === `/channel/${channel.id}`}
+                tooltip={channel.name}
+              >
+                <Link href={`/channel/${channel.id}`}>
+                  {channel.type === 'private' ? <Lock /> : <Hash />}
+                  <span>{channel.name}</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
@@ -79,18 +78,16 @@ export function SidebarNav() {
         <SidebarMenu>
           {directMessages.map((dm) => (
             <SidebarMenuItem key={dm.id}>
-              <Link href={`/dm/${dm.id}`} legacyBehavior passHref>
                 <SidebarMenuButton
                   asChild
                   isActive={pathname === `/dm/${dm.id}`}
                   tooltip={dm.name}
                 >
-                  <a>
+                  <Link href={`/dm/${dm.id}`}>
                     <User />
                     <span>{dm.name}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
-              </Link>
               <SidebarMenuAction
                 showOnHover
                 onClick={(e) => handleCall(e, dm.name)}
