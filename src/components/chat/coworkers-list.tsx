@@ -3,16 +3,17 @@
 
 import { useState, useEffect } from 'react';
 import { UserListCard } from "@/components/chat/user-list-card";
-import { User, CompanyRole } from "@/lib/types";
+import { User, CompanyRole, Channel } from "@/lib/types";
 import { Plus, MoreVertical, Settings, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
-import { users } from '@/lib/mock-data';
+import { users, channels as initialChannels } from '@/lib/mock-data';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { ManageCompanyGroupDialog } from './manage-company-group-dialog';
+import { useChat } from '@/hooks/use-chat';
 
 interface CoworkersListProps {
   initialGroupedUsers: Record<string, User[]>;
@@ -46,10 +47,12 @@ export function CoworkersList({
   const [currentUser, setCurrentUser] = useState(users.find(u => u.id === '1'));
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
-  
+  const { openChat } = useChat();
+
   const [isManageGroupOpen, setManageGroupOpen] = useState(false);
   const [managedGroup, setManagedGroup] = useState<{name: string, description: string, users: User[]} | null>(null);
 
+  const [channels, setChannels] = useState<Channel[]>(initialChannels);
 
   const privilegedRoles: CompanyRole[] = ['Administrador', 'CEO', 'Jefe de proyecto'];
 
@@ -74,6 +77,20 @@ export function CoworkersList({
             ...prev,
             [companyName]: [newUserWithRole]
         }));
+
+        const newChannel: Channel = {
+          id: `channel-${companyName.toLowerCase().replace(/\s/g, '-')}-chat`,
+          name: `${companyName} Chat`,
+          type: 'private',
+          messages: [{
+            id: 'msg-welcome',
+            text: `Bienvenido al chat corporativo de ${companyName}.`,
+            timestamp: new Date().toLocaleTimeString(),
+            user: users.find(u => u.role === 'admin') || users[0]
+          }]
+        };
+
+        setChannels(prev => [...prev, newChannel]);
     }
     setCreateGroupOpen(false);
   };
@@ -86,12 +103,8 @@ export function CoworkersList({
   };
   
   const handleCorporateChat = (companyName: string) => {
-    toast({
-        title: `Chat Corporativo: ${companyName}`,
-        description: "Abriendo el chat exclusivo del grupo..."
-    });
-    // In a real implementation, you would navigate to the chat page:
-    // router.push(`/corporate-chat/${companyName}`);
+    const channelId = `channel-${companyName.toLowerCase().replace(/\s/g, '-')}-chat`;
+    openChat(channelId);
   };
 
   const handleSaveManagedGroup = (originalName: string, newName: string, newDescription: string, newUsers: string[]) => {
@@ -233,5 +246,3 @@ export function CoworkersList({
     </>
   );
 }
-
-    

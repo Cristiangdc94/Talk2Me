@@ -83,6 +83,24 @@ export const channels: Channel[] = [
       { id: 'msg9', text: '¿Alguien ha visto una buena película últimamente?', timestamp: '1:00 PM', user: users[5] },
     ],
   },
+  {
+    id: 'channel-innovatecorp-chat',
+    name: 'InnovateCorp Chat',
+    type: 'private',
+    messages: [{ id: 'msg-corp1', text: 'Bienvenido al chat corporativo de InnovateCorp.', timestamp: '9:00 AM', user: users[6] }]
+  },
+  {
+    id: 'channel-datasolutions-chat',
+    name: 'DataSolutions Chat',
+    type: 'private',
+    messages: [{ id: 'msg-corp2', text: 'Bienvenido al chat corporativo de DataSolutions.', timestamp: '9:05 AM', user: users[6] }]
+  },
+  {
+    id: 'channel-quantumleap-chat',
+    name: 'QuantumLeap Chat',
+    type: 'private',
+    messages: [{ id: 'msg-corp3', text: 'Bienvenido al chat corporativo de QuantumLeap.', timestamp: '9:10 AM', user: users[6] }]
+  }
 ];
 
 export const directMessages: DirectMessage[] = [

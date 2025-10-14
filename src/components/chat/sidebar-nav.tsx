@@ -24,9 +24,9 @@ import {
   SidebarMenuButton,
   SidebarMenuAction,
 } from "@/components/ui/sidebar";
-import { channels, directMessages, users } from "@/lib/mock-data";
+import { channels as initialChannels, directMessages, users } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SidebarSeparator } from "../ui/sidebar";
 import {
@@ -38,6 +38,7 @@ import { cn } from "@/lib/utils";
 import { useChat } from "@/hooks/use-chat";
 import { NewMessagePopover } from "./new-message-popover";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
+import type { Channel } from "@/lib/types";
 
 const mainNavLinks = [
     { href: "/friends", label: "Amigos", icon: Users },
@@ -49,6 +50,7 @@ export function SidebarNav() {
   const { toast } = useToast();
   const { openChat, activeChatId } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
+  const [channels, setChannels] = useState<Channel[]>(initialChannels);
 
   const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou"), [pathname]);
 
