@@ -77,7 +77,7 @@ export function NotificationWidget() {
         top: `${position.y}px`,
       }}
     >
-        <div className="bg-primary text-primary-foreground rounded-full">
+        <div className="bg-primary text-primary-foreground rounded-full shadow-lg">
             <ThemeToggle />
         </div>
         <Popover open={isOpen} onOpenChange={setIsOpen}>
