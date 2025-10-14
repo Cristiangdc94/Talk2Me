@@ -52,7 +52,11 @@ function CompanyNewsCard({ article, currentUserId }: { article: CompanyNewsArtic
                 </Link>
             </CardContent>
             <CardFooter className="p-4 pt-0 flex justify-between items-center">
-                <Badge variant="outline">{article.companyName}</Badge>
+                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="outline">{article.companyName}</Badge>
+                    <span>&middot;</span>
+                    <span>{article.timestamp}</span>
+                </div>
                 <div className="flex items-center gap-2">
                     <TooltipProvider>
                         <Tooltip>

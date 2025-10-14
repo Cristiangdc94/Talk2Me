@@ -37,8 +37,9 @@ export function NewsArticleCard({ article }: NewsArticleCardProps) {
           <CardTitle className="text-lg font-bold leading-snug mb-2">{article.title}</CardTitle>
           <p className="text-sm text-muted-foreground">{article.summary}</p>
         </CardContent>
-        <CardFooter className="p-4 pt-0">
+        <CardFooter className="p-4 pt-0 flex justify-between items-center text-xs text-muted-foreground">
           <Badge variant="secondary">{categoryText[article.category]}</Badge>
+          <span>{article.timestamp}</span>
         </CardFooter>
       </Card>
     </Link>

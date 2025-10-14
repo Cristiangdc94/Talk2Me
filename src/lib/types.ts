@@ -48,6 +48,7 @@ export interface NewsArticle {
   summary: string;
   imageUrl: string;
   link: string;
+  timestamp: string;
 }
 
 export interface CompanyNewsArticle {

@@ -166,12 +166,12 @@ export const directMessages: DirectMessage[] = [
 
 
 export const newsArticles: NewsArticle[] = [
-  { id: 'n1', category: 'technology', location: 'global', title: 'El Futuro de la IA: ¿Qué nos espera en 2025?', summary: 'Expertos de la industria comparten sus predicciones sobre los avances en inteligencia artificial.', imageUrl: findImage('news-1'), link: '#' },
-  { id: 'n2', category: 'business', location: 'global', title: 'Los Mercados Globales Reaccionan a las Nuevas Políticas Comerciales', summary: 'Un análisis del impacto de las recientes decisiones comerciales en la economía mundial.', imageUrl: findImage('news-2'), link: '#' },
-  { id: 'n3', category: 'sports', location: 'local', title: 'El Equipo Local Gana el Campeonato en un Partido Emocionante', summary: 'Una victoria histórica para el equipo de la ciudad que desata la euforia de los aficionados.', imageUrl: findImage('news-3'), link: '#' },
-  { id: 'n4', category: 'technology', location: 'global', title: 'Nuevo Lenguaje de Programación Promete Revolucionar el Desarrollo', summary: 'Descubre "Mojo", el nuevo lenguaje que combina la simplicidad de Python con el rendimiento de C.', imageUrl: findImage('news-4'), link: '#' },
-  { id: 'n5', category: 'health', location: 'local', title: 'Nueva Campaña de Salud Pública se Lanza en la Ciudad', summary: 'Iniciativas para promover el bienestar y la prevención de enfermedades en la comunidad local.', imageUrl: findImage('news-5'), link: '#' },
-  { id: 'n6', category: 'sports', location: 'global', title: 'Resumen de los Partidos de Anoche y Próximos Encuentros', summary: 'No te pierdas los momentos más destacados de la jornada deportiva y lo que viene.', imageUrl: findImage('news-6'), link: '#' },
+  { id: 'n1', category: 'technology', location: 'global', title: 'El Futuro de la IA: ¿Qué nos espera en 2025?', summary: 'Expertos de la industria comparten sus predicciones sobre los avances en inteligencia artificial.', imageUrl: findImage('news-1'), link: '#', timestamp: 'hace 2 horas' },
+  { id: 'n2', category: 'business', location: 'global', title: 'Los Mercados Globales Reaccionan a las Nuevas Políticas Comerciales', summary: 'Un análisis del impacto de las recientes decisiones comerciales en la economía mundial.', imageUrl: findImage('news-2'), link: '#', timestamp: 'hace 8 horas' },
+  { id: 'n3', category: 'sports', location: 'local', title: 'El Equipo Local Gana el Campeonato en un Partido Emocionante', summary: 'Una victoria histórica para el equipo de la ciudad que desata la euforia de los aficionados.', imageUrl: findImage('news-3'), link: '#', timestamp: 'ayer' },
+  { id: 'n4', category: 'technology', location: 'global', title: 'Nuevo Lenguaje de Programación Promete Revolucionar el Desarrollo', summary: 'Descubre "Mojo", el nuevo lenguaje que combina la simplicidad de Python con el rendimiento de C.', imageUrl: findImage('news-4'), link: '#', timestamp: 'hace 2 días' },
+  { id: 'n5', category: 'health', location: 'local', title: 'Nueva Campaña de Salud Pública se Lanza en la Ciudad', summary: 'Iniciativas para promover el bienestar y la prevención de enfermedades en la comunidad local.', imageUrl: findImage('news-5'), link: '#', timestamp: 'hace 3 días' },
+  { id: 'n6', category: 'sports', location: 'global', title: 'Resumen de los Partidos de Anoche y Próximos Encuentros', summary: 'No te pierdas los momentos más destacados de la jornada deportiva y lo que viene.', imageUrl: findImage('news-6'), link: '#', timestamp: 'hace 1 día' },
 ];
 
 export const companyNews: CompanyNewsArticle[] = [
