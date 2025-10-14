@@ -1,11 +1,23 @@
 
+
 import { User, Channel, DirectMessage, NewsArticle, FriendStatus, Notification } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 const findImage = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || '';
 
 export const users: User[] = [
-  { id: '1', name: 'Tú', avatarUrl: findImage('avatar-1'), status: 'online', email: 'you@example.com' },
+  { 
+    id: '1', 
+    name: 'Tú', 
+    avatarUrl: findImage('avatar-1'), 
+    status: 'online', 
+    email: 'you@example.com',
+    companyRoles: {
+      'InnovateCorp': 'LeaderGroup',
+      'DataSolutions': 'Partner',
+      'QuantumLeap': 'Trabajador',
+    } 
+  },
   { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend', email: 'alice@example.com' },
   { id: '3', name: 'Bob', avatarUrl: findImage('avatar-3'), status: 'busy', lastSeen: 'En una reunión', relationship: 'coworker', email: 'bob@example.com', company: 'InnovateCorp' },
   { id: '4', name: 'Carlos', avatarUrl: findImage('avatar-4'), status: 'online', relationship: 'coworker', email: 'carlos@example.com', company: 'InnovateCorp' },

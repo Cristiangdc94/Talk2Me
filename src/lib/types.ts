@@ -1,4 +1,7 @@
 
+
+export type CompanyRole = 'Trabajador' | 'Partner' | 'LeaderGroup';
+
 export interface User {
   id: string;
   name: string;
@@ -9,6 +12,7 @@ export interface User {
   relationship?: 'friend' | 'coworker';
   email?: string;
   company?: string;
+  companyRoles?: { [companyName: string]: CompanyRole };
 }
 
 export interface Message {
