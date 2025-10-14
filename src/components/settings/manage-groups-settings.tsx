@@ -48,6 +48,11 @@ export function ManageGroupsSettings() {
   const router = useRouter();
   const { toast } = useToast();
   const [selectedGroup, setSelectedGroup] = React.useState<string>("");
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const currentUser = users[0];
   const managedGroups = React.useMemo(() => 
@@ -108,6 +113,10 @@ export function ManageGroupsSettings() {
     const newMembers = currentMembers.filter((id) => id !== idToRemove);
     form.setValue("members", newMembers);
   };
+  
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <Card className="max-w-2xl">
