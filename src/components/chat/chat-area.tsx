@@ -72,8 +72,6 @@ export function ChatArea({
     });
   };
 
-  const lastMessageIsFromOtherUser = messages.length > 0 && messages[messages.length - 1].user.id !== currentUser.id;
-
   return (
     <div className="flex flex-col h-full">
       <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
@@ -122,7 +120,7 @@ export function ChatArea({
       </div>
 
       <footer className="p-4 border-t shrink-0 space-y-2 bg-background">
-        {chatType === 'dm' && lastMessageIsFromOtherUser && (
+        {chatType === 'dm' && (
             <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
         )}
         <MessageInput onSendMessage={handleSendMessage} />
