@@ -27,6 +27,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
+import { cn } from "@/lib/utils";
 
 const mainNavLinks = [
     { href: "/friends", label: "Amigos", icon: Users },
@@ -69,19 +70,20 @@ export function SidebarNav() {
         <SidebarMenu>
            <Collapsible open={isNewsSectionOpen} onOpenChange={setIsNewsSectionOpen}>
             <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                    <SidebarMenuButton
-                        isActive={isNewsSectionOpen}
-                        className="justify-between"
-                        tooltip="Noticias"
-                    >
-                        <div className="flex items-center gap-2">
-                            <Newspaper />
-                            <span>Noticias</span>
-                        </div>
-                        <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
-                    </SidebarMenuButton>
-                </CollapsibleTrigger>
+                <SidebarMenuButton
+                    isActive={isNewsSectionOpen}
+                    className="justify-between group"
+                    tooltip="Noticias"
+                    asChild
+                >
+                  <CollapsibleTrigger className="w-full">
+                    <div className="flex items-center gap-2">
+                        <Newspaper />
+                        <span>Noticias</span>
+                    </div>
+                    <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
+                  </CollapsibleTrigger>
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <CollapsibleContent>
               <SidebarMenu className="pl-6 pb-1">
