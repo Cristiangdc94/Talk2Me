@@ -71,6 +71,15 @@ export function SidebarNav() {
      openChat(dmId);
   }
 
+  useEffect(() => {
+    // This is a mock to simulate dynamic channel additions.
+    // In a real app, this would come from a global state or context.
+    const newChannels = channels.filter(c => !initialChannels.some(ic => ic.id === c.id));
+    if (newChannels.length > 0) {
+      // Logic to handle new channels if needed
+    }
+  }, [channels]);
+
   return (
     <div className="flex flex-col gap-2">
       <CreateChannelDialog
@@ -166,7 +175,7 @@ export function SidebarNav() {
         <SidebarGroupLabel className="font-headline text-xl">
           Mensajes Directos
         </SidebarGroupLabel>
-        <SidebarGroupAction>
+        <SidebarGroupAction asChild>
             <NewMessagePopover />
         </SidebarGroupAction>
         <SidebarMenu>

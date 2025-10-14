@@ -33,10 +33,10 @@ export function NewMessagePopover() {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <button className="flex">
+        <div role="button" className="flex">
           <Plus className="h-4 w-4" />
           <span className="sr-only">Nuevo Mensaje</span>
-        </button>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0" side="right" align="start">
         <div className="p-4">
