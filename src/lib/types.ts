@@ -8,6 +8,7 @@ export interface User {
   role?: 'admin';
   relationship?: 'friend' | 'coworker';
   email?: string;
+  company?: string;
 }
 
 export interface Message {
