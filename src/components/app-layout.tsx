@@ -53,9 +53,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           {isAuthPage ? (
             <AuthLayout>{children}</AuthLayout>
           ) : (
-            <div className="mx-auto max-w-[1920px] h-full rounded-xl overflow-hidden">
+            <div className="mx-auto max-w-[1920px] h-full rounded-xl">
               <SidebarProvider>
-                <div className="h-full flex bg-muted rounded-xl overflow-hidden">
+                <div className="h-full flex bg-muted rounded-xl">
                   <Sidebar>
                     <SidebarHeader className="p-4">
                       <div className="flex items-center gap-2">
@@ -74,16 +74,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       <UserNav />
                     </SidebarFooter>
                   </Sidebar>
-                  <div className="flex-1 flex flex-col overflow-hidden rounded-tl-xl rounded-bl-xl">
+                  <main className="flex-1 flex flex-col rounded-tl-xl rounded-bl-xl bg-background">
                      <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:hidden">
                        <SidebarTrigger />
                     </header>
-                    <main className="flex-1 overflow-auto bg-background">
-                      <div className="w-full">
-                        {children}
-                      </div>
-                    </main>
-                  </div>
+                    <div className="w-full overflow-auto">
+                      {children}
+                    </div>
+                  </main>
                 </div>
                 <ChatDialog />
                 <NotificationWidget />
