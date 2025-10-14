@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect, useTransition, useRef } from 'react';
 import Cookies from 'js-cookie';
 import { NewsArticleCard } from './news-article-card';
 import { newsArticles, friendStatuses } from '@/lib/mock-data';
@@ -16,12 +16,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FriendStatusCard } from './friend-status-card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '../ui/separator';
+import { useToast } from '@/hooks/use-toast';
 
-function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGenerating: boolean }) {
+function LoadMoreNewsCard({ onClick, isGenerating, isDisabled }: { onClick: () => void; isGenerating: boolean, isDisabled: boolean }) {
   return (
     <Card
-      className="h-full flex flex-col items-center justify-center text-center transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer min-h-[288px]"
-      onClick={!isGenerating ? onClick : undefined}
+      className="h-full flex flex-col items-center justify-center text-center transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer min-h-[288px] disabled:cursor-not-allowed disabled:opacity-50"
+      onClick={!isGenerating && !isDisabled ? onClick : undefined}
+      aria-disabled={isGenerating || isDisabled}
     >
       <CardContent className="p-6 flex flex-col items-center justify-center">
         {isGenerating ? (
@@ -33,6 +35,7 @@ function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGe
           <>
             <PlusCircle className="h-12 w-12 text-muted-foreground" />
             <p className="mt-4 font-semibold">Más noticias</p>
+            {isDisabled && <p className="text-xs text-muted-foreground mt-2">Límite de peticiones alcanzado. Inténtalo más tarde.</p>}
           </>
         )}
       </CardContent>
@@ -50,6 +53,9 @@ export function NewsPortal({ view }: NewsPortalProps) {
   const [isLoading, setLoading] = useState(true);
   const [isGenerating, startGenerating] = useTransition();
   const [allNews, setAllNews] = useState<NewsArticle[]>(newsArticles);
+  const { toast } = useToast();
+  const [isRateLimited, setRateLimited] = useState(false);
+  const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Fetch location
@@ -73,6 +79,15 @@ export function NewsPortal({ view }: NewsPortalProps) {
     }
   }, [setPreferences]);
 
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (rateLimitTimer.current) {
+        clearTimeout(rateLimitTimer.current);
+      }
+    };
+  }, []);
+
   const handleSavePreferences = (newPrefs: string[]) => {
     setPreferences(newPrefs);
     Cookies.set('news-preferences', JSON.stringify(newPrefs), { expires: 365 });
@@ -80,17 +95,40 @@ export function NewsPortal({ view }: NewsPortalProps) {
   };
   
   const handleGenerateMoreNews = () => {
+    if (isRateLimited) return;
+
     startGenerating(async () => {
-      const { articles } = await generateNewsArticles({
-        existingTopics: allNews.map(a => a.title),
-        categories: ['technology', 'business', 'sports', 'health', 'entertainment'],
-      });
-      // Generate unique IDs for the new articles
-      const newArticlesWithIds = articles.map((article, index) => ({
-        ...article,
-        id: `gen-${Date.now()}-${index}`,
-      }));
-      setAllNews(prev => [...prev, ...newArticlesWithIds]);
+      try {
+        const { articles } = await generateNewsArticles({
+          existingTopics: allNews.map(a => a.title),
+          categories: ['technology', 'business', 'sports', 'health', 'entertainment'],
+        });
+        // Generate unique IDs for the new articles
+        const newArticlesWithIds = articles.map((article, index) => ({
+          ...article,
+          id: `gen-${Date.now()}-${index}`,
+        }));
+        setAllNews(prev => [...prev, ...newArticlesWithIds]);
+      } catch (error: any) {
+        console.error("Error al generar más noticias:", error);
+        if (error.message && error.message.includes('429')) {
+           toast({
+            variant: "destructive",
+            title: "Límite de Peticiones Alcanzado",
+            description: "Has superado la cuota de la API. Por favor, espera un minuto.",
+          });
+          setRateLimited(true);
+          rateLimitTimer.current = setTimeout(() => {
+            setRateLimited(false);
+          }, 60000);
+        } else {
+           toast({
+            variant: "destructive",
+            title: "Error al Generar Noticias",
+            description: "No se pudieron generar más noticias. Inténtalo de nuevo más tarde.",
+          });
+        }
+      }
     });
   };
 
@@ -172,7 +210,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
               {newsToShow.map((article) => (
                 <NewsArticleCard key={article.id} article={article} />
               ))}
-              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
+              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} isDisabled={isRateLimited} />
             </div>
           </div>
         )}
