@@ -2,6 +2,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User } from "@/lib/types";
+import { AddContactCard } from "./add-contact-card";
 
 interface UserListProps {
   title: string;
@@ -18,6 +19,7 @@ export function UserList({ title, users }: UserListProps) {
         {users.map((user) => (
           <UserListCard key={user.id} user={user} />
         ))}
+         <AddContactCard />
         {users.length === 0 && (
             <p className="col-span-full text-center text-muted-foreground">
                 No hay nadie en esta lista todavía.
