@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -65,7 +64,7 @@ export function AddContactForm() {
   };
 
   return (
-    <Card className="w-full mx-auto">
+    <Card className="w-full h-full border-0 sm:border rounded-none sm:rounded-lg">
       <CardHeader>
         <CardTitle>Añadir Contacto</CardTitle>
         <CardDescription>

@@ -1,4 +1,3 @@
-
 import { UserListCard } from "@/components/chat/user-list-card";
 import { AddContactCard } from "@/components/chat/add-contact-card";
 import type { User } from "@/lib/types";
@@ -17,7 +16,7 @@ export function UserList({
   showAddContact = false,
 }: UserListProps) {
   return (
-    <div className="flex flex-col h-full gap-6">
+    <div className="flex flex-col h-full gap-6 p-4 sm:p-6">
       <div className="shrink-0">
         <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
         <p className="text-sm text-muted-foreground">{description}</p>
