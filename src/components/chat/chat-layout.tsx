@@ -96,10 +96,10 @@ export function ChatLayout() {
                                         onClick={() => openChat(dm.id)}
                                     >
                                         <UserAvatarWithStatus user={user} className="w-8 h-8" />
-                                        <div className="flex-1 flex justify-between items-center ml-2">
+                                        <div className="flex items-center gap-2 ml-2 overflow-hidden">
                                             <span className={cn("font-medium truncate", statusColor[user.status])}>{dm.name}</span>
                                             {dm.unreadCount && dm.unreadCount > 0 && (
-                                                <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
+                                                <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs shrink-0">
                                                 {dm.unreadCount > 9 ? "+9" : dm.unreadCount}
                                                 </Badge>
                                             )}
