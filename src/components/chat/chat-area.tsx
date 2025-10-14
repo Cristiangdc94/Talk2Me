@@ -72,7 +72,7 @@ export function ChatArea({
 
   return (
     <div className="flex flex-col h-full">
-      <header className="flex items-center gap-3 p-4 shrink-0 border-b">
+      <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
         {icon}
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
         <div className="flex-1" />
@@ -117,7 +117,7 @@ export function ChatArea({
         </ScrollArea>
       </div>
 
-      <footer className="p-4 border-t shrink-0 space-y-4">
+      <footer className="p-4 border-t shrink-0 space-y-4 bg-background">
         <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
         <Separator />
         <MessageInput onSendMessage={handleSendMessage} />
