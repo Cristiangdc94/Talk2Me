@@ -5,6 +5,7 @@ export interface User {
   status: 'online' | 'offline';
   lastSeen?: string;
   role?: 'admin';
+  relationship?: 'friend' | 'coworker';
 }
 
 export interface Message {
@@ -16,7 +17,7 @@ export interface Message {
 }
 
 export interface Channel {
-  id: string;
+  id:string;
   name: string;
   type: 'public' | 'private';
   messages: Message[];
