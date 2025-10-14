@@ -73,12 +73,12 @@ export function SidebarNav() {
     });
   };
 
-  const handleChannelClick = (channel: (typeof channels)[0]) => {
-     openChat(channel.id);
+  const handleChannelClick = (channelId: string) => {
+     openChat(channelId);
   }
 
-  const handleDMClick = (dm: (typeof directMessages)[0]) => {
-     openChat(dm.id);
+  const handleDMClick = (dmId: string) => {
+     openChat(dmId);
   }
 
   return (
@@ -142,7 +142,7 @@ export function SidebarNav() {
         </SidebarMenu>
       </SidebarGroup>
 
-      <SidebarSeparator />
+      <SidebarSeparator className="h-0.5" />
 
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">
@@ -158,7 +158,7 @@ export function SidebarNav() {
           {channels.map((channel) => (
             <SidebarMenuItem key={channel.id}>
               <SidebarMenuButton
-                onClick={() => handleChannelClick(channel)}
+                onClick={() => handleChannelClick(channel.id)}
                 isActive={activeChatId === channel.id}
                 tooltip={channel.name}
               >
@@ -170,7 +170,7 @@ export function SidebarNav() {
         </SidebarMenu>
       </SidebarGroup>
 
-      <SidebarSeparator />
+      <SidebarSeparator className="h-0.5" />
 
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">
@@ -185,16 +185,21 @@ export function SidebarNav() {
             return (
               <SidebarMenuItem key={dm.id}>
                 <SidebarMenuButton
-                  onClick={() => handleDMClick(dm)}
+                  onClick={() => handleDMClick(dm.id)}
                   isActive={activeChatId === dm.id}
                   tooltip={dm.name}
                 >
-                  <User />
-                  {user && (
-                    <span
-                      className={cn(statusIndicatorVariants({ status: user.status }))}
-                    />
-                  )}
+                  <div className="relative inline-block">
+                    <User />
+                    {user && (
+                      <span
+                        className={cn(
+                          statusIndicatorVariants({ status: user.status }),
+                          'absolute bottom-0 -right-1 block h-2 w-2 rounded-full border border-sidebar'
+                        )}
+                      />
+                    )}
+                  </div>
                   <span>{dm.name}</span>
                 </SidebarMenuButton>
                 <SidebarMenuAction
