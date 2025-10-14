@@ -178,7 +178,7 @@ function MinimizedChatBar() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 p-2 flex justify-center items-end gap-2">
+    <div className="absolute bottom-0 z-40 p-2 flex justify-center items-end gap-2 w-full">
       {minimizedChats.map(chat => (
         <Button
           key={chat.id}
