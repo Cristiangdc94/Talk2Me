@@ -4,12 +4,13 @@
 import { CheckCheck } from "lucide-react";
 
 interface MessageStatusProps {
-  status?: 'read';
+  status?: 'sent' | 'read';
 }
 
 export function MessageStatus({ status }: MessageStatusProps) {
   if (status === 'read') {
     return <CheckCheck className="h-4 w-4 text-blue-500" />;
   }
-  return null;
+  // For 'sent' or undefined, show default check
+  return <CheckCheck className="h-4 w-4 text-muted-foreground" />;
 }
