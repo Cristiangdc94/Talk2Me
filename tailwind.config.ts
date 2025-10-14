@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'radial-gradient': 'radial-gradient(circle at center, hsl(var(--primary)) 0%, hsl(var(--background)) 100%)',
+      },
       maxWidth: {
         '8xl': '1920px',
       },
