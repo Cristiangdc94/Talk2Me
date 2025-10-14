@@ -1,65 +1,17 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Bell, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { NotificationList } from "./notification-list";
-import { notifications as mockNotifications, users } from "@/lib/mock-data";
 import { ThemeToggle } from "../theme-toggle";
-import type { Notification } from "@/lib/types";
-
-const exampleNotificationTemplates: Omit<Notification, 'id' | 'text' | 'timestamp'>[] = [
-    { type: 'message', chatId: 'dm-2', chatType: 'dm' },
-    { type: 'call', chatId: 'dm-3', chatType: 'dm' },
-    { type: 'news', link: '/' },
-    { type: 'news', link: '/company-news' },
-];
-
+import { useChat } from "@/hooks/use-chat";
 
 export function NotificationWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-        const templateIndex = Math.floor(Math.random() * exampleNotificationTemplates.length);
-        const template = exampleNotificationTemplates[templateIndex];
-        
-        let text = '';
-        const contacts = users.filter(u => u.relationship === 'friend' || u.relationship === 'coworker');
-        const randomContact = contacts[Math.floor(Math.random() * contacts.length)] || users[1];
-
-        switch(template.type) {
-            case 'message':
-                text = `Tienes un nuevo mensaje de ${randomContact.name}.`;
-                template.chatId = `dm-${randomContact.id}`;
-                break;
-            case 'call':
-                text = `Llamada perdida de ${randomContact.name}.`;
-                template.chatId = `dm-${randomContact.id}`;
-                break;
-            case 'news':
-                if (template.link === '/company-news') {
-                    text = 'Una de tus empresas ha publicado una nueva noticia.';
-                } else {
-                    text = 'Hay noticias de tecnología que te podrían interesar.';
-                }
-                break;
-        }
-
-        const newNotif: Notification = {
-            ...template,
-            id: `notif-${Date.now()}`,
-            text,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        };
-        setNotifications(prev => [newNotif, ...prev]);
-    }, 10000); // 10 seconds
-
-    return () => clearInterval(interval);
-  }, []);
+  const { notifications, setNotifications } = useChat();
   
   const handleNotificationClick = () => {
     setIsOpen(false);

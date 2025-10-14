@@ -3,8 +3,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
-import type { Message, DirectMessage } from "@/lib/types";
-import { channels, directMessages as initialDirectMessages, users } from "@/lib/mock-data";
+import type { Message, DirectMessage, Notification } from "@/lib/types";
+import { channels, directMessages as initialDirectMessages, users, notifications as initialNotifications } from "@/lib/mock-data";
 import { Hash, Lock } from "lucide-react";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 
@@ -22,6 +22,9 @@ interface ChatContextType {
   closeChat: () => void;
   activeChatId: string | null;
   directMessages: DirectMessage[];
+  addMessage: (chatId: string, message: Message) => void;
+  notifications: Notification[];
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -29,6 +32,17 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [directMessages, setDirectMessages] = useState<DirectMessage[]>(initialDirectMessages);
+  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+
+  const addMessage = useCallback((chatId: string, message: Message) => {
+    setDirectMessages(prevDms =>
+        prevDms.map(dm =>
+            dm.id === chatId
+                ? { ...dm, messages: [...dm.messages, message] }
+                : dm
+        )
+    );
+  }, []);
 
   const openChat = useCallback((id: string) => {
     setActiveChatId(id);
@@ -80,7 +94,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
 
   return (
-    <ChatContext.Provider value={{ activeChat, openChat, closeChat, activeChatId, directMessages }}>
+    <ChatContext.Provider value={{ activeChat, openChat, closeChat, activeChatId, directMessages, addMessage, notifications, setNotifications }}>
       {children}
     </ChatContext.Provider>
   );

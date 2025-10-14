@@ -153,7 +153,7 @@ function ChatWidget() {
             icon={activeChat.icon}
             initialMessages={activeChat.messages}
             currentUser={users[0]}
-            chatType={activeChat.type}
+            chatType={active.type}
             showHead={false}
           />
         </CardContent>

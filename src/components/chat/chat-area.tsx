@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 import { MessageInput } from "@/components/chat/message-input";
 import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
-import type { Message, User } from "@/lib/types";
+import type { Message, User, Notification } from "@/lib/types";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useChat } from "@/hooks/use-chat";
+import { users } from "@/lib/mock-data";
 
 interface ChatAreaProps {
   chatId: string;
@@ -40,18 +42,43 @@ export function ChatArea({
   showHead = true,
 }: ChatAreaProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const { setNotifications, addMessage, activeChat } = useChat();
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMessages(initialMessages);
-  }, [initialMessages]);
+    // When the active chat changes, update the messages
+    if (activeChat?.id === chatId) {
+        setMessages(activeChat.messages);
+    }
+  }, [activeChat, chatId]);
 
   useEffect(() => {
     if (scrollViewportRef.current) {
       scrollViewportRef.current.scrollTop = scrollViewportRef.current.scrollHeight;
     }
   }, [messages, chatId]);
+
+  const handleReceiveMessage = (text: string, sender: User) => {
+    const newMessage: Message = {
+      id: `msg-${Date.now()}`,
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      user: sender,
+    };
+    
+    const newNotification: Notification = {
+        id: `notif-${Date.now()}`,
+        type: 'message',
+        text: `Tienes un nuevo mensaje de ${sender.name}.`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        chatId: chatId,
+        chatType: chatType,
+    };
+
+    addMessage(chatId, newMessage);
+    setNotifications(prev => [newNotification, ...prev]);
+  };
 
   const handleSendMessage = (text: string) => {
     const newMessage: Message = {
@@ -61,7 +88,15 @@ export function ChatArea({
       user: currentUser,
     };
     
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+    addMessage(chatId, newMessage);
+
+    // Simulate receiving a reply after a short delay
+    setTimeout(() => {
+        const recipient = users.find(u => u.id === (chatId.startsWith('dm-') ? chatId.substring(3) : ''));
+        if (recipient) {
+            handleReceiveMessage(`¡Entendido! Gracias por tu mensaje.`, recipient);
+        }
+    }, 1000);
   };
   
   const handleSuggestionClick = (suggestion: string) => {
