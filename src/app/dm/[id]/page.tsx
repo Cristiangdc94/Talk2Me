@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 
 export default function DirectMessagePage({ params }: { params: { id: string } }) {
-  const dm = directMessages.find((d) => d.id === params.id);
+  // The id from params might not have the 'dm-' prefix, so we find by userId.
+  const dm = directMessages.find((d) => d.userId === params.id);
   const recipient = users.find((u) => u.id === params.id);
   const currentUser = users[0];
 

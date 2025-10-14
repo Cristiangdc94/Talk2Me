@@ -25,7 +25,7 @@ export const friendStatuses: FriendStatus[] = [
 
 export const channels: Channel[] = [
   {
-    id: '1',
+    id: 'channel-1',
     name: 'general',
     type: 'public',
     messages: [
@@ -35,7 +35,7 @@ export const channels: Channel[] = [
     ],
   },
   {
-    id: '2',
+    id: 'channel-2',
     name: 'equipo-diseño',
     type: 'private',
     messages: [
@@ -47,7 +47,7 @@ export const channels: Channel[] = [
     ],
   },
   {
-    id: '3',
+    id: 'channel-3',
     name: 'varios',
     type: 'public',
     messages: [
@@ -58,7 +58,8 @@ export const channels: Channel[] = [
 
 export const directMessages: DirectMessage[] = [
   {
-    id: '2', // Corresponds to user with id '2' (Alice)
+    id: 'dm-2', // Corresponds to user with id '2' (Alice)
+    userId: '2',
     name: 'Alice',
     type: 'private',
     messages: [
@@ -67,7 +68,8 @@ export const directMessages: DirectMessage[] = [
     ],
   },
   {
-    id: '4', // Corresponds to user with id '4' (Charlie)
+    id: 'dm-4', // Corresponds to user with id '4' (Charlie)
+    userId: '4',
     name: 'Carlos',
     type: 'private',
     messages: [
@@ -75,7 +77,8 @@ export const directMessages: DirectMessage[] = [
     ],
   },
   {
-    id: '5', // Corresponds to user with id '5' (Diana)
+    id: 'dm-5', // Corresponds to user with id '5' (Diana)
+    userId: '5',
     name: 'Diana',
     type: 'private',
     messages: [
@@ -95,9 +98,9 @@ export const newsArticles: NewsArticle[] = [
 ];
 
 export const notifications: Notification[] = [
-  { id: 'notif1', type: 'message', text: 'Alice te ha enviado un mensaje.', timestamp: 'hace 5 minutos', chatId: '2', chatType: 'dm' },
-  { id: 'notif2', type: 'message', text: 'Nuevo mensaje en el canal #general.', timestamp: 'hace 10 minutos', chatId: '1', chatType: 'channel' },
-  { id: 'notif3', type: 'call', text: 'Llamada perdida de Bob.', timestamp: 'hace 1 hora', chatId: '3', chatType: 'dm' },
+  { id: 'notif1', type: 'message', text: 'Alice te ha enviado un mensaje.', timestamp: 'hace 5 minutos', chatId: 'dm-2', chatType: 'dm' },
+  { id: 'notif2', type: 'message', text: 'Nuevo mensaje en el canal #general.', timestamp: 'hace 10 minutos', chatId: 'channel-1', chatType: 'channel' },
+  { id: 'notif3', type: 'call', text: 'Llamada perdida de Bob.', timestamp: 'hace 1 hora', chatId: 'dm-3', chatType: 'dm' },
   { id: 'notif4', type: 'news', text: 'Se ha publicado un nuevo artículo de tecnología que podría interesarte.', timestamp: 'hace 3 horas', link: '/' },
-  { id: 'notif5', type: 'message', text: 'Diana ha respondido a tu mensaje.', timestamp: 'hace 4 horas', chatId: '5', chatType: 'dm' },
+  { id: 'notif5', type: 'message', text: 'Diana ha respondido a tu mensaje.', timestamp: 'hace 4 horas', chatId: 'dm-5', chatType: 'dm' },
 ];

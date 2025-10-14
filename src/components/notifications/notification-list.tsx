@@ -64,15 +64,17 @@ export function NotificationList({ notifications, onNotificationClick }: Notific
         }
       } else if (item.chatType === 'dm') {
          const dm = directMessages.find(d => d.id === item.chatId);
-         const recipient = users.find((u) => u.id === item.chatId);
-         if (dm && recipient) {
-            openChat({
-              id: dm.id,
-              type: "dm",
-              title: dm.name,
-              icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
-              messages: dm.messages,
-            });
+         if (dm) {
+            const recipient = users.find((u) => u.id === dm.userId);
+            if(recipient) {
+                 openChat({
+                    id: dm.id,
+                    type: "dm",
+                    title: dm.name,
+                    icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
+                    messages: dm.messages,
+                });
+            }
          }
       }
     } else if (item.link) {

@@ -42,28 +42,32 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const activeChat = React.useMemo(() => {
     if (!activeChatId) return null;
 
-    const channel = channels.find(c => c.id === activeChatId);
-    if (channel) {
-      return {
-        id: channel.id,
-        type: "channel" as const,
-        title: channel.name,
-        icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
-        messages: channel.messages,
-      };
+    if (activeChatId.startsWith('channel-')) {
+        const channel = channels.find(c => c.id === activeChatId);
+        if (channel) {
+          return {
+            id: channel.id,
+            type: "channel" as const,
+            title: channel.name,
+            icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
+            messages: channel.messages,
+          };
+        }
     }
 
-    const dm = directMessages.find(d => d.id === activeChatId);
-    if (dm) {
-      const recipient = users.find((u) => u.id === dm.id);
-      if (!recipient) return null;
-      return {
-        id: dm.id,
-        type: "dm" as const,
-        title: dm.name,
-        icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
-        messages: dm.messages,
-      };
+    if (activeChatId.startsWith('dm-')) {
+        const dm = directMessages.find(d => d.id === activeChatId);
+        if (dm) {
+          const recipient = users.find((u) => u.id === dm.userId);
+          if (!recipient) return null;
+          return {
+            id: dm.id,
+            type: "dm" as const,
+            title: dm.name,
+            icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
+            messages: dm.messages,
+          };
+        }
     }
     
     return null;

@@ -25,7 +25,9 @@ export interface Channel {
   messages: Message[];
 }
 
-export interface DirectMessage extends Channel {}
+export interface DirectMessage extends Channel {
+  userId: string;
+}
 
 export interface NewsArticle {
   id: string;
