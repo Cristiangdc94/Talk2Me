@@ -23,7 +23,6 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
-    --radius: 0.8rem;
     --chart-1: 240 5.9% 10%;
     --chart-2: 240 3.8% 46.1%;
     --chart-3: 240 4.8% 95.9%;
@@ -81,5 +80,24 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .sidebar-border-gradient {
+    border-color: transparent;
+    position: relative;
+  }
+  .sidebar-border-gradient::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, hsl(var(--border)), transparent);
+  }
+  .dark .sidebar-border-gradient::after {
+    background: linear-gradient(to bottom, transparent, hsl(var(--border)), transparent);
   }
 }
