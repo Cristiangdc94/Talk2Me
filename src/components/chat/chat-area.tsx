@@ -75,7 +75,7 @@ export function ChatArea({
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
         <div className="flex-1" />
         {chatType === "dm" && (
-            <Button variant="ghost" size="icon" onClick={handleCall} className="mr-[-15px]">
+            <Button variant="ghost" size="icon" onClick={handleCall} className="mr-[-45px]">
                 <Phone className="w-5 h-5" />
                 <span className="sr-only">Llamar a {title}</span>
             </Button>
