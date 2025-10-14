@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import React from 'react';
@@ -57,7 +58,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="mx-auto max-w-[1920px] h-full rounded-xl">
               <SidebarProvider>
                 <div className="h-full flex bg-background rounded-xl">
-                  <div className="sidebar-border-gradient border-r border-transparent">
+                  <div className="border-transparent">
                     <Sidebar>
                       <SidebarHeader className="p-4">
                         <div className="flex items-center gap-2">
@@ -77,7 +78,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       </SidebarFooter>
                     </Sidebar>
                   </div>
-                  <main className="flex-1 flex flex-col bg-background rounded-bl-xl">
+                  <div className="sidebar-gradient-border w-px" />
+                  <main className="flex-1 flex flex-col bg-background rounded-r-xl">
                      <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:hidden">
                        <SidebarTrigger />
                     </header>

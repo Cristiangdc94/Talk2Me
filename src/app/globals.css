@@ -90,14 +90,12 @@
   body {
     @apply bg-background text-foreground;
   }
-  .sidebar-border-gradient {
-    border-image: linear-gradient(
-        to bottom,
-        hsl(var(--sidebar-border)),
-        hsl(var(--sidebar-border) / 0),
-        hsl(var(--sidebar-border))
-      )
-      1;
+  .sidebar-gradient-border {
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--sidebar-border)),
+      hsl(var(--background))
+    );
   }
   
   ::-webkit-scrollbar {
