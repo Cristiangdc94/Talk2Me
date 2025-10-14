@@ -119,8 +119,8 @@ export function NewsPortal() {
       />
       <Tabs defaultValue="general">
         <TabsList className='mb-4'>
-          <TabsTrigger value="general">Noticias Generales</TabsTrigger>
-          <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
+          <TabsTrigger value="general">Noticias generales</TabsTrigger>
+          <TabsTrigger value="personalizadas">Para tí</TabsTrigger>
         </TabsList>
         <TabsContent value="general">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
