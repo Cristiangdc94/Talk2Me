@@ -66,20 +66,9 @@ export function CoworkersList({
                     </CardHeader>
                     <CardContent className="flex-1 overflow-hidden p-0">
                         <ScrollArea className="h-full">
-                            <div
-                                className={cn(
-                                    "space-y-4 transition-colors p-4 min-h-[100px]"
-                                )}
-                            >
+                            <div className="space-y-4 transition-colors p-4 min-h-[100px]">
                                 {users.map((user) => (
-                                    <div
-                                        key={user.id}
-                                        className={cn(
-                                            "relative group/item"
-                                        )}
-                                    >
-                                        <UserListCard user={user} />
-                                    </div>
+                                    <UserListCard key={user.id} user={user} />
                                 ))}
                                 {users.length === 0 && (
                                     <div className="text-center py-4 text-sm text-muted-foreground h-24 flex items-center justify-center">
