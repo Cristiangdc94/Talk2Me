@@ -63,7 +63,7 @@ export function SignupForm() {
   return (
     <div className="flex flex-col justify-center h-full">
       <CardHeader className="text-center p-0 mb-6">
-        <CardTitle className="text-2xl font-semibold tracking-tight">¿Eres nuevo aquí?</CardTitle>
+        <CardTitle className="text-2xl font-semibold tracking-tight">Crear una Cuenta</CardTitle>
         <CardDescription>Crea tu cuenta para empezar a chatear</CardDescription>
       </CardHeader>
 

@@ -63,10 +63,8 @@ export function LoginForm() {
 
   return (
     <div className="flex flex-col justify-center h-full">
-      <CardHeader className="text-center p-0 mb-6">
-        <div className="flex justify-center items-center gap-2 mb-2">
-          <CardTitle className="font-logo text-4xl">Talk2Me</CardTitle>
-        </div>
+       <CardHeader className="text-center p-0 mb-6">
+        <CardTitle className="text-2xl font-semibold tracking-tight">Iniciar Sesión</CardTitle>
         <CardDescription>Introduce tus credenciales para acceder a tu cuenta</CardDescription>
       </CardHeader>
       
