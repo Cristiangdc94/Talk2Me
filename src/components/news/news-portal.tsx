@@ -15,7 +15,6 @@ import { generateNewsArticles } from '@/ai/flows/generate-news-articles';
 import { Card, CardContent } from '@/components/ui/card';
 import { FriendStatusCard } from './friend-status-card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { Separator } from '../ui/separator';
 import { useToast } from '@/hooks/use-toast';
 
 function LoadMoreNewsCard({ onClick, isGenerating, isDisabled }: { onClick: () => void; isGenerating: boolean, isDisabled: boolean }) {
@@ -165,7 +164,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
       />
 
       <div className='flex flex-col gap-8'>
-        <div className="bg-muted rounded-lg p-6">
+        <div className="bg-background rounded-lg p-6">
           <h2 className="text-2xl font-semibold tracking-tight mb-4">Lo nuevo entre tus amigos</h2>
             <Carousel
             opts={{

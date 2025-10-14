@@ -55,7 +55,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           ) : (
             <div className="mx-auto max-w-[1920px] h-full rounded-xl">
               <SidebarProvider>
-                <div className="h-full flex bg-muted rounded-xl">
+                <div className="h-full flex bg-background rounded-xl">
                   <Sidebar>
                     <SidebarHeader className="p-4">
                       <div className="flex items-center gap-2">
