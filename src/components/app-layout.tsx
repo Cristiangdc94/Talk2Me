@@ -93,7 +93,7 @@ function ChatWidget() {
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging && position.x !== null && position.y !== null) {
+    if (isDragging && widgetRef.current) {
       const newX = e.clientX - dragOffset.current.x;
       const newY = e.clientY - dragOffset.current.y;
       setPosition({ x: newX, y: newY });
