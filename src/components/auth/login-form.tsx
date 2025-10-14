@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,12 +8,9 @@ import Cookies from "js-cookie";
 
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription
 } from "@/components/ui/card";
 import {
   Form,
@@ -25,7 +21,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { AppLogo } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -47,7 +42,6 @@ export function LoginForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Simulate Firebase login
-    console.log("Simulating login with:", values);
     if (values.email === 'admin@example.com' && values.password === 'adminadmin') {
       toast({
         title: 'Inicio de Sesión de Administrador Exitoso',
@@ -68,56 +62,47 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader className="text-center">
-        <div className="flex justify-center items-center gap-2 mb-4">
+    <div className="flex flex-col justify-center h-full">
+      <CardHeader className="text-center p-0 mb-6">
+        <div className="flex justify-center items-center gap-2 mb-2">
           <CardTitle className="font-logo text-4xl">Talk2Me</CardTitle>
         </div>
         <CardDescription>Introduce tus credenciales para acceder a tu cuenta</CardDescription>
       </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Correo Electrónico</FormLabel>
-                  <FormControl>
-                    <Input placeholder="nombre@ejemplo.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contraseña</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Iniciando sesión..." : "Iniciar Sesión"}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="flex justify-center text-sm">
-        <p>
-          ¿No tienes una cuenta?&nbsp;
-          <Link href="/signup" className="text-primary hover:underline font-medium">
-            Regístrate
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+      
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Correo Electrónico</FormLabel>
+                <FormControl>
+                  <Input placeholder="nombre@ejemplo.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contraseña</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="••••••••" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? "Iniciando sesión..." : "Iniciar Sesión"}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }
