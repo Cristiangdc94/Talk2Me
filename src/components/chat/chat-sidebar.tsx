@@ -129,12 +129,14 @@ export function ChatSidebar() {
                     )}
                   </div>
                 </SidebarMenuButton>
-                <SidebarMenuAction
-                  onClick={(e) => handleCall(e, dm.name)}
-                  aria-label={`Llamar a ${dm.name}`}
-                >
-                  <Phone />
-                </SidebarMenuAction>
+                {user.status !== 'offline' && (
+                  <SidebarMenuAction
+                    onClick={(e) => handleCall(e, dm.name)}
+                    aria-label={`Llamar a ${dm.name}`}
+                  >
+                    <Phone />
+                  </SidebarMenuAction>
+                )}
               </SidebarMenuItem>
             );
           })}
