@@ -54,7 +54,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           ) : (
             <div className="mx-auto max-w-[1920px] h-full rounded-xl overflow-hidden">
               <SidebarProvider>
-                <div className="h-full flex bg-muted">
+                <div className="h-full flex bg-muted rounded-xl overflow-hidden">
                   <Sidebar>
                     <SidebarHeader className="p-4">
                       <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                      <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:hidden">
                        <SidebarTrigger />
                     </header>
-                    <main className="flex-1 overflow-auto bg-background rounded-tl-xl">
+                    <main className="flex-1 overflow-auto bg-background">
                       <div className="w-full h-full">
                         {children}
                       </div>
