@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useState, useEffect, useTransition } from "react";
+import React, { useState, useEffect, useTransition, useRef } from "react";
 import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getSmartReplySuggestions } from "@/ai/flows/smart-reply-suggestions";
@@ -18,9 +19,20 @@ export function SmartReplySuggestions({
 }: SmartReplySuggestionsProps) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
+  const [isRateLimited, setRateLimited] = useState(false);
+  const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (messages.length > 0) {
+    // Cleanup timer on unmount
+    return () => {
+      if (rateLimitTimer.current) {
+        clearTimeout(rateLimitTimer.current);
+      }
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (messages.length > 0 && !isRateLimited) {
       startTransition(async () => {
         try {
           // Format the last 3 messages for context
@@ -31,15 +43,34 @@ export function SmartReplySuggestions({
             
           const result = await getSmartReplySuggestions({ messageHistory });
           setSuggestions(result.suggestions);
-        } catch (error) {
+        } catch (error: any) {
           console.error("Error al obtener respuestas inteligentes:", error);
-          setSuggestions([]);
+          if (error.message && error.message.includes('429')) {
+            console.warn("Límite de tasa alcanzado. Desactivando sugerencias temporalmente.");
+            setRateLimited(true);
+            setSuggestions([]);
+
+            // Set a timer to re-enable suggestions after 60 seconds
+            rateLimitTimer.current = setTimeout(() => {
+              setRateLimited(false);
+              console.log("Temporizador de límite de tasa finalizado. Reactivando sugerencias.");
+            }, 60000); 
+          } else {
+            setSuggestions([]);
+          }
         }
       });
+    } else if (isRateLimited) {
+      setSuggestions([]);
     } else {
       setSuggestions([]);
     }
-  }, [messages]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages, isRateLimited]);
+  
+  if (isRateLimited) {
+      return null; // Don't show anything if we are rate limited
+  }
 
   if (isPending) {
     return (
