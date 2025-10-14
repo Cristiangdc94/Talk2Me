@@ -45,7 +45,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <HeaderActions />
             </div>
           </header>
-          <main className="flex-1 overflow-auto bg-muted/50">{children}</main>
+          <main className="flex-1 overflow-auto bg-muted">{children}</main>
         </div>
       </div>
     </SidebarProvider>
