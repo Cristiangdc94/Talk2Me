@@ -2,16 +2,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { Paperclip, Send, Sparkles } from "lucide-react";
+import { Paperclip, Send, Phone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 interface MessageInputProps {
   onSendMessage: (text: string) => void;
+  onCall: () => void;
+  chatType: "channel" | "dm";
+  chatTitle: string;
 }
 
-export function MessageInput({ onSendMessage }: MessageInputProps) {
+export function MessageInput({ onSendMessage, onCall, chatType, chatTitle }: MessageInputProps) {
   const [text, setText] = useState("");
 
   const handleSend = () => {
@@ -34,6 +37,12 @@ export function MessageInput({ onSendMessage }: MessageInputProps) {
         <Paperclip className="w-5 h-5" />
         <span className="sr-only">Adjuntar archivo</span>
       </Button>
+      {chatType === "dm" && (
+        <Button variant="ghost" size="icon" className="shrink-0" onClick={onCall}>
+          <Phone className="w-5 h-5" />
+          <span className="sr-only">Llamar a {chatTitle}</span>
+        </Button>
+      )}
       <div className="flex-1 relative">
         <Textarea
           value={text}
