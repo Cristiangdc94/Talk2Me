@@ -164,13 +164,12 @@ export function NewsPortal({ view }: NewsPortalProps) {
         currentPreferences={preferences}
       />
 
-      <div className='space-y-8'>
-        <div>
+      <div className='flex flex-col gap-8'>
+        <div className="bg-muted rounded-lg p-6">
           <h2 className="text-2xl font-semibold tracking-tight mb-4">Lo nuevo entre tus amigos</h2>
             <Carousel
             opts={{
               align: "start",
-              loop: true,
             }}
             className="w-full"
           >
@@ -183,15 +182,13 @@ export function NewsPortal({ view }: NewsPortalProps) {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="ml-12" />
-            <CarouselNext className="mr-12" />
+            <CarouselPrevious className="-left-4" />
+            <CarouselNext className="-right-4" />
           </Carousel>
         </div>
-        
-        <Separator />
 
         {view === 'foryou' && preferences.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-muted/50 min-h-[400px]">
+          <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-background min-h-[400px]">
               <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
               <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
               <Button onClick={() => setDialogOpen(true)}>
