@@ -1,50 +1,89 @@
+
 "use client";
 
 import { useChat } from "@/hooks/use-chat";
 import { ChatArea } from "./chat-area";
 import { channels, directMessages, users } from "@/lib/mock-data";
 import { Button } from "../ui/button";
-import { Hash, Lock, User } from "lucide-react";
+import { Hash, Lock, User, Phone } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { UserAvatarWithStatus } from "./user-avatar-with-status";
+import { Badge } from "../ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 export function ChatLayout() {
-    const { activeChat, activeChatId, setActiveChatId } = useChat();
+    const { activeChat, activeChatId, openChat } = useChat();
+    const { toast } = useToast();
 
     if (!activeChat) {
         return null;
     }
 
+    const handleCall = (event: React.MouseEvent, userName: string) => {
+        event.preventDefault();
+        event.stopPropagation();
+        toast({
+          title: `Llamando a ${userName}...`,
+          description: "Esta función es una demostración.",
+        });
+    };
+
     return (
         <div className="flex h-full w-full bg-background">
-            <div className="w-64 border-r bg-muted p-2 flex flex-col gap-2">
+            <div className="w-72 border-r bg-muted/50 p-2 flex flex-col gap-2">
                 <h2 className="text-lg font-semibold tracking-tight p-2">Chats</h2>
                 <ScrollArea>
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 p-2">
                         <p className="text-sm font-medium text-muted-foreground px-2 pt-2">Canales</p>
                         {channels.map((channel) => (
                             <Button
                                 key={channel.id}
                                 variant={activeChatId === channel.id ? "secondary" : "ghost"}
                                 className="w-full justify-start"
-                                onClick={() => setActiveChatId(channel.id)}
+                                onClick={() => openChat(channel.id)}
                             >
                                 {channel.type === "private" ? <Lock className="mr-2 h-4 w-4" /> : <Hash className="mr-2 h-4 w-4" />}
                                 {channel.name}
                             </Button>
                         ))}
                         <p className="text-sm font-medium text-muted-foreground px-2 pt-4">Mensajes Directos</p>
-                        {directMessages.map((dm) => (
-                             <Button
-                                key={dm.id}
-                                variant={activeChatId === dm.id ? "secondary" : "ghost"}
-                                className="w-full justify-start"
-                                onClick={() => setActiveChatId(dm.id)}
-                            >
-                               <User className="mr-2 h-4 w-4" />
-                               {dm.name}
-                            </Button>
-                        ))}
+                        {directMessages.map((dm) => {
+                             const user = users.find((u) => u.id === dm.userId);
+                             if (!user) return null;
+                             const statusColor = {
+                               online: "text-green-500",
+                               busy: "text-red-500",
+                               offline: "text-muted-foreground",
+                             };
+                            return (
+                                <div key={dm.id} className="relative group">
+                                    <Button
+                                        variant={activeChatId === dm.id ? "secondary" : "ghost"}
+                                        className="w-full justify-start h-auto p-2"
+                                        onClick={() => openChat(dm.id)}
+                                    >
+                                        <UserAvatarWithStatus user={user} className="w-8 h-8" />
+                                        <div className="flex-1 flex justify-between items-center ml-2">
+                                            <span className={cn("font-medium truncate", statusColor[user.status])}>{dm.name}</span>
+                                            {dm.unreadCount && dm.unreadCount > 0 && (
+                                                <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
+                                                {dm.unreadCount > 9 ? "+9" : dm.unreadCount}
+                                                </Badge>
+                                            )}
+                                        </div>
+                                    </Button>
+                                    <Button 
+                                        variant="ghost" 
+                                        size="icon" 
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 opacity-0 group-hover:opacity-100"
+                                        onClick={(e) => handleCall(e, dm.name)}
+                                    >
+                                        <Phone className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            )
+                        })}
                     </div>
                 </ScrollArea>
             </div>

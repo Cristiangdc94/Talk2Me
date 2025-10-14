@@ -20,7 +20,6 @@ interface ChatContextType {
   openChat: (id: string) => void;
   closeChat: () => void;
   activeChatId: string | null;
-  setActiveChatId: (id: string | null) => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -72,7 +71,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
 
   return (
-    <ChatContext.Provider value={{ activeChat, openChat, closeChat, activeChatId, setActiveChatId }}>
+    <ChatContext.Provider value={{ activeChat, openChat, closeChat, activeChatId }}>
       {children}
     </ChatContext.Provider>
   );
