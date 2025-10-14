@@ -38,7 +38,7 @@ import {
 } from "../ui/collapsible";
 import { cn } from "@/lib/utils";
 import { useChat } from "@/hooks/use-chat";
-import { UserAvatarWithStatus } from "./user-avatar-with-status";
+import { NewMessagePopover } from "./new-message-popover";
 
 const mainNavLinks = [
   { href: "/friends", label: "Amigos", icon: Users },
@@ -177,10 +177,7 @@ export function SidebarNav() {
           Mensajes Directos
         </SidebarGroupLabel>
         <SidebarGroupAction asChild>
-          <Link href="/add-contact">
-            <Plus />
-            <span className="sr-only">Nuevo Mensaje</span>
-          </Link>
+            <NewMessagePopover />
         </SidebarGroupAction>
         <SidebarMenu>
           {directMessages.map((dm) => {
