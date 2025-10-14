@@ -1,3 +1,4 @@
+
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -14,6 +15,7 @@ import {
   Search,
   ChevronDown,
 } from "lucide-react";
+import { cva } from "class-variance-authority";
 
 import {
   SidebarGroup,
@@ -44,6 +46,16 @@ const mainNavLinks = [
   { href: "/add-contact", label: "Buscar", icon: Search },
 ];
 
+const statusIndicatorVariants = cva("h-2.5 w-2.5 rounded-full", {
+  variants: {
+    status: {
+      online: "bg-green-500",
+      busy: "bg-orange-500",
+      offline: "bg-red-500",
+    },
+  },
+});
+
 export function SidebarNav() {
   const pathname = usePathname();
   const { toast } = useToast();
@@ -72,7 +84,7 @@ export function SidebarNav() {
   }
 
   const handleDMClick = (dm: (typeof directMessages)[0]) => {
-    const recipient = users.find((u) => u.id === dm.id);
+    const recipient = users.find((u) => u.id === dm.userId);
     if (!recipient) return;
      openChat({
       id: dm.id,
@@ -186,24 +198,32 @@ export function SidebarNav() {
           </button>
         </SidebarGroupAction>
         <SidebarMenu>
-          {directMessages.map((dm) => (
-            <SidebarMenuItem key={dm.id}>
-              <SidebarMenuButton
-                onClick={() => handleDMClick(dm)}
-                isActive={activeChatId === dm.id}
-                tooltip={dm.name}
-              >
-                <User />
-                <span>{dm.name}</span>
-              </SidebarMenuButton>
-              <SidebarMenuAction
-                onClick={(e) => handleCall(e, dm.name)}
-                aria-label={`Llamar a ${dm.name}`}
-              >
-                <Phone />
-              </SidebarMenuAction>
-            </SidebarMenuItem>
-          ))}
+          {directMessages.map((dm) => {
+            const user = users.find(u => u.id === dm.userId);
+            return (
+              <SidebarMenuItem key={dm.id}>
+                <SidebarMenuButton
+                  onClick={() => handleDMClick(dm)}
+                  isActive={activeChatId === dm.id}
+                  tooltip={dm.name}
+                >
+                  <User />
+                  {user && (
+                    <span
+                      className={cn(statusIndicatorVariants({ status: user.status }))}
+                    />
+                  )}
+                  <span>{dm.name}</span>
+                </SidebarMenuButton>
+                <SidebarMenuAction
+                  onClick={(e) => handleCall(e, dm.name)}
+                  aria-label={`Llamar a ${dm.name}`}
+                >
+                  <Phone />
+                </SidebarMenuAction>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroup>
     </div>
