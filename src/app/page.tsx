@@ -4,5 +4,9 @@
 import { NewsPortal } from "@/components/news/news-portal";
 
 export default function Home() {
-  return <NewsPortal />;
+  return (
+    <div className="p-4 sm:p-6">
+      <NewsPortal />
+    </div>
+  );
 }

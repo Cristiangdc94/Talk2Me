@@ -16,17 +16,18 @@ export function MainNav() {
   ];
 
   return (
-    <nav className="flex items-center space-x-2" aria-label="Tabs">
+    <nav className="hidden md:flex items-center space-x-1 rounded-lg p-1 bg-muted">
       {navItems.map((item) => (
         <Button
           key={item.href}
           asChild
           variant="ghost"
+          size="sm"
           className={cn(
-            'justify-center rounded-md px-3 py-2 text-sm font-medium',
+            'justify-center rounded-md px-3 py-1.5 text-sm font-medium',
             pathname === item.href
               ? 'bg-primary text-primary-foreground shadow-sm'
-              : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+              : 'text-muted-foreground hover:bg-background/80 hover:text-foreground'
           )}
         >
           <Link href={item.href}>{item.label}</Link>
