@@ -11,8 +11,6 @@ export function MainNav() {
 
   const navItems = [
     { href: '/', label: 'Noticias' },
-    { href: '/friends', label: 'Amigos' },
-    { href: '/coworkers', label: 'Compañeros' },
   ];
 
   return (

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useTransition } from 'react';
 import Cookies from 'js-cookie';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { NewsArticleCard } from './news-article-card';
 import { newsArticles } from '@/lib/mock-data';
@@ -92,10 +91,6 @@ export function NewsPortal() {
     (article) => article.location === location || article.location === 'global'
   );
 
-  const personalizedNews = allNews.filter((article) =>
-    preferences.includes(article.category)
-  );
-
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -117,45 +112,14 @@ export function NewsPortal() {
         onSave={handleSavePreferences}
         currentPreferences={preferences}
       />
-      <Tabs defaultValue="general">
-        <TabsList className='mb-4'>
-          <TabsTrigger value="general">Noticias generales</TabsTrigger>
-          <TabsTrigger value="personalizadas">Para tí</TabsTrigger>
-        </TabsList>
-        <TabsContent value="general">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {generalNews.map((article) => (
-              <NewsArticleCard key={article.id} article={article} />
-            ))}
-            <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
-          </div>
-        </TabsContent>
-        <TabsContent value="personalizadas">
-          {personalizedNews.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {personalizedNews.map((article) => (
-                <NewsArticleCard key={article.id} article={article} />
-              ))}
-              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
-            </div>
-          ) : (
-            <Card className="col-span-full flex flex-col items-center justify-center p-8 text-center">
-              <CardHeader>
-                <CardTitle>Personaliza tu feed de noticias</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-muted-foreground">
-                  Selecciona tus intereses para ver noticias personalizadas aquí.
-                </p>
-                <Button onClick={() => setDialogOpen(true)}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Elegir Intereses
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-        </TabsContent>
-      </Tabs>
+      <div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {generalNews.map((article) => (
+            <NewsArticleCard key={article.id} article={article} />
+          ))}
+          <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
+        </div>
+      </div>
     </>
   );
 }
