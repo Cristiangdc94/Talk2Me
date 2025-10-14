@@ -74,7 +74,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       <UserNav />
                     </SidebarFooter>
                   </Sidebar>
-                  <main className="flex-1 flex flex-col rounded-tl-xl rounded-bl-xl bg-background">
+                  <main className="flex-1 flex flex-col bg-background rounded-tl-xl rounded-bl-xl">
                      <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:hidden">
                        <SidebarTrigger />
                     </header>
