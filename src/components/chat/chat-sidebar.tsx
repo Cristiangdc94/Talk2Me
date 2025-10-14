@@ -1,9 +1,9 @@
 
+'use client';
 
-"use client";
-
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import {
   Hash,
   Lock,
@@ -14,7 +14,7 @@ import {
   Briefcase,
   ChevronDown,
   User,
-} from "lucide-react";
+} from 'lucide-react';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -23,18 +23,18 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuAction,
-} from "@/components/ui/sidebar";
-import { Popover, PopoverTrigger } from "@/components/ui/popover";
-import { channels as initialChannels, users } from "@/lib/mock-data";
-import { CreateChannelDialog } from "./create-channel-dialog";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
-import { useChat } from "@/hooks/use-chat";
-import { NewMessagePopover } from "./new-message-popover";
-import { UserAvatarWithStatus } from "./user-avatar-with-status";
-import type { Channel } from "@/lib/types";
-import { Badge } from "../ui/badge";
+} from '@/components/ui/sidebar';
+import { Popover, PopoverTrigger } from '@/components/ui/popover';
+import { channels as initialChannels, users } from '@/lib/mock-data';
+import { CreateChannelDialog } from './create-channel-dialog';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+import { useChat } from '@/hooks/use-chat';
+import { NewMessagePopover } from './new-message-popover';
+import { UserAvatarWithStatus } from './user-avatar-with-status';
+import type { Channel } from '@/lib/types';
+import { Badge } from '../ui/badge';
 
 export function ChatSidebar() {
   const { toast } = useToast();
@@ -48,7 +48,7 @@ export function ChatSidebar() {
     event.stopPropagation();
     toast({
       title: `Llamando a ${userName}...`,
-      description: "Esta función es una demostración.",
+      description: 'Esta función es una demostración.',
     });
   };
 
@@ -74,7 +74,7 @@ export function ChatSidebar() {
                 isActive={activeChatId === channel.id}
                 tooltip={channel.name}
               >
-                {channel.type === "private" ? <Lock /> : <Hash />}
+                {channel.type === 'private' ? <Lock /> : <Hash />}
                 <span>{channel.name}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -84,7 +84,10 @@ export function ChatSidebar() {
 
       <SidebarGroup>
         <SidebarGroupLabel>Mensajes Directos</SidebarGroupLabel>
-        <NewMessagePopover isOpen={isNewMessagePopoverOpen} setIsOpen={setNewMessagePopoverOpen}>
+        <NewMessagePopover
+          isOpen={isNewMessagePopoverOpen}
+          setIsOpen={setNewMessagePopoverOpen}
+        >
           <PopoverTrigger asChild>
             <SidebarGroupAction asChild>
               <button>
@@ -99,9 +102,9 @@ export function ChatSidebar() {
             const user = users.find((u) => u.id === dm.userId);
             if (!user) return null;
             const statusColor = {
-                online: "text-green-500",
-                busy: "text-red-500",
-                offline: "text-muted-foreground",
+              online: 'text-green-500',
+              busy: 'text-red-500',
+              offline: 'text-muted-foreground',
             };
             return (
               <SidebarMenuItem key={dm.id}>
@@ -110,21 +113,26 @@ export function ChatSidebar() {
                   isActive={activeChatId === dm.id}
                   tooltip={dm.name}
                 >
-                  <div className="flex items-center gap-2 overflow-hidden">
+                  <div className="flex items-center gap-2 overflow-hidden w-full">
                     <UserAvatarWithStatus user={user} className="w-6 h-6" />
-                    <span className={cn("truncate", statusColor[user.status])}>{dm.name}</span>
+                    <span className={cn('truncate', statusColor[user.status])}>
+                      {dm.name}
+                    </span>
+                    {dm.unreadCount > 0 && (
+                      <Badge
+                        variant="destructive"
+                        className="h-5 min-w-[1.25rem] justify-center text-xs ml-auto"
+                      >
+                        {dm.unreadCount > 9 ? '+9' : dm.unreadCount}
+                      </Badge>
+                    )}
                   </div>
                 </SidebarMenuButton>
-                {dm.unreadCount && (
-                   <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
-                     {dm.unreadCount > 9 ? "+9" : dm.unreadCount}
-                   </Badge>
-                )}
                 <SidebarMenuAction
-                    onClick={(e) => handleCall(e, dm.name)}
-                    aria-label={`Llamar a ${dm.name}`}
+                  onClick={(e) => handleCall(e, dm.name)}
+                  aria-label={`Llamar a ${dm.name}`}
                 >
-                    <Phone />
+                  <Phone />
                 </SidebarMenuAction>
               </SidebarMenuItem>
             );
