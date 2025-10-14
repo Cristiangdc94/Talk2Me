@@ -82,9 +82,6 @@ export function CoworkersList({
         
         setCurrentUser(newUserWithRole);
         
-        const updatedUsers = users.map(u => u.id === '1' ? newUserWithRole : u);
-        // This is a mock, in a real app you'd update the source of truth
-        
         setGroupedUsers(prev => ({
             ...prev,
             [companyName]: [newUserWithRole]
@@ -96,6 +93,15 @@ export function CoworkersList({
   const handleOpenManageDialog = (companyName: string, users: User[]) => {
     setManagedGroup({ name: companyName, description: "Descripción del grupo de la empresa.", users });
     setManageGroupOpen(true);
+  };
+  
+  const handleCorporateChat = (companyName: string) => {
+    toast({
+        title: `Chat Corporativo: ${companyName}`,
+        description: "Abriendo el chat exclusivo del grupo..."
+    });
+    // In a real implementation, you would navigate to the chat page:
+    // router.push(`/corporate-chat/${companyName}`);
   };
 
   const handleSaveManagedGroup = (originalName: string, newName: string, newDescription: string, newUsers: string[]) => {
@@ -143,39 +149,44 @@ export function CoworkersList({
                 return (
                     <div key={company} className="w-[320px] shrink-0 h-full">
                         <Card className="h-full flex flex-col bg-muted/50 relative group/card">
-                             <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="absolute top-3 right-3 h-7 w-7">
-                                        <MoreVertical className="h-4 w-4" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    {isPrivileged ? (
-                                        <>
-                                            <DropdownMenuItem onClick={() => handleOpenManageDialog(company, sortedUsers)}>
-                                                <Settings className="mr-2 h-4 w-4" />
-                                                <span>Gestionar Grupo</span>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="text-destructive" onClick={() => toast({variant: 'destructive', title: "Grupo eliminado"})}>
-                                                <Trash2 className="mr-2 h-4 w-4" />
-                                                <span>Eliminar Grupo</span>
-                                            </DropdownMenuItem>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
-                                                <Info className="mr-2 h-4 w-4" />
-                                                <span>Ver detalles</span>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem onClick={() => toast({title: "Has abandonado el grupo"})}>
-                                                <LogOut className="mr-2 h-4 w-4" />
-                                                <span>Abandonar el grupo</span>
-                                            </DropdownMenuItem>
-                                        </>
-                                    )}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="absolute top-3 right-3 flex items-center gap-1">
+                                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleCorporateChat(company)}>
+                                    <MessageSquare className="h-4 w-4" />
+                                </Button>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-7 w-7">
+                                            <MoreVertical className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        {isPrivileged ? (
+                                            <>
+                                                <DropdownMenuItem onClick={() => handleOpenManageDialog(company, sortedUsers)}>
+                                                    <Settings className="mr-2 h-4 w-4" />
+                                                    <span>Gestionar Grupo</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem className="text-destructive" onClick={() => toast({variant: 'destructive', title: "Grupo eliminado"})}>
+                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    <span>Eliminar Grupo</span>
+                                                </DropdownMenuItem>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
+                                                    <Info className="mr-2 h-4 w-4" />
+                                                    <span>Ver detalles</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => toast({title: "Has abandonado el grupo"})}>
+                                                    <LogOut className="mr-2 h-4 w-4" />
+                                                    <span>Abandonar el grupo</span>
+                                                </DropdownMenuItem>
+                                            </>
+                                        )}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
 
                             <CardHeader>
                                 <CardTitle className='font-bold text-lg'>{company}</CardTitle>
@@ -186,15 +197,6 @@ export function CoworkersList({
                                         <p className='text-xs font-semibold mt-1'>Logo de la Empresa</p>
                                     </div>
                                 </div>
-                                {currentUserRole && (
-                                    <>
-                                        <Separator className="my-2 bg-border/50"/>
-                                        <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1">
-                                            <Tag className="h-3 w-3" />
-                                            <span>Tu Rol: <span className="font-semibold text-foreground">{currentUserRole}</span></span>
-                                        </div>
-                                    </>
-                                )}
                             </CardHeader>
                             <CardContent className="flex-1 overflow-hidden p-0">
                                 <ScrollArea className="h-full">
