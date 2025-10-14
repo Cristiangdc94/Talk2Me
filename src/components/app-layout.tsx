@@ -16,7 +16,7 @@ import { UserNav } from '@/components/chat/user-nav';
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex h-full">
+      <div className="flex h-full bg-muted">
         <Sidebar>
           <SidebarHeader className="p-4">
             <div className="flex items-center gap-2">
@@ -35,11 +35,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <UserNav />
           </SidebarFooter>
         </Sidebar>
-        <div className="flex flex-1 flex-col h-full">
+        <div className="flex flex-1 flex-col h-full bg-background rounded-tl-lg md:rounded-none">
           <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
              <SidebarTrigger />
           </header>
-          <main className="flex-1 bg-muted overflow-auto">
+          <main className="flex-1 overflow-auto">
             {children}
           </main>
         </div>
