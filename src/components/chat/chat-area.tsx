@@ -117,7 +117,7 @@ export function ChatArea({
       </header>
 
       <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
-          <div className="p-4 flex flex-col justify-end min-h-full">
+          <div className="p-4">
             <div className="space-y-4">
                 {messages.map((message) => {
                   const isSentByCurrentUser = message.user.id === currentUser.id;
