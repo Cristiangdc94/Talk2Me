@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -19,6 +18,7 @@ import { users } from "@/lib/mock-data";
 import { LogOut, Settings, User, Newspaper } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNewsPreferences } from "@/hooks/use-news-preferences";
+import Link from "next/link";
 
 export function UserNav() {
   const router = useRouter();
@@ -36,13 +36,6 @@ export function UserNav() {
     });
     router.push("/login");
     router.refresh();
-  };
-
-  const handleSettingsClick = () => {
-    toast({
-      title: "Abriendo ajustes...",
-      description: "Esta funcionalidad se implementará pronto.",
-    });
   };
 
   return (
@@ -73,9 +66,11 @@ export function UserNav() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Perfil</span>
+            <DropdownMenuItem asChild>
+              <Link href="/settings">
+                <User className="mr-2 h-4 w-4" />
+                <span>Perfil</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setDialogOpen(true)}>
               <Newspaper className="mr-2 h-4 w-4" />
@@ -90,9 +85,11 @@ export function UserNav() {
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="group-data-[collapsible=icon]:hidden">
-        <Button variant="ghost" size="icon" onClick={handleSettingsClick}>
-            <Settings className="h-5 w-5" />
-            <span className="sr-only">Ajustes</span>
+        <Button variant="ghost" size="icon" asChild>
+            <Link href="/settings">
+                <Settings className="h-5 w-5" />
+                <span className="sr-only">Ajustes</span>
+            </Link>
         </Button>
       </div>
     </div>
