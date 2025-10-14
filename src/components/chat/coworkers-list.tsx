@@ -4,12 +4,11 @@
 import { useState, useEffect } from 'react';
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User, CompanyRole } from "@/lib/types";
-import { Plus, Tag, MoreVertical, Settings, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
+import { Plus, MoreVertical, Settings, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
 import { users } from '@/lib/mock-data';
-import { Separator } from '../ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -59,19 +58,8 @@ export function CoworkersList({
   }, []);
 
   useEffect(() => {
-    const updatedGroups: Record<string, User[]> = {};
-    for (const companyName in initialGroupedUsers) {
-        let userList = initialGroupedUsers[companyName];
-        if (currentUser && !userList.some(u => u.id === currentUser.id)) {
-            const currentUserInGroup = users.find(u => u.id === currentUser.id && u.companyRoles?.[companyName]);
-            if (currentUserInGroup) {
-                userList = [...userList, currentUserInGroup];
-            }
-        }
-        updatedGroups[companyName] = userList;
-    }
-     setGroupedUsers(updatedGroups);
-  }, [initialGroupedUsers, currentUser]);
+     setGroupedUsers(initialGroupedUsers);
+  }, [initialGroupedUsers]);
 
   const handleCreateGroup = (companyName: string) => {
     if (companyName && !groupedUsers[companyName]) {
@@ -91,7 +79,9 @@ export function CoworkersList({
   };
   
   const handleOpenManageDialog = (companyName: string, users: User[]) => {
-    setManagedGroup({ name: companyName, description: "Descripción del grupo de la empresa.", users });
+    // In a real app, you'd fetch this description
+    const description = "Descripción del grupo de la empresa.";
+    setManagedGroup({ name: companyName, description: description, users });
     setManageGroupOpen(true);
   };
   
@@ -105,9 +95,22 @@ export function CoworkersList({
   };
 
   const handleSaveManagedGroup = (originalName: string, newName: string, newDescription: string, newUsers: string[]) => {
+    setGroupedUsers(prev => {
+        const updatedGroups = { ...prev };
+        const groupData = updatedGroups[originalName];
+        if (groupData) {
+            delete updatedGroups[originalName];
+            
+            const updatedMembers = users.filter(u => newUsers.includes(u.id));
+
+            updatedGroups[newName] = updatedMembers;
+        }
+        return updatedGroups;
+    });
+
     toast({
         title: "Grupo actualizado",
-        description: `El grupo ${originalName} ha sido actualizado.`
+        description: `El grupo ${originalName} ha sido actualizado a ${newName}.`
     });
     console.log("Saving changes for", originalName, {newName, newDescription, newUsers});
     setManageGroupOpen(false);
@@ -149,7 +152,7 @@ export function CoworkersList({
                 return (
                     <div key={company} className="w-[320px] shrink-0 h-full">
                         <Card className="h-full flex flex-col bg-muted/50 relative group/card">
-                            <div className="absolute top-3 right-3 flex items-center gap-1">
+                            <div className="absolute top-3 right-3 flex items-center gap-1 z-20">
                                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleCorporateChat(company)}>
                                     <MessageSquare className="h-4 w-4" />
                                 </Button>
@@ -230,3 +233,5 @@ export function CoworkersList({
     </>
   );
 }
+
+    
