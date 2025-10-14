@@ -36,7 +36,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
-          <header className="flex h-16 items-center justify-between border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
+          <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
              <SidebarTrigger />
           </header>
           <main className="flex-1 overflow-auto bg-muted">
