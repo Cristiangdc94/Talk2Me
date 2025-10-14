@@ -47,7 +47,6 @@ export function LoginForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.email === 'admin@example.com' && values.password === 'adminadmin') {
-      console.log('Admin login successful');
       toast({
         title: 'Inicio de Sesión de Administrador Exitoso',
         description: '¡Bienvenido de nuevo, administrador! Redirigiendo...',
@@ -56,7 +55,6 @@ export function LoginForm() {
       router.push('/');
       router.refresh();
     } else {
-      console.log('Simulating login with:', values);
       toast({
         title: 'Inicio de Sesión Exitoso',
         description: '¡Bienvenido de nuevo! Redirigiendo...',

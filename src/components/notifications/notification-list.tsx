@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, MessageSquare, PhoneMissed, Newspaper } from "lucide-react";
+import { Bell, MessageSquare, PhoneMissed, Newspaper, Trash2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -12,10 +12,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Notification, User } from "@/lib/types";
 import { useChat } from "@/hooks/use-chat";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 interface NotificationListProps {
   notifications: Notification[];
   onNotificationClick: () => void;
+  onClearAll: () => void;
 }
 
 const iconMap = {
@@ -35,7 +37,7 @@ const groupNotifications = (notifications: Notification[]) => {
   }, {} as Record<string, Notification[]>);
 };
 
-export function NotificationList({ notifications, onNotificationClick }: NotificationListProps) {
+export function NotificationList({ notifications, onNotificationClick, onClearAll }: NotificationListProps) {
   const groupedNotifications = groupNotifications(notifications);
   const { openChat } = useChat();
   const router = useRouter();
@@ -59,7 +61,13 @@ export function NotificationList({ notifications, onNotificationClick }: Notific
     <Card className="w-80 border-0 shadow-none">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 border-b">
         <CardTitle className="text-lg font-semibold">Notificaciones</CardTitle>
-        <Bell className="h-5 w-5 text-muted-foreground" />
+        <div className="flex items-center gap-2">
+           <Button variant="ghost" size="sm" onClick={onClearAll} disabled={notifications.length === 0}>
+             <Trash2 className="h-4 w-4 mr-1"/>
+             Limpiar
+           </Button>
+           <Bell className="h-5 w-5 text-muted-foreground" />
+        </div>
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="h-[300px]">

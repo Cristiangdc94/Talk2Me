@@ -1,23 +1,49 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { NotificationList } from "./notification-list";
 import { notifications as mockNotifications } from "@/lib/mock-data";
 import { ThemeToggle } from "../theme-toggle";
+import type { Notification } from "@/lib/types";
+
+const exampleNotifications: Notification[] = [
+    { id: 'example-msg', type: 'message', text: 'Ejemplo: Tienes un nuevo mensaje de Alex.', timestamp: 'Ahora', chatId: 'dm-2', chatType: 'dm' },
+    { id: 'example-call', type: 'call', text: 'Ejemplo: Llamada perdida de un contacto.', timestamp: 'Ahora', chatId: 'dm-3', chatType: 'dm' },
+    { id: 'example-news', type: 'news', text: 'Ejemplo: Hay noticias de tecnología que te podrían interesar.', timestamp: 'Ahora', link: '/' },
+];
+
 
 export function NotificationWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const notificationCount = mockNotifications.length;
+  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * exampleNotifications.length);
+        const newNotif: Notification = {
+            ...exampleNotifications[randomIndex],
+            id: `notif-${Date.now()}`,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+        setNotifications(prev => [newNotif, ...prev]);
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, []);
   
   const handleNotificationClick = () => {
     setIsOpen(false);
   };
   
-  if (notificationCount === 0) return null;
+  const handleClearAll = () => {
+    setNotifications([]);
+  };
+  
+  const notificationCount = notifications.length;
 
   return (
     <div
@@ -39,13 +65,17 @@ export function NotificationWidget() {
                     variant="destructive"
                     className="absolute -top-1 -right-1 h-6 w-6 justify-center rounded-full"
                 >
-                    {notificationCount}
+                    {notificationCount > 9 ? '9+' : notificationCount}
                 </Badge>
                 )}
             </div>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="end" sideOffset={15}>
-            <NotificationList notifications={mockNotifications} onNotificationClick={handleNotificationClick} />
+            <NotificationList 
+                notifications={notifications} 
+                onNotificationClick={handleNotificationClick}
+                onClearAll={handleClearAll} 
+            />
             </PopoverContent>
         </Popover>
     </div>

@@ -19,6 +19,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+const statusColor = {
+    online: "text-green-500",
+    busy: "text-red-500",
+    offline: "text-muted-foreground",
+};
+
 export function ChatLayout() {
     const { activeChat, activeChatId, openChat } = useChat();
     const { toast } = useToast();
@@ -82,11 +88,6 @@ export function ChatLayout() {
                         {directMessages.map((dm) => {
                              const user = users.find((u) => u.id === dm.userId);
                              if (!user) return null;
-                             const statusColor = {
-                               online: "text-green-500",
-                               busy: "text-red-500",
-                               offline: "text-muted-foreground",
-                             };
                             return (
                                 <div key={dm.id} className="relative group">
                                     <Button
