@@ -4,8 +4,8 @@
 import { useState, useEffect, useTransition, useRef } from 'react';
 import Cookies from 'js-cookie';
 import { NewsArticleCard } from './news-article-card';
-import { newsArticles, friendStatuses } from '@/lib/mock-data';
-import type { NewsArticle } from '@/lib/types';
+import { friendStatuses as initialFriendStatuses, newsArticles, users } from '@/lib/mock-data';
+import type { NewsArticle, FriendStatus } from '@/lib/types';
 import { Button } from '../ui/button';
 import { Loader2, Settings, PlusCircle } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
@@ -17,8 +17,8 @@ import { FriendStatusCard } from './friend-status-card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { useToast } from '@/hooks/use-toast';
 import { CompanyNewsPortal } from './company-news-portal';
-import { Separator } from '../ui/separator';
 import Autoplay from "embla-carousel-autoplay";
+import { AddStatusCard } from './add-status-card';
 
 function LoadMoreNewsCard({ onClick, isGenerating, isDisabled }: { onClick: () => void; isGenerating: boolean, isDisabled: boolean }) {
   return (
@@ -55,12 +55,14 @@ export function NewsPortal({ view }: NewsPortalProps) {
   const [isLoading, setLoading] = useState(true);
   const [isGenerating, startGenerating] = useTransition();
   const [allNews, setAllNews] = useState<NewsArticle[]>(newsArticles);
+  const [friendStatuses, setFriendStatuses] = useState<FriendStatus[]>(initialFriendStatuses);
   const { toast } = useToast();
   const [isRateLimited, setRateLimited] = useState(false);
   const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
+  const currentUser = users.find(u => u.id === '1');
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true, loop: true })
+    Autoplay({ delay: 5000, stopOnInteraction: true, loop: true })
   );
 
   useEffect(() => {
@@ -100,6 +102,21 @@ export function NewsPortal({ view }: NewsPortalProps) {
     setDialogOpen(false);
   };
   
+  const handleAddStatus = (statusText: string) => {
+    if (!currentUser) return;
+    const newStatus: FriendStatus = {
+      id: `status-${Date.now()}`,
+      user: currentUser,
+      statusText,
+      timestamp: 'justo ahora',
+    };
+    setFriendStatuses(prev => [newStatus, ...prev]);
+    toast({
+        title: "Estado Publicado",
+        description: "Tus amigos ahora pueden ver tu nueva actualización.",
+    });
+  };
+
   const handleGenerateMoreNews = () => {
     if (isRateLimited) return;
 
@@ -148,7 +165,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
   
   const newsToShow = view === 'foryou' ? preferredNews : generalNews;
 
-  if (isLoading) {
+  if (isLoading || !currentUser) {
     return (
       <div className="space-y-4">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -229,6 +246,11 @@ export function NewsPortal({ view }: NewsPortalProps) {
                 onMouseLeave={() => autoplayPlugin.current.play()}
             >
                 <CarouselContent>
+                    <CarouselItem className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                      <div className="p-1 h-full">
+                          <AddStatusCard currentUser={currentUser} onAddStatus={handleAddStatus} />
+                      </div>
+                    </CarouselItem>
                     {friendStatuses.map((status) => (
                         <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                             <div className="p-1 h-full">

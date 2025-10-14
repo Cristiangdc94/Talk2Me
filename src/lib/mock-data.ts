@@ -47,8 +47,18 @@ const friends = users.filter(u => u.relationship === 'friend');
 export const friendStatuses: FriendStatus[] = [
   { id: 's1', user: friends[0], statusText: '¡Qué interesante el nuevo lenguaje de programación! Definitivamente tengo que probarlo.', timestamp: 'hace 2 horas' },
   { id: 's2', user: friends[1], statusText: 'No puedo creer la victoria del equipo local anoche. ¡Qué partidazo!', timestamp: 'hace 5 horas' },
-  { id: 's3', user: friends[0], statusText: 'La nueva campaña de salud es justo lo que la ciudad necesitaba. ¡Bravo!', timestamp: 'hace 1 día' },
-  { id: 's4', user: friends[1], statusText: 'Pensando en las implicaciones de la IA para el futuro... da un poco de vértigo.', timestamp: 'hace 2 días' },
+  { id: 's3', user: friends[2], statusText: 'La nueva campaña de salud es justo lo que la ciudad necesitaba. ¡Bravo!', timestamp: 'hace 1 día' },
+  { id: 's4', user: friends[3], statusText: 'Pensando en las implicaciones de la IA para el futuro... da un poco de vértigo.', timestamp: 'hace 2 días' },
+  { id: 's5', user: friends[4], statusText: 'Disfrutando de un buen libro y una taza de café. El plan perfecto para una tarde de lluvia.', timestamp: 'hace 10 minutos' },
+  { id: 's6', user: friends[5], statusText: '¡Acabo de terminar de correr 10km! Me siento con mucha energía.', timestamp: 'hace 30 minutos' },
+  { id: 's7', user: friends[6], statusText: 'Probando una receta nueva para la cena de esta noche. ¡Espero que salga bien!', timestamp: 'hace 1 hora' },
+  { id: 's8', user: friends[0], statusText: 'Planeando las vacaciones de verano. ¿Alguna recomendación de destinos con playa?', timestamp: 'hace 3 horas' },
+  { id: 's9', user: friends[1], statusText: 'Viendo de nuevo mi serie favorita. Nunca me canso de estos personajes.', timestamp: 'hace 6 horas' },
+  { id: 's10', user: friends[2], statusText: 'El concierto de anoche fue simplemente espectacular. ¡Qué gran banda!', timestamp: 'hace 12 horas' },
+  { id: 's11', user: friends[3], statusText: 'Trabajando en un proyecto personal que me tiene muy emocionado. Pronto compartiré más detalles.', timestamp: 'hace 1 día' },
+  { id: 's12', user: friends[4], statusText: '¿Alguien más siente que la semana ha pasado volando?', timestamp: 'hace 1 día' },
+  { id: 's13', user: friends[5], statusText: 'Visitando un museo de arte moderno. Hay algunas obras que realmente te hacen pensar.', timestamp: 'hace 2 días' },
+  { id: 's14', user: friends[6], statusText: '¡Qué bien sienta un paseo por la naturaleza para desconectar de todo!', timestamp: 'hace 3 días' },
 ];
 
 export const channels: Channel[] = [
