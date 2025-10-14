@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User, CompanyRole, Channel } from "@/lib/types";
 import { Plus, MoreVertical, Settings, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
@@ -12,7 +13,6 @@ import { users, channels as initialChannels } from '@/lib/mock-data';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { ManageCompanyGroupDialog } from './manage-company-group-dialog';
 import { useChat } from '@/hooks/use-chat';
 
 interface CoworkersListProps {
@@ -48,9 +48,6 @@ export function CoworkersList({
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
   const { openChat } = useChat();
-
-  const [isManageGroupOpen, setManageGroupOpen] = useState(false);
-  const [managedGroup, setManagedGroup] = useState<{name: string, description: string, users: User[]} | null>(null);
 
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
 
@@ -95,13 +92,6 @@ export function CoworkersList({
     setCreateGroupOpen(false);
   };
   
-  const handleOpenManageDialog = (companyName: string, users: User[]) => {
-    // In a real app, you'd fetch this description
-    const description = "Descripción del grupo de la empresa.";
-    setManagedGroup({ name: companyName, description: description, users });
-    setManageGroupOpen(true);
-  };
-  
   const handleCorporateChat = (companyName: string) => {
     const channelId = `channel-${companyName.toLowerCase().replace(/\s/g, '-')}-chat`;
     const channelExists = channels.find(c => c.id === channelId);
@@ -116,28 +106,6 @@ export function CoworkersList({
     }
   };
 
-  const handleSaveManagedGroup = (originalName: string, newName: string, newDescription: string, newUsers: string[]) => {
-    setGroupedUsers(prev => {
-        const updatedGroups = { ...prev };
-        const groupData = updatedGroups[originalName];
-        if (groupData) {
-            delete updatedGroups[originalName];
-            
-            const updatedMembers = users.filter(u => newUsers.includes(u.id));
-
-            updatedGroups[newName] = updatedMembers;
-        }
-        return updatedGroups;
-    });
-
-    toast({
-        title: "Grupo actualizado",
-        description: `El grupo ${originalName} ha sido actualizado a ${newName}.`
-    });
-    console.log("Saving changes for", originalName, {newName, newDescription, newUsers});
-    setManageGroupOpen(false);
-  };
-  
   if (!isMounted) {
     return null;
   }
@@ -149,16 +117,6 @@ export function CoworkersList({
             onOpenChange={setCreateGroupOpen}
             onCreate={handleCreateGroup}
         />
-        {managedGroup && (
-            <ManageCompanyGroupDialog
-                isOpen={isManageGroupOpen}
-                onOpenChange={setManageGroupOpen}
-                groupName={managedGroup.name}
-                groupDescription={managedGroup.description}
-                members={managedGroup.users}
-                onSave={handleSaveManagedGroup}
-            />
-        )}
         <div className="flex-1 overflow-x-auto px-4 sm:px-6 pb-6">
             <div className="flex gap-6 h-full">
             {Object.entries(groupedUsers).map(([company, userList]) => {
@@ -173,7 +131,7 @@ export function CoworkersList({
 
                 return (
                     <div key={company} className="w-[320px] shrink-0 h-full">
-                        <Card className="h-full flex flex-col bg-muted/50 relative group/card overflow-hidden">
+                        <Card className="h-full flex flex-col bg-muted/50 relative overflow-hidden group/card">
                              <div className="absolute top-3 right-3 flex items-center gap-1">
                                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleCorporateChat(company)}>
                                     <MessageSquare className="h-4 w-4" />
@@ -187,9 +145,11 @@ export function CoworkersList({
                                     <DropdownMenuContent align="end">
                                         {isPrivileged ? (
                                             <>
-                                                <DropdownMenuItem onClick={() => handleOpenManageDialog(company, sortedUsers)}>
-                                                    <Settings className="mr-2 h-4 w-4" />
-                                                    <span>Gestionar Grupo</span>
+                                                <DropdownMenuItem asChild>
+                                                    <Link href={`/coworkers/${encodeURIComponent(company)}`}>
+                                                        <Settings className="mr-2 h-4 w-4" />
+                                                        <span>Gestionar Grupo</span>
+                                                    </Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem className="text-destructive" onClick={() => toast({variant: 'destructive', title: "Grupo eliminado"})}>
