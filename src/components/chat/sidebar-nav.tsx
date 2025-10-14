@@ -176,12 +176,17 @@ export function SidebarNav() {
           Mensajes Directos
         </SidebarGroupLabel>
         <SidebarGroupAction asChild>
-            <NewMessagePopover />
+          <NewMessagePopover />
         </SidebarGroupAction>
         <SidebarMenu>
           {directMessages.map((dm) => {
             const user = users.find(u => u.id === dm.userId);
             if (!user) return null;
+            const statusColor = {
+                online: 'text-green-500',
+                busy: 'text-red-500',
+                offline: 'text-muted-foreground',
+            };
             return (
               <SidebarMenuItem key={dm.id}>
                 <SidebarMenuButton
@@ -190,7 +195,7 @@ export function SidebarNav() {
                   tooltip={dm.name}
                 >
                   <UserAvatarWithStatus user={user} className="w-6 h-6" />
-                  <span>{dm.name}</span>
+                  <span className={cn(statusColor[user.status])}>{dm.name}</span>
                 </SidebarMenuButton>
                 <SidebarMenuAction
                   onClick={(e) => handleCall(e, dm.name)}
