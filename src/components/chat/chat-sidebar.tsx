@@ -9,6 +9,7 @@ import {
   Lock,
   Plus,
   Phone,
+  X,
 } from 'lucide-react';
 import {
   SidebarGroup,
@@ -34,7 +35,7 @@ import { Button } from '../ui/button';
 
 export function ChatSidebar() {
   const { toast } = useToast();
-  const { openChat, activeChatIds, directMessages } = useChat();
+  const { openChat, activeChatIds, directMessages, removeDirectMessage } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
   const [isNewMessageOpen, setNewMessageOpen] = useState(false);
   const [channels] = useState<Channel[]>(initialChannels);
@@ -45,6 +46,16 @@ export function ChatSidebar() {
     toast({
       title: `Llamando a ${userName}...`,
       description: 'Esta función es una demostración.',
+    });
+  };
+
+  const handleRemoveDM = (event: React.MouseEvent, dmId: string) => {
+    event.preventDefault();
+    event.stopPropagation();
+    removeDirectMessage(dmId);
+     toast({
+      title: "Conversación eliminada",
+      description: "La conversación ha sido eliminada de tu lista.",
     });
   };
 
@@ -101,8 +112,17 @@ export function ChatSidebar() {
                   onClick={() => openChat(dm.id)}
                   isActive={activeChatIds.includes(dm.id)}
                   tooltip={dm.name}
+                  className="group"
                 >
-                  <div className="flex items-center gap-2 overflow-hidden w-full">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute left-1"
+                    onClick={(e) => handleRemoveDM(e, dm.id)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                  <div className="flex items-center gap-2 overflow-hidden w-full pl-6">
                     <UserAvatarWithStatus user={user} className="w-6 h-6" />
                     <span className='truncate'>
                       {dm.name}

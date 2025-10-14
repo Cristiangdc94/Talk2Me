@@ -29,6 +29,7 @@ interface ChatContextType {
   addMessage: (chatId: string, message: Message, incrementUnread?: boolean) => void;
   notifications: Notification[];
   setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
+  removeDirectMessage: (id: string) => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -71,6 +72,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
             return chat;
         })
     );
+  }, []);
+
+  const removeDirectMessage = useCallback((id: string) => {
+    setDirectMessages(prev => prev.filter(dm => dm.id !== id));
+    closeChat(id);
   }, []);
 
   useEffect(() => {
@@ -179,6 +185,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
             name: recipient.name,
             type: 'private',
             messages: [],
+            unreadCount: 0,
           };
           // Add to our mock data list
           setDirectMessages(prev => [...prev, newDm]);
@@ -240,7 +247,8 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     addMessage,
     notifications,
     setNotifications,
-  }), [activeChats, openChat, closeChat, toggleMinimizeChat, activeChatIds, directMessages, addMessage, notifications]);
+    removeDirectMessage,
+  }), [activeChats, openChat, closeChat, toggleMinimizeChat, activeChatIds, directMessages, addMessage, notifications, removeDirectMessage]);
 
 
   return (
