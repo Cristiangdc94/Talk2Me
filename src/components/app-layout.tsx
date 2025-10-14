@@ -17,7 +17,7 @@ import { HeaderActions } from './header-actions';
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen text-foreground">
+      <div className="flex h-full">
         <Sidebar>
           <SidebarHeader className="p-4">
             <div className="flex items-center gap-2">
@@ -41,6 +41,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <SidebarTrigger className="md:hidden" />
             <div className="flex items-center w-full">
               <MainNav />
+              <div className='flex-1'></div>
               <HeaderActions />
             </div>
           </header>

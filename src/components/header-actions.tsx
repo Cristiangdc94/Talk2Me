@@ -14,23 +14,7 @@ import { ThemeToggle } from "./theme-toggle";
 export function HeaderActions() {
   const { setDialogOpen } = useNewsPreferences();
 
-  return (
-    <div className="flex items-center">
-      <ThemeToggle />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <Settings className="h-[1.2rem] w-[1.2rem]" />
-            <span className="sr-only">Ajustes</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setDialogOpen(true)}>
-            <Newspaper className="mr-2 h-4 w-4" />
-            <span>Preferencias de Noticias</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
+  // This component is now effectively empty, but we keep it to avoid breaking imports.
+  // The functionality has been moved to UserNav.
+  return null;
 }
