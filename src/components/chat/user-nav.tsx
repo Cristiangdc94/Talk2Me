@@ -38,6 +38,13 @@ export function UserNav() {
     router.refresh();
   };
 
+  const handleSettingsClick = () => {
+    toast({
+      title: "Abriendo ajustes...",
+      description: "Esta funcionalidad se implementará pronto.",
+    });
+  };
+
   return (
     <div className="flex items-center justify-between gap-2 p-2 group-data-[collapsible=icon]:justify-center">
       <DropdownMenu>
@@ -74,10 +81,6 @@ export function UserNav() {
               <Newspaper className="mr-2 h-4 w-4" />
               <span>Preferencias de Noticias</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Ajustes</span>
-            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={handleLogout}>
@@ -87,7 +90,7 @@ export function UserNav() {
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="group-data-[collapsible=icon]:hidden">
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" onClick={handleSettingsClick}>
             <Settings className="h-5 w-5" />
             <span className="sr-only">Ajustes</span>
         </Button>
