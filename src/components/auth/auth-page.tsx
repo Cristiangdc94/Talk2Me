@@ -34,7 +34,7 @@ export function AuthPage() {
           <Separator orientation="horizontal" className="md:hidden" />
         </div>
 
-        <div className="w-full md:w-1/2 p-6 sm:p-8 bg-muted/30 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 p-6 sm:p-8 bg-foreground/5 flex flex-col justify-center">
           <SignupForm />
         </div>
       </CardContent>
