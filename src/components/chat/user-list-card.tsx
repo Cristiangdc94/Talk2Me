@@ -62,14 +62,14 @@ export function UserListCard({ user, currentUserRole, userRole }: UserListCardPr
   return (
     <Card className="h-full flex flex-col text-center transition-all hover:shadow-lg hover:-translate-y-1 relative group">
       {userRole && (
-        <Badge variant="secondary" className="absolute top-2 right-2 z-10">
+        <Badge variant="secondary" className="absolute top-2 right-2">
           {userRole}
         </Badge>
       )}
       {!isCurrentUser && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            <Button variant="ghost" size="icon" className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <MoreVertical className="h-4 w-4" />
               <span className="sr-only">Más opciones</span>
             </Button>
