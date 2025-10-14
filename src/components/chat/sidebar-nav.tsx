@@ -29,7 +29,7 @@ import {
 import { PopoverTrigger } from "@/components/ui/popover";
 import { channels as initialChannels, directMessages, users } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SidebarSeparator } from "../ui/sidebar";
 import {
