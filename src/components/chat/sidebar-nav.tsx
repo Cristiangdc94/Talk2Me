@@ -201,15 +201,12 @@ export function SidebarNav() {
                   )}
                   <span>{dm.name}</span>
                 </SidebarMenuButton>
-                <div className="flex items-center group-data-[collapsible=icon]:hidden">
-                    <div className="border-l h-5 mx-1" />
-                    <SidebarMenuAction
-                      onClick={(e) => handleCall(e, dm.name)}
-                      aria-label={`Llamar a ${dm.name}`}
-                    >
-                      <Phone />
-                    </SidebarMenuAction>
-                </div>
+                <SidebarMenuAction
+                  onClick={(e) => handleCall(e, dm.name)}
+                  aria-label={`Llamar a ${dm.name}`}
+                >
+                  <Phone />
+                </SidebarMenuAction>
               </SidebarMenuItem>
             );
           })}
