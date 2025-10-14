@@ -36,12 +36,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
-          <header className="flex h-14 items-center border-b px-4 shrink-0 bg-sidebar text-sidebar-foreground border-sidebar-border">
+          <header className="flex h-14 shrink-0 items-center border-b border-sidebar-border bg-sidebar px-4 text-sidebar-foreground">
             <SidebarTrigger className="md:hidden" />
             <div className="flex w-full items-center">
               <MainNav />
-              <div className="flex-1" />
-              {/* Actions are now in UserNav */}
             </div>
           </header>
           <main className="flex-1 overflow-auto bg-muted">
