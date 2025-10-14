@@ -18,6 +18,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { useToast } from '@/hooks/use-toast';
 import { CompanyNewsPortal } from './company-news-portal';
 import { Separator } from '../ui/separator';
+import Autoplay from "embla-carousel-autoplay";
 
 function LoadMoreNewsCard({ onClick, isGenerating, isDisabled }: { onClick: () => void; isGenerating: boolean, isDisabled: boolean }) {
   return (
@@ -45,7 +46,7 @@ function LoadMoreNewsCard({ onClick, isGenerating, isDisabled }: { onClick: () =
 }
 
 interface NewsPortalProps {
-  view: 'general' | 'foryou' | 'company' | 'friends';
+  view: 'general' | 'foryou' | 'company';
 }
 
 export function NewsPortal({ view }: NewsPortalProps) {
@@ -57,6 +58,10 @@ export function NewsPortal({ view }: NewsPortalProps) {
   const { toast } = useToast();
   const [isRateLimited, setRateLimited] = useState(false);
   const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true, loop: true })
+  );
 
   useEffect(() => {
     // Fetch location
@@ -158,30 +163,6 @@ export function NewsPortal({ view }: NewsPortalProps) {
 
   const renderContent = () => {
     switch (view) {
-      case 'friends':
-        return (
-          <div className="bg-muted/50 rounded-lg p-4">
-            <h2 className="text-2xl font-semibold tracking-tight mb-3">Lo nuevo entre tus amigos</h2>
-              <Carousel
-              opts={{
-                align: "start",
-              }}
-              className="w-full"
-            >
-              <CarouselContent>
-                {friendStatuses.map((status) => (
-                  <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                    <div className="p-1 h-full">
-                        <FriendStatusCard status={status} />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="-left-4" />
-              <CarouselNext className="-right-4" />
-            </Carousel>
-          </div>
-        );
       case 'company':
         return <CompanyNewsPortal />;
       case 'foryou':
@@ -220,6 +201,8 @@ export function NewsPortal({ view }: NewsPortalProps) {
             </div>
           </div>
         );
+      default:
+        return null;
     }
   }
 
@@ -233,6 +216,32 @@ export function NewsPortal({ view }: NewsPortalProps) {
         currentPreferences={preferences}
       />
       <div className='flex flex-col gap-8'>
+        <div className="bg-muted/50 rounded-lg p-4">
+            <h2 className="text-2xl font-semibold tracking-tight mb-3">Lo nuevo entre tus amigos</h2>
+            <Carousel
+                opts={{
+                    align: "start",
+                    loop: true,
+                }}
+                plugins={[autoplayPlugin.current]}
+                className="w-full"
+                onMouseEnter={() => autoplayPlugin.current.stop()}
+                onMouseLeave={() => autoplayPlugin.current.play()}
+            >
+                <CarouselContent>
+                    {friendStatuses.map((status) => (
+                        <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                            <div className="p-1 h-full">
+                                <FriendStatusCard status={status} />
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="-left-4" />
+                <CarouselNext className="-right-4" />
+            </Carousel>
+        </div>
+
         {renderContent()}
       </div>
     </>

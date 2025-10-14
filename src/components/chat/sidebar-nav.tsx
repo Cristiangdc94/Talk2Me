@@ -128,14 +128,6 @@ export function SidebarNav() {
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
-                 <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={pathname === '/friends-news'} tooltip="Amigos">
-                        <Link href="/friends-news">
-                          <Users className="w-4 h-4 mr-2" />
-                          <span>Amigos</span>
-                        </Link>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild isActive={pathname === '/company-news'} tooltip="Empresa">
                         <Link href="/company-news">
