@@ -95,8 +95,8 @@ export function SidebarNav() {
                     </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={pathname === '/foryou'} tooltip="Para Ti">
-                        <Link href="/foryou"><span>Para Ti</span></Link>
+                    <SidebarMenuButton asChild isActive={pathname === '/foryou'} tooltip="Para tí">
+                        <Link href="/foryou"><span>Para tí</span></Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
