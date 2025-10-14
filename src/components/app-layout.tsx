@@ -59,14 +59,16 @@ function ChatWidget() {
 
   useEffect(() => {
     // Set initial position only on the client
-    const defaultX = window.innerWidth - 450;
-    const defaultY = window.innerHeight - 560;
-    setPosition({ x: defaultX, y: defaultY });
+    if (typeof window !== 'undefined') {
+      const defaultX = window.innerWidth - 450;
+      const defaultY = window.innerHeight - 560;
+      setPosition({ x: defaultX, y: defaultY });
+    }
   }, []);
 
   useEffect(() => {
     // Reset position to default when a new chat is opened, but keep it within bounds
-    if (activeChat?.id) {
+    if (activeChat?.id && typeof window !== 'undefined') {
         const defaultX = window.innerWidth - 450;
         const defaultY = window.innerHeight - 560;
         setPosition({ x: defaultX, y: defaultY });
@@ -148,7 +150,7 @@ function ChatWidget() {
             key={activeChat.id}
             chatId={activeChat.id}
             title={activeChat.title}
-            icon={active-chat.icon}
+            icon={activeChat.icon}
             initialMessages={activeChat.messages}
             currentUser={users[0]}
             chatType={activeChat.type}
