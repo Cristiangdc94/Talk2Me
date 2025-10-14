@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Hash, Lock, Plus, User, Phone } from "lucide-react";
+import { Hash, Lock, Plus, User, Phone, Home } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -17,7 +17,6 @@ import { channels, directMessages } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Separator } from "../ui/separator";
 import { SidebarSeparator } from "../ui/sidebar";
 
 export function SidebarNav() {
@@ -38,6 +37,25 @@ export function SidebarNav() {
     <div className="flex flex-col gap-2">
       <CreateChannelDialog open={isCreateChannelOpen} onOpenChange={setCreateChannelOpen} />
 
+      <SidebarGroup>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={pathname === "/"}
+              tooltip="Inicio"
+            >
+              <Link href="/">
+                <Home />
+                <span>Inicio</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+
+      <SidebarSeparator />
+      
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">Canales</SidebarGroupLabel>
         <SidebarGroupAction asChild>
