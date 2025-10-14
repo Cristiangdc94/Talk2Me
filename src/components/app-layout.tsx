@@ -183,8 +183,11 @@ function MinimizedChatBar() {
       {minimizedChats.map(chat => (
         <Button
           key={chat.id}
-          variant={chat.hasUnread ? "secondary" : "outline"}
-          className={cn("h-10 shadow-lg flex items-center gap-2", chat.hasUnread && "animate-pulse border-primary")}
+          variant="outline"
+          className={cn(
+            "h-10 shadow-lg flex items-center gap-2 bg-card",
+            chat.hasUnread && "animate-pulse border-primary"
+          )}
           onClick={() => toggleMinimizeChat(chat.id)}
         >
           {chat.icon}
