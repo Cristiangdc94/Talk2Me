@@ -4,169 +4,169 @@
       "id": "avatar-1",
       "description": "User Avatar 1",
       "imageUrl": "https://picsum.photos/seed/avatar1/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "professional portrait"
     },
     {
       "id": "avatar-2",
       "description": "User Avatar 2",
       "imageUrl": "https://picsum.photos/seed/avatar2/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "woman portrait"
     },
     {
       "id": "avatar-3",
       "description": "User Avatar 3",
       "imageUrl": "https://picsum.photos/seed/avatar3/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "man portrait"
     },
     {
       "id": "avatar-4",
       "description": "User Avatar 4",
       "imageUrl": "https://picsum.photos/seed/avatar4/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "person smiling"
     },
     {
       "id": "avatar-5",
       "description": "User Avatar 5",
       "imageUrl": "https://picsum.photos/seed/avatar5/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "woman face"
     },
     {
       "id": "avatar-6",
       "description": "User Avatar 6",
       "imageUrl": "https://picsum.photos/seed/avatar6/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "person happy"
     },
     {
       "id": "avatar-7",
       "description": "User Avatar 7",
       "imageUrl": "https://picsum.photos/seed/avatar7/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "man smiling"
     },
     {
       "id": "avatar-8",
       "description": "User Avatar 8",
       "imageUrl": "https://picsum.photos/seed/avatar8/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "woman professional"
     },
     {
       "id": "avatar-9",
       "description": "User Avatar 9",
       "imageUrl": "https://picsum.photos/seed/avatar9/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "person thinking"
     },
     {
       "id": "avatar-10",
       "description": "User Avatar 10",
       "imageUrl": "https://picsum.photos/seed/avatar10/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "man glasses"
     },
     {
       "id": "avatar-11",
       "description": "User Avatar 11",
       "imageUrl": "https://picsum.photos/seed/avatar11/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "woman glasses"
     },
     {
       "id": "avatar-12",
       "description": "User Avatar 12",
       "imageUrl": "https://picsum.photos/seed/avatar12/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "person laughing"
     },
     {
       "id": "avatar-13",
       "description": "User Avatar 13",
       "imageUrl": "https://picsum.photos/seed/avatar13/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "man serious"
     },
     {
       "id": "avatar-14",
       "description": "User Avatar 14",
       "imageUrl": "https://picsum.photos/seed/avatar14/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "woman smiling"
     },
     {
       "id": "avatar-15",
       "description": "User Avatar 15",
       "imageUrl": "https://picsum.photos/seed/avatar15/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "person professional"
     },
     {
       "id": "avatar-16",
       "description": "User Avatar 16",
       "imageUrl": "https://picsum.photos/seed/avatar16/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "man thinking"
     },
     {
       "id": "avatar-17",
       "description": "User Avatar 17",
       "imageUrl": "https://picsum.photos/seed/avatar17/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "woman working"
     },
     {
       "id": "avatar-18",
       "description": "User Avatar 18",
       "imageUrl": "https://picsum.photos/seed/avatar18/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "person serious"
     },
     {
       "id": "avatar-19",
       "description": "User Avatar 19",
       "imageUrl": "https://picsum.photos/seed/avatar19/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "man happy"
     },
     {
       "id": "avatar-20",
       "description": "User Avatar 20",
       "imageUrl": "https://picsum.photos/seed/avatar20/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "woman coffee"
     },
     {
       "id": "avatar-21",
       "description": "User Avatar 21",
       "imageUrl": "https://picsum.photos/seed/avatar21/100/100",
-      "imageHint": "person portrait"
+      "imageHint": "man outdoor"
     },
     {
       "id": "chat-image-1",
       "description": "A beautiful landscape sent in a chat message",
       "imageUrl": "https://picsum.photos/seed/chatimage1/400/300",
-      "imageHint": "landscape nature"
+      "imageHint": "mountain landscape"
     },
     {
       "id": "news-1",
       "description": "AI Future",
       "imageUrl": "https://picsum.photos/seed/news1/600/400",
-      "imageHint": "technology abstract"
+      "imageHint": "abstract technology"
     },
     {
       "id": "news-2",
       "description": "Global Markets",
       "imageUrl": "https://picsum.photos/seed/news2/600/400",
-      "imageHint": "city skyline"
+      "imageHint": "stock market"
     },
     {
       "id": "news-3",
       "description": "Local Sports",
       "imageUrl": "https://picsum.photos/seed/news3/600/400",
-      "imageHint": "stadium sport"
+      "imageHint": "sports stadium"
     },
     {
       "id": "news-4",
       "description": "Programming Code",
       "imageUrl": "https://picsum.photos/seed/news4/600/400",
-      "imageHint": "code programming"
+      "imageHint": "computer code"
     },
     {
       "id": "news-5",
       "description": "Public Health Campaign",
       "imageUrl": "https://picsum.photos/seed/news5/600/400",
-      "imageHint": "health doctor"
+      "imageHint": "healthy food"
     },
     {
       "id": "news-6",
       "description": "Sports Highlights",
       "imageUrl": "https://picsum.photos/seed/news6/600/400",
-      "imageHint": "basketball action"
+      "imageHint": "basketball game"
     }
   ]
 }
