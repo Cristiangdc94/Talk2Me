@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
 import type { Message, DirectMessage, Notification } from "@/lib/types";
 import { channels, directMessages as initialDirectMessages, users, notifications as initialNotifications } from "@/lib/mock-data";
 import { Hash, Lock } from "lucide-react";
@@ -22,27 +22,75 @@ interface ChatContextType {
   closeChat: () => void;
   activeChatId: string | null;
   directMessages: DirectMessage[];
-  addMessage: (chatId: string, message: Message) => void;
+  addMessage: (chatId: string, message: Message, incrementUnread?: boolean) => void;
   notifications: Notification[];
   setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
+const randomMessages = [
+  "¿Qué tal todo?",
+  "Te envío el archivo ahora mismo.",
+  "¿Nos vemos mañana para el café?",
+  "Revisa esto cuando tengas un momento.",
+  "¡Me encantó la idea que propusiste!",
+  "Confirmado para la reunión de las 3 PM.",
+];
+
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [directMessages, setDirectMessages] = useState<DirectMessage[]>(initialDirectMessages);
   const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
 
-  const addMessage = useCallback((chatId: string, message: Message) => {
+  const addMessage = useCallback((chatId: string, message: Message, incrementUnread = false) => {
     setDirectMessages(prevDms =>
-        prevDms.map(dm =>
-            dm.id === chatId
-                ? { ...dm, messages: [...dm.messages, message] }
-                : dm
-        )
+        prevDms.map(dm => {
+            if (dm.id === chatId) {
+                const newUnreadCount = incrementUnread ? (dm.unreadCount || 0) + 1 : dm.unreadCount;
+                return { ...dm, messages: [...dm.messages, message], unreadCount: newUnreadCount };
+            }
+            return dm;
+        })
     );
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        // Pick a random DM that is not the active one
+        const availableDms = directMessages.filter(dm => dm.id !== activeChatId);
+        if (availableDms.length === 0) return;
+
+        const randomDm = availableDms[Math.floor(Math.random() * availableDms.length)];
+        const sender = users.find(u => u.id === randomDm.userId);
+        
+        if (!sender) return;
+
+        const newMessage: Message = {
+            id: `msg-${Date.now()}`,
+            text: randomMessages[Math.floor(Math.random() * randomMessages.length)],
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            user: sender,
+        };
+
+        const newNotification: Notification = {
+            id: `notif-${Date.now()}`,
+            type: 'message',
+            text: `Tienes un nuevo mensaje de ${sender.name}.`,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            chatId: randomDm.id,
+            chatType: 'dm',
+        };
+
+        // Add message and notification
+        addMessage(randomDm.id, newMessage, true);
+        setNotifications(prev => [newNotification, ...prev]);
+
+    }, 15000); // Every 15 seconds
+
+    return () => clearInterval(interval);
+  }, [activeChatId, addMessage, directMessages]);
+
 
   const openChat = useCallback((id: string) => {
     setActiveChatId(id);
@@ -52,6 +100,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         dm.id === id ? { ...dm, unreadCount: 0 } : dm
       )
     );
+     setNotifications(prevNotifs => 
+        prevNotifs.filter(notif => notif.chatId !== id)
+     );
   }, []);
 
   const closeChat = useCallback(() => {

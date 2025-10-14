@@ -1,26 +1,28 @@
 
+
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { NotificationList } from "./notification-list";
 import { ThemeToggle } from "../theme-toggle";
 import { useChat } from "@/hooks/use-chat";
+import type { Notification } from "@/lib/types";
 
 export function NotificationWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const { notifications, setNotifications } = useChat();
-  
+  const { notifications, setNotifications, openChat } = useChat();
+
   const handleNotificationClick = () => {
     setIsOpen(false);
   };
-  
+
   const handleClearAll = () => {
     setNotifications([]);
   };
-  
+
   const notificationCount = notifications.length;
 
   return (

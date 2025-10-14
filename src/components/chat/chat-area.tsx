@@ -41,8 +41,8 @@ export function ChatArea({
   chatType,
   showHead = true,
 }: ChatAreaProps) {
+  const { activeChat, addMessage, setNotifications } = useChat();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const { setNotifications, addMessage, activeChat } = useChat();
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +59,7 @@ export function ChatArea({
     }
   }, [messages, chatId]);
 
-  const handleReceiveMessage = (text: string, sender: User) => {
+  const handleReceiveMessage = (text: string, sender: User, isAutoReply: boolean = false) => {
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
       text,
@@ -67,17 +67,22 @@ export function ChatArea({
       user: sender,
     };
     
-    const newNotification: Notification = {
-        id: `notif-${Date.now()}`,
-        type: 'message',
-        text: `Tienes un nuevo mensaje de ${sender.name}.`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        chatId: chatId,
-        chatType: chatType,
-    };
+    // Only create a notification if the chat is not active or it's not an auto-reply
+    const shouldNotify = activeChat?.id !== chatId;
 
-    addMessage(chatId, newMessage);
-    setNotifications(prev => [newNotification, ...prev]);
+    if (shouldNotify) {
+      const newNotification: Notification = {
+          id: `notif-${Date.now()}`,
+          type: 'message',
+          text: `Tienes un nuevo mensaje de ${sender.name}.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          chatId: chatId,
+          chatType: chatType,
+      };
+      setNotifications(prev => [newNotification, ...prev]);
+    }
+
+    addMessage(chatId, newMessage, shouldNotify);
   };
 
   const handleSendMessage = (text: string) => {
@@ -94,7 +99,7 @@ export function ChatArea({
     setTimeout(() => {
         const recipient = users.find(u => u.id === (chatId.startsWith('dm-') ? chatId.substring(3) : ''));
         if (recipient) {
-            handleReceiveMessage(`¡Entendido! Gracias por tu mensaje.`, recipient);
+            handleReceiveMessage(`¡Entendido! Gracias por tu mensaje.`, recipient, true);
         }
     }, 1000);
   };
