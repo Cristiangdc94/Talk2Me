@@ -2,12 +2,12 @@
 "use client";
 
 import React, { useState, useTransition, useRef, useEffect } from "react";
-import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getSmartReplySuggestions } from "@/ai/flows/smart-reply-suggestions";
 import type { Message } from "@/lib/types";
 import { Skeleton } from "../ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+import { Sparkles, Bot } from "lucide-react";
 
 interface SmartReplySuggestionsProps {
   messages: Message[];
@@ -31,6 +31,11 @@ export function SmartReplySuggestions({
         clearTimeout(rateLimitTimer.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    // Fetch suggestions when the popover is opened
+    handleFetchSuggestions();
   }, []);
 
   const handleFetchSuggestions = () => {
@@ -64,51 +69,48 @@ export function SmartReplySuggestions({
     });
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    onSuggestionClick(suggestion);
-    setSuggestions([]); // Clear suggestions after one is clicked
-  };
-
   if (isPending) {
     return (
-        <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-purple-500 animate-pulse shrink-0" />
-            <Skeleton className="h-8 w-28" />
-            <Skeleton className="h-8 w-32" />
-            <Skeleton className="h-8 w-24" />
-        </div>
-    );
-  }
-
-  if (suggestions.length > 0) {
-    return (
-        <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => setSuggestions([])}>
-                <Sparkles className="h-5 w-5 text-purple-500" />
-            </Button>
-            <div className="flex items-center gap-2 overflow-x-auto pb-2">
-                {suggestions.map((suggestion, index) => (
-                <Button
-                    key={index}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="shrink-0"
-                >
-                    {suggestion}
-                </Button>
-                ))}
+        <div className="flex flex-col items-center gap-2 p-4 text-center">
+            <Sparkles className="h-6 w-6 text-purple-500 animate-pulse shrink-0" />
+            <p className="text-sm font-medium">Generando sugerencias...</p>
+            <div className="w-full space-y-2 mt-2">
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
             </div>
         </div>
     );
   }
+  
+  if (messages.length === 0) {
+      return (
+        <div className="flex flex-col items-center gap-2 p-4 text-center text-muted-foreground">
+            <Bot className="h-6 w-6" />
+            <p className="text-sm font-medium">No hay mensajes</p>
+            <p className="text-xs">Envía un mensaje para obtener sugerencias.</p>
+        </div>
+      )
+  }
 
   return (
-    <div className="flex items-center">
-        <Button variant="ghost" size="icon" onClick={handleFetchSuggestions} disabled={isPending || isRateLimited || messages.length === 0}>
-            <Sparkles className="h-5 w-5 text-muted-foreground hover:text-purple-500" />
-            <span className="sr-only">Generar respuestas inteligentes</span>
-        </Button>
+    <div className="flex flex-col items-center gap-2 p-2">
+        <h4 className="font-semibold text-sm">Respuestas Sugeridas</h4>
+        <div className="flex flex-col items-center gap-2 w-full">
+            {suggestions.map((suggestion, index) => (
+            <Button
+                key={index}
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => onSuggestionClick(suggestion)}
+            >
+                {suggestion}
+            </Button>
+            ))}
+             {suggestions.length === 0 && !isPending && (
+                 <p className="text-xs text-muted-foreground text-center p-2">No se pudieron generar sugerencias. Inténtalo de nuevo.</p>
+             )}
+        </div>
     </div>
   );
 }

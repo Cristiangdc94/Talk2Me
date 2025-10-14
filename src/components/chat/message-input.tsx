@@ -2,20 +2,33 @@
 "use client";
 
 import React, { useState } from "react";
-import { Paperclip, Send, Phone } from "lucide-react";
+import { Paperclip, Send, Phone, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { SmartReplySuggestions } from "./smart-reply-suggestions";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import type { Message } from "@/lib/types";
 
 interface MessageInputProps {
   onSendMessage: (text: string) => void;
+  onSuggestionClick: (suggestion: string) => void;
   onCall: () => void;
   chatType: "channel" | "dm";
   chatTitle: string;
+  messages: Message[];
 }
 
-export function MessageInput({ onSendMessage, onCall, chatType, chatTitle }: MessageInputProps) {
+export function MessageInput({ 
+  onSendMessage, 
+  onCall, 
+  chatType, 
+  chatTitle,
+  messages,
+  onSuggestionClick,
+}: MessageInputProps) {
   const [text, setText] = useState("");
+  const [isSuggestionOpen, setSuggestionOpen] = useState(false);
 
   const handleSend = () => {
     if (text.trim()) {
@@ -23,6 +36,11 @@ export function MessageInput({ onSendMessage, onCall, chatType, chatTitle }: Mes
       setText("");
     }
   };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    onSuggestionClick(suggestion);
+    setSuggestionOpen(false);
+  }
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -37,6 +55,20 @@ export function MessageInput({ onSendMessage, onCall, chatType, chatTitle }: Mes
         <Paperclip className="w-5 h-5" />
         <span className="sr-only">Adjuntar archivo</span>
       </Button>
+       <Popover open={isSuggestionOpen} onOpenChange={setSuggestionOpen}>
+        <PopoverTrigger asChild>
+           <Button variant="ghost" size="icon" className="shrink-0">
+            <Sparkles className="h-5 w-5 text-muted-foreground hover:text-purple-500" />
+            <span className="sr-only">Generar respuestas inteligentes</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 border-none p-2">
+          <SmartReplySuggestions 
+            messages={messages}
+            onSuggestionClick={handleSuggestionClick}
+          />
+        </PopoverContent>
+      </Popover>
       {chatType === "dm" && (
         <Button variant="ghost" size="icon" className="shrink-0" onClick={onCall}>
           <Phone className="w-5 h-5" />

@@ -7,7 +7,6 @@ import { Phone, MoreVertical, Trash2, Ban, Info, PhoneMissed } from "lucide-reac
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 import { MessageInput } from "@/components/chat/message-input";
-import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
 import type { Message, User, Notification } from "@/lib/types";
 import { Button } from "../ui/button";
 import {
@@ -260,6 +259,8 @@ export function ChatArea({
           onCall={handleCall}
           chatType={chatType}
           chatTitle={title}
+          messages={messages}
+          onSuggestionClick={handleSuggestionClick}
         />
       </footer>
     </div>
