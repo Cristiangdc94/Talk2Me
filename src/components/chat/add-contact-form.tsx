@@ -72,7 +72,7 @@ export function AddContactForm() {
           Busca usuarios por nombre o correo electrónico para añadirlos como amigos o compañeros de trabajo.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-end gap-4 mb-6">
             <FormField

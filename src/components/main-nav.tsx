@@ -13,7 +13,6 @@ export function MainNav() {
     { href: '/', label: 'Noticias' },
     { href: '/friends', label: 'Amigos' },
     { href: '/coworkers', label: 'Compañeros' },
-    { href: '/add', label: 'Añadir' },
   ];
 
   return (
@@ -26,7 +25,7 @@ export function MainNav() {
           size="sm"
           className={cn(
             'justify-center rounded-md px-3 py-1.5 text-sm font-medium',
-            pathname === item.href
+            pathname.startsWith(item.href) && item.href !== '/' || pathname === item.href
               ? 'bg-primary text-primary-foreground shadow-sm'
               : 'text-muted-foreground hover:bg-background/80 hover:text-foreground'
           )}

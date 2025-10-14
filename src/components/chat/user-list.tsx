@@ -14,7 +14,7 @@ export function UserList({ title, users }: UserListProps) {
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-6">
+      <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {users.map((user) => (
           <UserListCard key={user.id} user={user} />
         ))}
