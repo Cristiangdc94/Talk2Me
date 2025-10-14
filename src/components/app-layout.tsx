@@ -7,7 +7,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarTrigger,
-  SidebarInset,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { AppLogo } from "@/components/icons";
@@ -38,7 +37,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <div className="flex flex-col h-screen">
-        <header className="flex items-center h-14 px-4 border-b shrink-0">
+        <header className="flex items-center h-14 px-4 border-b shrink-0 bg-background">
           <SidebarTrigger className="md:hidden" />
           <div className="flex-1">
             <MainNav />
