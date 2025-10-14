@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/tabs";
 import { AccountSettings } from "@/components/settings/account-settings";
 import { VoiceVideoSettings } from "@/components/settings/voice-video-settings";
-import { ManageGroupsSettings } from "@/components/settings/manage-groups-settings";
 
 export default function SettingsPage() {
   return (
@@ -23,14 +22,13 @@ export default function SettingsPage() {
        <CardHeader className="px-0">
           <CardTitle className="text-3xl font-bold tracking-tight">Ajustes</CardTitle>
           <CardDescription>
-            Gestiona tu cuenta, la configuración de la aplicación y tus grupos.
+            Gestiona la configuración de tu cuenta y de la aplicación.
           </CardDescription>
         </CardHeader>
       <Tabs defaultValue="account" className="flex-1 flex flex-col">
-        <TabsList className="grid w-full grid-cols-3 max-w-lg">
+        <TabsList className="grid w-full grid-cols-2 max-w-lg">
           <TabsTrigger value="account">Mi Cuenta</TabsTrigger>
           <TabsTrigger value="voice-video">Voz y Video</TabsTrigger>
-          <TabsTrigger value="manage-groups">Gestionar Grupos</TabsTrigger>
         </TabsList>
         <div className="flex-1 py-6 overflow-auto">
             <TabsContent value="account">
@@ -38,9 +36,6 @@ export default function SettingsPage() {
             </TabsContent>
             <TabsContent value="voice-video">
                 <VoiceVideoSettings />
-            </TabsContent>
-            <TabsContent value="manage-groups">
-                <ManageGroupsSettings />
             </TabsContent>
         </div>
       </Tabs>
