@@ -8,12 +8,36 @@ import { NewsArticleCard } from './news-article-card';
 import { newsArticles } from '@/lib/mock-data';
 import type { NewsArticle } from '@/lib/types';
 import { Button } from '../ui/button';
-import { Loader2, Settings, Sparkles } from 'lucide-react';
+import { Loader2, Settings, Sparkles, PlusCircle } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
 import { HeaderActions } from '../header-actions';
 import { generateNewsArticles } from '@/ai/flows/generate-news-articles';
+
+function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGenerating: boolean }) {
+  return (
+    <Card
+      className="h-full flex flex-col items-center justify-center text-center transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+      onClick={!isGenerating ? onClick : undefined}
+    >
+      <CardContent className="p-6 flex flex-col items-center justify-center">
+        {isGenerating ? (
+          <>
+            <Loader2 className="h-12 w-12 text-muted-foreground animate-spin" />
+            <p className="mt-4 text-muted-foreground">Generando noticias...</p>
+          </>
+        ) : (
+          <>
+            <PlusCircle className="h-12 w-12 text-muted-foreground" />
+            <p className="mt-4 font-semibold">Generar más noticias</p>
+          </>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 
 export function NewsPortal() {
   const [location, setLocation] = useState<string | null>(null);
@@ -94,24 +118,11 @@ export function NewsPortal() {
         onSave={handleSavePreferences}
         currentPreferences={preferences}
       />
-      <Tabs defaultValue="general" className="pb-8">
+      <Tabs defaultValue="general">
         <div className="flex items-center justify-between mb-4">
           <TabsList>
             <TabsTrigger value="general">Noticias Generales</TabsTrigger>
             <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
-            <TabsTrigger value="more" onClick={handleGenerateMoreNews} disabled={isGenerating}>
-              {isGenerating ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generando...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Más
-                </>
-              )}
-            </TabsTrigger>
           </TabsList>
           <HeaderActions />
         </div>
@@ -120,6 +131,7 @@ export function NewsPortal() {
             {generalNews.map((article) => (
               <NewsArticleCard key={article.id} article={article} />
             ))}
+            <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
           </div>
         </TabsContent>
         <TabsContent value="personalizadas">
@@ -128,6 +140,7 @@ export function NewsPortal() {
               {personalizedNews.map((article) => (
                 <NewsArticleCard key={article.id} article={article} />
               ))}
+              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
             </div>
           ) : (
             <Card className="col-span-full flex flex-col items-center justify-center p-8 text-center">
