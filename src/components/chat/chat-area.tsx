@@ -1,0 +1,108 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
+import { MessageInput } from "@/components/chat/message-input";
+import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
+import type { Message, User } from "@/lib/types";
+
+interface ChatAreaProps {
+  chatId: string;
+  title: string;
+  icon: React.ReactNode;
+  initialMessages: Message[];
+  currentUser: User;
+  chatType: "channel" | "dm";
+}
+
+export function ChatArea({
+  chatId,
+  title,
+  icon,
+  initialMessages,
+  currentUser,
+}: ChatAreaProps) {
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // In a real app, you'd subscribe to Firestore updates here
+    // For this demo, we just use the initialMessages and any new ones.
+    setMessages(initialMessages);
+  }, [chatId, initialMessages]);
+
+  useEffect(() => {
+    // Scroll to bottom when new messages are added
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTo({
+        top: scrollAreaRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [messages]);
+
+  const handleSendMessage = (text: string) => {
+    const newMessage: Message = {
+      id: `msg-${Date.now()}`,
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      user: currentUser,
+    };
+    setMessages((prev) => [...prev, newMessage]);
+  };
+  
+  const handleSuggestionClick = (suggestion: string) => {
+    handleSendMessage(suggestion);
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      <header className="flex items-center gap-3 p-4 border-b shrink-0">
+        {icon}
+        <h2 className="text-xl font-headline font-semibold">{title}</h2>
+      </header>
+
+      <div className="flex-1 overflow-hidden">
+        <ScrollArea className="h-full" viewportRef={scrollAreaRef}>
+          <div className="p-4 space-y-6">
+            {messages.map((message) => (
+              <div key={message.id} className="flex items-start gap-4 animate-accordion-down">
+                <UserAvatarWithStatus user={message.user} />
+                <div className="flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <p className="font-bold">{message.user.name}</p>
+                    <time className="text-xs text-muted-foreground">
+                      {message.timestamp}
+                    </time>
+                  </div>
+                  {message.text && <p className="text-foreground/90">{message.text}</p>}
+                  {message.imageUrl && (
+                    <div className="mt-2">
+                       <Image
+                        src={message.imageUrl}
+                        alt="Chat image"
+                        width={400}
+                        height={300}
+                        className="rounded-lg object-cover"
+                        data-ai-hint="landscape nature"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
+
+      <footer className="p-4 border-t shrink-0 space-y-4">
+        <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
+        <Separator />
+        <MessageInput onSendMessage={handleSendMessage} />
+      </footer>
+    </div>
+  );
+}

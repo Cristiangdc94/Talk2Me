@@ -1,3 +1,46 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "avatar-1",
+      "description": "User Avatar 1",
+      "imageUrl": "https://picsum.photos/seed/avatar1/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-2",
+      "description": "User Avatar 2",
+      "imageUrl": "https://picsum.photos/seed/avatar2/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-3",
+      "description": "User Avatar 3",
+      "imageUrl": "https://picsum.photos/seed/avatar3/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-4",
+      "description": "User Avatar 4",
+      "imageUrl": "https://picsum.photos/seed/avatar4/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-5",
+      "description": "User Avatar 5",
+      "imageUrl": "https://picsum.photos/seed/avatar5/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-6",
+      "description": "User Avatar 6",
+      "imageUrl": "https://picsum.photos/seed/avatar6/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "chat-image-1",
+      "description": "A beautiful landscape sent in a chat message",
+      "imageUrl": "https://picsum.photos/seed/chatimage1/400/300",
+      "imageHint": "landscape nature"
+    }
+  ]
 }
