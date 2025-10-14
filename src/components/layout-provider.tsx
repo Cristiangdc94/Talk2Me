@@ -1,20 +1,48 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { AppLayout } from "@/components/app-layout";
+
+function ThemeProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      {children}
+    </NextThemesProvider>
+  );
+}
 
 export function LayoutProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAuthPage = pathname === "/login" || pathname === "/signup";
+  const [mounted, setMounted] = useState(false);
 
-  if (isAuthPage) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+  
+  if (pathname === "/login" || pathname === "/signup") {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-background p-4">
-        {children}
-      </main>
+      <ThemeProvider>
+        <main className="flex min-h-screen items-center justify-center bg-background p-4">
+          {children}
+        </main>
+      </ThemeProvider>
     );
   }
 
-  return <AppLayout>{children}</AppLayout>;
+  return (
+    <ThemeProvider>
+      <AppLayout>{children}</AppLayout>
+    </ThemeProvider>
+  );
 }

@@ -11,6 +11,7 @@ import {
 import { AppLogo } from "@/components/icons";
 import { SidebarNav } from "@/components/chat/sidebar-nav";
 import { UserNav } from "@/components/chat/user-nav";
+import { ThemeToggle } from "./theme-toggle";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -34,7 +35,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <SidebarInset>
         <header className="sticky top-0 z-10 flex items-center h-14 px-4 border-b bg-background/95 backdrop-blur-sm">
           <SidebarTrigger className="md:hidden" />
-          {/* This space can be used for a global search or page title */}
+          <div className="flex-1" />
+          <ThemeToggle />
         </header>
         <main className="flex-1 overflow-auto p-4">{children}</main>
       </SidebarInset>
