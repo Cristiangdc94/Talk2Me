@@ -73,7 +73,7 @@ export function ChatArea({
 
   return (
     <div className="flex flex-col h-full">
-      <header className="flex items-center gap-3 p-4 shrink-0">
+      <header className="flex items-center gap-3 p-4 shrink-0 border-b">
         {icon}
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
         <div className="flex-1" />
@@ -83,7 +83,6 @@ export function ChatArea({
                 <span className="sr-only">Llamar a {title}</span>
             </Button>
         )}
-        <HeaderActions />
       </header>
 
       <div className="flex-1 overflow-hidden">
