@@ -50,7 +50,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function DraggableChatWidget({ chat }: { chat: ChatState }) {
+function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }) {
   const { closeChat } = useChat();
   const [position, setPosition] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
   const [isDragging, setIsDragging] = useState(false);
@@ -59,11 +59,13 @@ function DraggableChatWidget({ chat }: { chat: ChatState }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const defaultX = window.innerWidth - 450;
-      const defaultY = window.innerHeight - 560;
+      // Calculate a staggered position starting from the left
+      const staggerOffset = index * 40;
+      const defaultX = 50 + staggerOffset; 
+      const defaultY = 100 + staggerOffset;
       setPosition({ x: defaultX, y: defaultY });
     }
-  }, [chat.id]);
+  }, [chat.id, index]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (widgetRef.current) {
@@ -153,8 +155,8 @@ function ChatManager() {
 
   return (
     <>
-      {activeChats.map(chat => (
-        <DraggableChatWidget key={chat.id} chat={chat} />
+      {activeChats.map((chat, index) => (
+        <DraggableChatWidget key={chat.id} chat={chat} index={index} />
       ))}
     </>
   );
