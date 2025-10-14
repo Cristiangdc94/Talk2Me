@@ -62,7 +62,7 @@ function AddNewsArticleDialog({ companyName, onAddArticle }: { companyName: stri
     const [isOpen, setIsOpen] = useState(false);
     const form = useForm<z.infer<typeof newArticleSchema>>({
         resolver: zodResolver(newArticleSchema),
-        defaultValues: { title: "", summary: "", imageUrl: "", link: "#" },
+        defaultValues: { title: "", summary: "", imageUrl: "https://picsum.photos/seed/news_placeholder/600/400", link: "#" },
     });
 
     const onSubmit = (values: z.infer<typeof newArticleSchema>) => {
