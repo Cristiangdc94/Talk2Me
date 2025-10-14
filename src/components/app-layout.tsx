@@ -36,11 +36,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
-          <header className="flex items-center h-14 px-4 border-b shrink-0 bg-sidebar text-sidebar-foreground border-sidebar-border">
+          <header className="flex h-14 items-center border-b px-4 shrink-0 bg-sidebar text-sidebar-foreground border-sidebar-border">
             <SidebarTrigger className="md:hidden" />
-            <div className="flex items-center w-full">
+            <div className="flex w-full items-center">
               <MainNav />
-              <div className="flex-1" />
             </div>
           </header>
           <main className="flex-1 overflow-auto bg-muted">

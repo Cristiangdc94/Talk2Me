@@ -30,6 +30,7 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
   const isAuthPage = pathname === "/login" || pathname === "/signup";
 
   if (!mounted) {
+    // Return a skeleton or null until the client is mounted to avoid hydration mismatches
     return null;
   }
   
@@ -46,7 +47,9 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <NewsPreferencesProvider>
-        <AppLayout>{children}</AppLayout>
+        <div className="h-full">
+          <AppLayout>{children}</AppLayout>
+        </div>
       </NewsPreferencesProvider>
     </ThemeProvider>
   );
