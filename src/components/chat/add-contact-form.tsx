@@ -65,7 +65,7 @@ export function AddContactForm() {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto mt-12">
+    <Card className="w-full mx-auto">
       <CardHeader>
         <CardTitle>Añadir Contacto</CardTitle>
         <CardDescription>
