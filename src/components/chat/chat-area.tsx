@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Phone } from "lucide-react";
+import { Phone, Check, CheckCheck } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
@@ -13,6 +13,8 @@ import type { Message, User } from "@/lib/types";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { users } from "@/lib/mock-data";
+import { cn } from "@/lib/utils";
+import { MessageStatus } from "./message-status";
 
 interface ChatAreaProps {
   chatId: string;
@@ -35,11 +37,29 @@ export function ChatArea({
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
 
+  const assignMessageStatus = (msgs: Message[], currentUserId: string): Message[] => {
+    let lastSentMessageId: string | null = null;
+    for (let i = msgs.length - 1; i >= 0; i--) {
+      if (msgs[i].user.id === currentUserId) {
+        lastSentMessageId = msgs[i].id;
+        break;
+      }
+    }
+
+    return msgs.map(msg => {
+      if (msg.user.id === currentUserId) {
+        if (msg.id === lastSentMessageId) {
+          return { ...msg, status: 'sent' };
+        }
+        return { ...msg, status: 'read' };
+      }
+      return msg;
+    });
+  };
+
   useEffect(() => {
-    // In a real app, you'd subscribe to Firestore updates here
-    // For this demo, we just use the initialMessages and any new ones.
-    setMessages(initialMessages);
-  }, [chatId, initialMessages]);
+    setMessages(assignMessageStatus(initialMessages, currentUser.id));
+  }, [chatId, initialMessages, currentUser.id]);
 
   useEffect(() => {
     // Scroll to bottom when new messages are added
@@ -57,8 +77,9 @@ export function ChatArea({
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       user: currentUser,
+      status: 'sent',
     };
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages((prev) => assignMessageStatus([...prev, newMessage], currentUser.id));
   };
   
   const handleSuggestionClick = (suggestion: string) => {
@@ -79,42 +100,67 @@ export function ChatArea({
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
         <div className="flex-1" />
         {chatType === "dm" && (
-            <Button variant="ghost" size="icon" onClick={handleCall} className="mr-5">
+            <Button variant="ghost" size="icon" onClick={handleCall}>
                 <Phone className="w-5 h-5" />
                 <span className="sr-only">Llamar a {title}</span>
             </Button>
         )}
       </header>
 
-      <div className="flex-1 flex flex-col overflow-y-auto">
+      <div className="flex-1 flex flex-col-reverse overflow-y-auto">
         <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
-          <div className="p-4 space-y-6">
-            {messages.map((message) => (
-              <div key={message.id} className="flex items-start gap-4 animate-accordion-down">
-                <UserAvatarWithStatus user={message.user} />
-                <div className="flex-1">
-                  <div className="flex items-baseline gap-2">
-                    <p className="font-bold">{message.user.name}</p>
-                    <time className="text-xs text-muted-foreground">
-                      {message.timestamp}
-                    </time>
-                  </div>
-                  {message.text && <p className="text-foreground/90">{message.text}</p>}
-                  {message.imageUrl && (
-                    <div className="mt-2">
-                       <Image
-                        src={message.imageUrl}
-                        alt="Chat image"
-                        width={400}
-                        height={300}
-                        className="rounded-lg object-cover"
-                        data-ai-hint="landscape nature"
-                      />
+          <div className="p-4 space-y-4">
+            {messages.map((message) => {
+              const isSentByCurrentUser = message.user.id === currentUser.id;
+              return (
+                <div 
+                  key={message.id} 
+                  className={cn(
+                    "flex items-end gap-3 w-full",
+                    isSentByCurrentUser ? "justify-end" : "justify-start"
+                  )}
+                >
+                  {!isSentByCurrentUser && (
+                    <UserAvatarWithStatus user={message.user} className="shrink-0" />
+                  )}
+                  <div 
+                    className={cn(
+                      "p-3 rounded-lg max-w-sm md:max-w-md",
+                      isSentByCurrentUser 
+                        ? "bg-primary text-primary-foreground" 
+                        : "bg-muted"
+                    )}
+                  >
+                     {!isSentByCurrentUser && <p className="font-bold text-xs mb-1">{message.user.name}</p>}
+                    {message.text && <p className="text-sm">{message.text}</p>}
+                    {message.imageUrl && (
+                      <div className="mt-2">
+                         <Image
+                          src={message.imageUrl}
+                          alt="Chat image"
+                          width={400}
+                          height={300}
+                          className="rounded-lg object-cover"
+                          data-ai-hint="landscape nature"
+                        />
+                      </div>
+                    )}
+                    <div className="flex justify-end items-center gap-2 mt-1">
+                      <time className={cn(
+                        "text-xs", 
+                        isSentByCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground"
+                      )}>
+                        {message.timestamp}
+                      </time>
+                      {isSentByCurrentUser && <MessageStatus status={message.status} />}
                     </div>
+                  </div>
+                  {isSentByCurrentUser && (
+                    <UserAvatarWithStatus user={message.user} className="shrink-0" />
                   )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </ScrollArea>
       </div>

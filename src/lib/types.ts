@@ -26,6 +26,7 @@ export interface Message {
   imageUrl?: string;
   timestamp: string;
   user: User;
+  status?: 'sent' | 'read';
 }
 
 export interface Channel {
