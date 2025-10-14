@@ -14,10 +14,7 @@ export function AppLogo(props: SVGProps<SVGSVGElement>) {
       strokeLinejoin="round"
       {...props}
     >
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      <path d="M12 7h.01" />
-      <path d="M16 7h.01" />
-      <path d="M8 7h.01" />
+      <path d="M17.5 3h-11A4.5 4.5 0 0 0 2 7.5v6A4.5 4.5 0 0 0 6.5 18H7l4 4v-4h6.5A4.5 4.5 0 0 0 22 13.5v-6A4.5 4.5 0 0 0 17.5 3Z" />
     </svg>
   );
 }
