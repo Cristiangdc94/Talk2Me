@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -28,7 +29,7 @@ const iconMap = {
 
 const groupNotifications = (notifications: Notification[]) => {
   return notifications.reduce((acc, notification) => {
-    const key = notification.type;
+    const key = notification.link === '/company-news' ? 'company-news' : notification.type;
     if (!acc[key]) {
       acc[key] = [];
     }
@@ -45,8 +46,11 @@ export function NotificationList({ notifications, onNotificationClick, onClearAl
   const groupTitles = {
     message: "Mensajes no leídos",
     call: "Llamadas perdidas",
-    news: "Noticias para ti",
+    news: "Noticias Generales",
+    'company-news': "Noticias de Empresa",
   };
+  
+  const groupOrder = ['message', 'call', 'company-news', 'news'];
 
   const handleNotificationClick = (item: Notification) => {
     if (item.chatId) {
@@ -71,25 +75,30 @@ export function NotificationList({ notifications, onNotificationClick, onClearAl
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="h-[300px]">
-          {Object.entries(groupedNotifications).map(([type, items]) => (
-            <div key={type} className="p-4 border-b">
-              <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
-                {groupTitles[type as keyof typeof groupTitles]} ({items.length})
-              </h3>
-              <div className="space-y-3">
-                {items.map((item) => (
-                   <button
-                    key={item.id}
-                    onClick={() => handleNotificationClick(item)}
-                    className="flex w-full text-left items-start gap-3 hover:bg-accent rounded-md p-2 -m-2"
-                  >
-                    <div className="mt-1">{iconMap[item.type as keyof typeof iconMap]}</div>
-                    <p className="text-sm text-foreground/90">{item.text}</p>
-                   </button>
-                ))}
+          {groupOrder.map(type => {
+            const items = groupedNotifications[type];
+            if (!items || items.length === 0) return null;
+            
+            return (
+              <div key={type} className="p-4 border-b">
+                <h3 className="mb-2 text-sm font-semibold text-muted-foreground">
+                  {groupTitles[type as keyof typeof groupTitles]} ({items.length})
+                </h3>
+                <div className="space-y-3">
+                  {items.map((item) => (
+                     <button
+                      key={item.id}
+                      onClick={() => handleNotificationClick(item)}
+                      className="flex w-full text-left items-start gap-3 hover:bg-accent rounded-md p-2 -m-2"
+                    >
+                      <div className="mt-1">{iconMap[item.type as keyof typeof iconMap]}</div>
+                      <p className="text-sm text-foreground/90">{item.text}</p>
+                     </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
           {notifications.length === 0 && (
             <div className="p-4 text-center text-sm text-muted-foreground">
               No tienes notificaciones nuevas.

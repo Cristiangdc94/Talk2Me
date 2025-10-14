@@ -14,6 +14,7 @@ const exampleNotifications: Notification[] = [
     { id: 'example-msg', type: 'message', text: 'Ejemplo: Tienes un nuevo mensaje de Alex.', timestamp: 'Ahora', chatId: 'dm-2', chatType: 'dm' },
     { id: 'example-call', type: 'call', text: 'Ejemplo: Llamada perdida de un contacto.', timestamp: 'Ahora', chatId: 'dm-3', chatType: 'dm' },
     { id: 'example-news', type: 'news', text: 'Ejemplo: Hay noticias de tecnología que te podrían interesar.', timestamp: 'Ahora', link: '/' },
+    { id: 'example-company-news', type: 'news', text: 'Ejemplo: InnovateCorp ha lanzado un nuevo producto.', timestamp: 'Ahora', link: '/company-news' },
 ];
 
 
