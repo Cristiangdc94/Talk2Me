@@ -16,6 +16,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FriendStatusCard } from './friend-status-card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { useToast } from '@/hooks/use-toast';
+import { CompanyNewsPortal } from './company-news-portal';
+import { Separator } from '../ui/separator';
 
 function LoadMoreNewsCard({ onClick, isGenerating, isDisabled }: { onClick: () => void; isGenerating: boolean, isDisabled: boolean }) {
   return (
@@ -164,7 +166,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
       />
 
       <div className='flex flex-col gap-8'>
-        <div className="bg-muted rounded-lg p-4">
+        <div className="bg-muted/50 rounded-lg p-4">
           <h2 className="text-2xl font-semibold tracking-tight mb-3">Lo nuevo entre tus amigos</h2>
             <Carousel
             opts={{
@@ -185,6 +187,12 @@ export function NewsPortal({ view }: NewsPortalProps) {
             <CarouselNext className="-right-4" />
           </Carousel>
         </div>
+
+        <Separator />
+
+        <CompanyNewsPortal />
+
+        <Separator />
 
         {view === 'foryou' && preferences.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-background min-h-[400px]">

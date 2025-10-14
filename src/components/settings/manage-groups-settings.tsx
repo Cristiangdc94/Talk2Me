@@ -5,8 +5,8 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { users } from "@/lib/mock-data";
-import { User, CompanyRoleDetails } from "@/lib/types";
+import { users, companyNews as initialCompanyNews } from "@/lib/mock-data";
+import { User, CompanyRoleDetails, CompanyNewsArticle } from "@/lib/types";
 import {
   Accordion,
   AccordionContent,
@@ -26,8 +26,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Building2, Upload, User as UserIcon, X, Tag } from "lucide-react";
+import { Building2, Upload, User as UserIcon, X, Tag, Plus, Newspaper, Trash2 } from "lucide-react";
 import { UserAvatarWithStatus } from "../chat/user-avatar-with-status";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Separator } from "../ui/separator";
 
 const groupFormSchema = z.object({
     name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
@@ -37,6 +39,13 @@ const groupFormSchema = z.object({
         name: z.string(),
         tag: z.string().optional(),
     })),
+});
+
+const newArticleSchema = z.object({
+    title: z.string().min(5, "El título debe tener al menos 5 caracteres."),
+    summary: z.string().min(10, "El resumen debe tener al menos 10 caracteres."),
+    imageUrl: z.string().url("Debe ser una URL válida."),
+    link: z.string().url("Debe ser una URL válida."),
 });
 
 interface ManageableGroup {
@@ -50,8 +59,62 @@ interface GroupEditFormProps {
     allUsers: User[];
 }
 
+function AddNewsArticleDialog({ companyName, onAddArticle }: { companyName: string, onAddArticle: (article: Omit<CompanyNewsArticle, 'id' | 'companyName' | 'timestamp'>) => void }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const form = useForm<z.infer<typeof newArticleSchema>>({
+        resolver: zodResolver(newArticleSchema),
+        defaultValues: { title: "", summary: "", imageUrl: "", link: "#" },
+    });
+
+    const onSubmit = (values: z.infer<typeof newArticleSchema>) => {
+        onAddArticle(values);
+        form.reset();
+        setIsOpen(false);
+    };
+    
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+                <Button>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Añadir Noticia
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Añadir Noticia para {companyName}</DialogTitle>
+                    <DialogDescription>
+                        Publica una nueva actualización para los miembros de tu grupo.
+                    </DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <FormField control={form.control} name="title" render={({ field }) => (
+                            <FormItem><FormLabel>Título</FormLabel><FormControl><Input {...field} placeholder="Título del artículo" /></FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="summary" render={({ field }) => (
+                            <FormItem><FormLabel>Resumen</FormLabel><FormControl><Textarea {...field} placeholder="Un breve resumen de la noticia..." /></FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="imageUrl" render={({ field }) => (
+                            <FormItem><FormLabel>URL de la Imagen</FormLabel><FormControl><Input {...field} placeholder="https://picsum.photos/seed/..." /></FormControl><FormMessage /></FormMessage>
+                        )} />
+                        <FormField control={form.control} name="link" render={({ field }) => (
+                            <FormItem><FormLabel>Enlace (Opcional)</FormLabel><FormControl><Input {...field} placeholder="#" /></FormControl><FormMessage /></FormMessage>
+                        )} />
+                        <DialogFooter>
+                            <Button type="submit">Publicar Noticia</Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+
 function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
     const { toast } = useToast();
+    const [companyNews, setCompanyNews] = useState(initialCompanyNews.filter(n => n.companyName === group.name));
     
     const form = useForm<z.infer<typeof groupFormSchema>>({
         resolver: zodResolver(groupFormSchema),
@@ -77,6 +140,20 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
             description: `La configuración de ${values.name} ha sido guardada. (Simulación)`,
         });
         console.log("Saving group data:", values);
+    };
+
+    const handleAddArticle = (article: Omit<CompanyNewsArticle, 'id' | 'companyName' | 'timestamp'>) => {
+        const newArticle: CompanyNewsArticle = {
+            ...article,
+            id: `cn-${Date.now()}`,
+            companyName: group.name,
+            timestamp: "justo ahora"
+        };
+        setCompanyNews(prev => [newArticle, ...prev]);
+        toast({
+            title: "Noticia Publicada",
+            description: `Se ha añadido "${article.title}" a las noticias de ${group.name}.`,
+        });
     };
 
     return (
@@ -127,13 +204,13 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
                         />
                     </div>
                     {/* Columna de Miembros */}
-                    <div className="md:col-span-2">
+                    <div className="md:col-span-2 space-y-6">
                          <Card>
                             <CardHeader>
                                 <CardTitle className="text-base">Miembros del Grupo</CardTitle>
                                 <CardDescription>Añade etiquetas personalizadas a cada miembro.</CardDescription>
                             </CardHeader>
-                            <CardContent className="space-y-4">
+                            <CardContent className="space-y-4 max-h-96 overflow-y-auto">
                                 {fields.map((field, index) => {
                                      const user = allUsers.find(u => u.id === field.id);
                                      return (
@@ -165,10 +242,37 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
                                 })}
                             </CardContent>
                          </Card>
+
+                         <Card>
+                            <CardHeader>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle className="text-base">Noticias de la Empresa</CardTitle>
+                                        <CardDescription>Gestiona las noticias de tu grupo.</CardDescription>
+                                    </div>
+                                    <AddNewsArticleDialog companyName={group.name} onAddArticle={handleAddArticle} />
+                                </div>
+                            </CardHeader>
+                             <CardContent className="space-y-4 max-h-96 overflow-y-auto">
+                                {companyNews.map(article => (
+                                    <div key={article.id} className="flex items-center gap-4 p-2 rounded-md bg-muted/50">
+                                        <Newspaper className="h-5 w-5 text-muted-foreground" />
+                                        <div className="flex-1">
+                                            <p className="font-semibold truncate">{article.title}</p>
+                                            <p className="text-sm text-muted-foreground truncate">{article.summary}</p>
+                                        </div>
+                                        <Button type="button" variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                ))}
+                                {companyNews.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No hay noticias para este grupo.</p>}
+                             </CardContent>
+                         </Card>
                     </div>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-end pt-4 border-t">
                     <Button type="submit">Guardar Cambios</Button>
                 </div>
             </form>
@@ -180,7 +284,6 @@ export function ManageGroupsSettings() {
     const { toast } = useToast();
     const [isMounted, setIsMounted] = useState(false);
     
-    // Simulate fetching current user and all users
     const currentUser = users.find((u) => u.id === "1");
     const allUsers = users;
 
@@ -214,7 +317,6 @@ export function ManageGroupsSettings() {
             title: "Has abandonado el grupo",
             description: `Has abandonado ${groupName}. (Simulación)`,
         });
-        // In a real app, update state here
     };
 
     if (!isMounted) {
@@ -227,7 +329,7 @@ export function ManageGroupsSettings() {
     }
 
     return (
-        <div className="max-w-4xl space-y-8">
+        <div className="max-w-6xl space-y-8">
             <div>
                 <h3 className="text-lg font-medium">Grupos Administrables</h3>
                 <p className="text-sm text-muted-foreground">

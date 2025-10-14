@@ -1,9 +1,4 @@
 
-
-
-
-
-
 export type CompanyRole = 'Empleado' | 'Partner' | 'Administrador' | 'Jefe de proyecto' | 'CEO' | 'Miembro';
 
 export interface CompanyRoleDetails {
@@ -52,6 +47,16 @@ export interface NewsArticle {
   summary: string;
   imageUrl: string;
   link: string;
+}
+
+export interface CompanyNewsArticle {
+  id: string;
+  companyName: string;
+  title: string;
+  summary: string;
+  imageUrl: string;
+  link: string;
+  timestamp: string;
 }
 
 export interface FriendStatus {

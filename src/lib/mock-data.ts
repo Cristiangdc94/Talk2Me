@@ -1,7 +1,5 @@
 
-
-
-import { User, Channel, DirectMessage, NewsArticle, FriendStatus, Notification } from './types';
+import { User, Channel, DirectMessage, NewsArticle, FriendStatus, Notification, CompanyNewsArticle } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 const findImage = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || '';
@@ -164,6 +162,13 @@ export const newsArticles: NewsArticle[] = [
   { id: 'n4', category: 'technology', location: 'global', title: 'Nuevo Lenguaje de Programación Promete Revolucionar el Desarrollo', summary: 'Descubre "Mojo", el nuevo lenguaje que combina la simplicidad de Python con el rendimiento de C.', imageUrl: findImage('news-4'), link: '#' },
   { id: 'n5', category: 'health', location: 'local', title: 'Nueva Campaña de Salud Pública se Lanza en la Ciudad', summary: 'Iniciativas para promover el bienestar y la prevención de enfermedades en la comunidad local.', imageUrl: findImage('news-5'), link: '#' },
   { id: 'n6', category: 'sports', location: 'global', title: 'Resumen de los Partidos de Anoche y Próximos Encuentros', summary: 'No te pierdas los momentos más destacados de la jornada deportiva y lo que viene.', imageUrl: findImage('news-6'), link: '#' },
+];
+
+export const companyNews: CompanyNewsArticle[] = [
+  { id: 'cn1', companyName: 'InnovateCorp', title: 'InnovateCorp Lanza su Nuevo Producto "QuantumConnect"', summary: 'Nuestro equipo ha trabajado incansablemente para lanzar esta nueva plataforma que revolucionará la comunicación empresarial.', imageUrl: findImage('news-1'), link: '#', timestamp: 'hace 1 día' },
+  { id: 'cn2', companyName: 'DataSolutions', title: 'Resultados Financieros del Tercer Trimestre de DataSolutions', summary: 'Un crecimiento récord impulsado por nuestras soluciones de análisis de datos de vanguardia.', imageUrl: findImage('news-2'), link: '#', timestamp: 'hace 3 días' },
+  { id: 'cn3', companyName: 'InnovateCorp', title: 'Anuncio del Hackathon Interno de InnovateCorp', summary: 'Prepara tus ideas más innovadoras para nuestro hackathon anual. ¡Habrá grandes premios!', imageUrl: findImage('news-4'), link: '#', timestamp: 'hace 5 días' },
+  { id: 'cn4', companyName: 'QuantumLeap', title: 'QuantumLeap se Asocia con una Importante Empresa Tecnológica', summary: 'Esta alianza estratégica nos permitirá acelerar nuestra investigación en computación cuántica.', imageUrl: findImage('news-5'), link: '#', timestamp: 'hace 1 semana' },
 ];
 
 export const notifications: Notification[] = [
