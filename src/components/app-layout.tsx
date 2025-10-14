@@ -7,6 +7,7 @@ import {
   SidebarFooter,
   SidebarTrigger,
   SidebarInset,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { AppLogo } from "@/components/icons";
 import { SidebarNav } from "@/components/chat/sidebar-nav";
@@ -29,6 +30,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarContent>
           <SidebarNav />
         </SidebarContent>
+        <SidebarSeparator />
         <SidebarFooter>
           <UserNav />
         </SidebarFooter>

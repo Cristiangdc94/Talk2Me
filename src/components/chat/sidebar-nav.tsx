@@ -17,6 +17,8 @@ import { channels, directMessages } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "../ui/separator";
+import { SidebarSeparator } from "../ui/sidebar";
 
 export function SidebarNav() {
   const pathname = usePathname();
@@ -61,6 +63,8 @@ export function SidebarNav() {
           ))}
         </SidebarMenu>
       </SidebarGroup>
+
+      <SidebarSeparator />
 
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">Mensajes Directos</SidebarGroupLabel>
