@@ -31,7 +31,7 @@ export function ChatArea({
 }: ChatAreaProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const { toast } = useToast();
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollViewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // In a real app, you'd subscribe to Firestore updates here
@@ -41,9 +41,9 @@ export function ChatArea({
 
   useEffect(() => {
     // Scroll to bottom when new messages are added
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
+    if (scrollViewportRef.current) {
+      scrollViewportRef.current.scrollTo({
+        top: scrollViewportRef.current.scrollHeight,
         behavior: 'smooth'
       });
     }
@@ -84,8 +84,8 @@ export function ChatArea({
         )}
       </header>
 
-      <div className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full" viewportRef={scrollAreaRef}>
+      <div className="flex-1 overflow-y-auto">
+        <ScrollArea className="h-full" viewportRef={scrollViewportRef}>
           <div className="p-4 space-y-6">
             {messages.map((message) => (
               <div key={message.id} className="flex items-start gap-4 animate-accordion-down">
