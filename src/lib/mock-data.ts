@@ -13,7 +13,7 @@ export const users: User[] = [
     status: 'online', 
     email: 'you@example.com',
     companyRoles: {
-      'InnovateCorp': 'Administrador',
+      'InnovateCorp': 'CEO',
     } 
   },
   { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend', email: 'alice@example.com' },
