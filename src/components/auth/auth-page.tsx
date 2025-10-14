@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -15,7 +16,7 @@ import { AppLogo } from "../icons";
 export function AuthPage() {
   return (
     <Card className="w-full max-w-4xl overflow-hidden">
-      <CardHeader className="text-center p-6 bg-muted/30">
+      <CardHeader className="text-center p-4 bg-muted/30">
         <div className="flex justify-center items-center gap-4">
           <AppLogo className="w-12 h-12 text-primary" />
           <CardTitle className="text-4xl font-logo tracking-wider">
