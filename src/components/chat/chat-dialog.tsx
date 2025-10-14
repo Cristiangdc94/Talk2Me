@@ -17,7 +17,10 @@ import { users } from "@/lib/mock-data";
 export function ChatDialog() {
   const { activeChat, closeChat } = useChat();
 
-  const isOpen = activeChat !== null;
+  // This component is no longer used as a full-screen dialog, 
+  // but we keep it in case we want to switch back.
+  // The new implementation is a floating widget in AppLayout.
+  const isOpen = false; 
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {

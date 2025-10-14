@@ -17,13 +17,17 @@ import {
 import { AppLogo } from '@/components/icons';
 import { SidebarNav } from '@/components/chat/sidebar-nav';
 import { UserNav } from '@/components/chat/user-nav';
-import { ChatDialog } from './chat/chat-dialog';
 import { NotificationWidget } from './notifications/notification-widget';
 import { NewsPreferencesProvider } from '@/hooks/use-news-preferences';
-import { ChatProvider } from '@/hooks/use-chat';
+import { ChatProvider, useChat } from '@/hooks/use-chat';
 import { cn } from '@/lib/utils';
 import { MainNav } from './main-nav';
 import { HeaderActions } from './header-actions';
+import { Card, CardContent, CardHeader } from './ui/card';
+import { ChatArea } from './chat/chat-area';
+import { users } from '@/lib/mock-data';
+import { Button } from './ui/button';
+import { X } from 'lucide-react';
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -44,6 +48,42 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
       {children}
     </main>
   );
+}
+
+function ChatWidget() {
+  const { activeChat, closeChat } = useChat();
+
+  if (!activeChat) {
+    return null;
+  }
+
+  return (
+    <div className="fixed bottom-8 right-[calc(8rem+2rem)] z-50">
+       <Card className="w-96 h-[32rem] flex flex-col shadow-2xl">
+        <CardHeader className="flex flex-row items-center justify-between p-2 border-b">
+           <div className="flex items-center gap-3 p-2">
+            {activeChat.icon}
+            <h2 className="font-semibold">{activeChat.title}</h2>
+          </div>
+          <Button variant="ghost" size="icon" onClick={closeChat}>
+            <X className="h-4 w-4" />
+            <span className="sr-only">Cerrar chat</span>
+          </Button>
+        </CardHeader>
+        <CardContent className="p-0 flex-1 flex flex-col">
+          <ChatArea
+            key={activeChat.id}
+            chatId={activeChat.id}
+            title={activeChat.title}
+            icon={activeChat.icon}
+            initialMessages={activeChat.messages}
+            currentUser={users[0]}
+            chatType={activeChat.type}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -88,10 +128,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         {children}
                       </div>
                     </main>
+                    <ChatWidget />
                     <NotificationWidget />
                   </div>
                 </div>
-                <ChatDialog />
               </SidebarProvider>
             </div>
           )}
