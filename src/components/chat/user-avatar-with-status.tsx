@@ -12,12 +12,12 @@ export function UserAvatarWithStatus({ user, className }: UserAvatarWithStatusPr
   const nameInitial = user.name.charAt(0).toUpperCase();
   const statusColor = {
     online: 'bg-green-500',
-    offline: 'bg-gray-400',
-    busy: 'bg-orange-500',
+    offline: 'bg-gray-500',
+    busy: 'bg-red-500',
   };
 
   return (
-    <div className="relative">
+    <div className="relative shrink-0">
       <Avatar className={cn("h-10 w-10", className)}>
         <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="person portrait"/>
         <AvatarFallback>{nameInitial}</AvatarFallback>

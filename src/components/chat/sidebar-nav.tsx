@@ -7,7 +7,6 @@ import {
   Hash,
   Lock,
   Plus,
-  User,
   Phone,
   Newspaper,
   Users,
@@ -15,7 +14,6 @@ import {
   Search,
   ChevronDown,
 } from "lucide-react";
-import { cva } from "class-variance-authority";
 
 import {
   SidebarGroup,
@@ -39,22 +37,12 @@ import {
 import { cn } from "@/lib/utils";
 import { useChat } from "@/hooks/use-chat";
 import { NewMessagePopover } from "./new-message-popover";
+import { UserAvatarWithStatus } from "./user-avatar-with-status";
 
 const mainNavLinks = [
-  { href: "/friends", label: "Amigos", icon: Users },
-  { href: "/coworkers", label: "Compañeros", icon: Briefcase },
-  { href: "/add-contact", label: "Buscar", icon: Search },
-];
-
-const statusIndicatorVariants = cva("h-2.5 w-2.5 rounded-full", {
-  variants: {
-    status: {
-      online: "bg-green-500",
-      busy: "bg-orange-500",
-      offline: "bg-red-500",
-    },
-  },
-});
+    { href: "/friends", label: "Amigos", icon: Users },
+    { href: "/coworkers", label: "Compañeros", icon: Briefcase },
+  ];
 
 export function SidebarNav() {
   const pathname = usePathname();
@@ -150,7 +138,7 @@ export function SidebarNav() {
         </SidebarGroupLabel>
         <SidebarGroupAction asChild>
           <button onClick={() => setCreateChannelOpen(true)}>
-            <Plus />
+            <Plus className="h-4 w-4" />
             <span className="sr-only">Crear Canal</span>
           </button>
         </SidebarGroupAction>
@@ -182,6 +170,7 @@ export function SidebarNav() {
         <SidebarMenu>
           {directMessages.map((dm) => {
             const user = users.find(u => u.id === dm.userId);
+            if (!user) return null;
             return (
               <SidebarMenuItem key={dm.id}>
                 <SidebarMenuButton
@@ -189,17 +178,7 @@ export function SidebarNav() {
                   isActive={activeChatId === dm.id}
                   tooltip={dm.name}
                 >
-                  <div className="relative inline-block">
-                    <User />
-                    {user && (
-                      <span
-                        className={cn(
-                          statusIndicatorVariants({ status: user.status }),
-                          'absolute bottom-0 -right-1 block h-2 w-2 rounded-full border border-sidebar'
-                        )}
-                      />
-                    )}
-                  </div>
+                  <UserAvatarWithStatus user={user} className="w-6 h-6" />
                   <span>{dm.name}</span>
                 </SidebarMenuButton>
                 <SidebarMenuAction
