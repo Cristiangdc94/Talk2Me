@@ -2,7 +2,17 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Hash, Lock, Plus, User, Phone, Home } from "lucide-react";
+import {
+  Hash,
+  Lock,
+  Plus,
+  User,
+  Phone,
+  Newspaper,
+  Users,
+  Briefcase,
+  Search,
+} from "lucide-react";
 
 import {
   SidebarGroup,
@@ -35,19 +45,54 @@ export function SidebarNav() {
 
   return (
     <div className="flex flex-col gap-2">
-      <CreateChannelDialog open={isCreateChannelOpen} onOpenChange={setCreateChannelOpen} />
+      <CreateChannelDialog
+        open={isCreateChannelOpen}
+        onOpenChange={setCreateChannelOpen}
+      />
 
       <SidebarGroup>
         <SidebarMenu>
           <SidebarMenuItem>
+            <SidebarMenuButton asChild isActive={pathname === "/"} tooltip="Noticias">
+              <Link href="/">
+                <Newspaper />
+                <span>Noticias</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              isActive={pathname === "/"}
-              tooltip="Inicio"
+              isActive={pathname === "/friends"}
+              tooltip="Amigos"
             >
-              <Link href="/">
-                <Home />
-                <span>Inicio</span>
+              <Link href="/friends">
+                <Users />
+                <span>Amigos</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={pathname === "/coworkers"}
+              tooltip="Compañeros"
+            >
+              <Link href="/coworkers">
+                <Briefcase />
+                <span>Compañeros</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={pathname === "/add-contact"}
+              tooltip="Buscar"
+            >
+              <Link href="/add-contact">
+                <Search />
+                <span>Buscar</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -55,9 +100,11 @@ export function SidebarNav() {
       </SidebarGroup>
 
       <SidebarSeparator />
-      
+
       <SidebarGroup>
-        <SidebarGroupLabel className="font-headline text-xl">Canales</SidebarGroupLabel>
+        <SidebarGroupLabel className="font-headline text-xl">
+          Canales
+        </SidebarGroupLabel>
         <SidebarGroupAction asChild>
           <button onClick={() => setCreateChannelOpen(true)}>
             <Plus />
@@ -73,7 +120,7 @@ export function SidebarNav() {
                 tooltip={channel.name}
               >
                 <Link href={`/channel/${channel.id}`}>
-                  {channel.type === 'private' ? <Lock /> : <Hash />}
+                  {channel.type === "private" ? <Lock /> : <Hash />}
                   <span>{channel.name}</span>
                 </Link>
               </SidebarMenuButton>
@@ -85,9 +132,11 @@ export function SidebarNav() {
       <SidebarSeparator />
 
       <SidebarGroup>
-        <SidebarGroupLabel className="font-headline text-xl">Mensajes Directos</SidebarGroupLabel>
+        <SidebarGroupLabel className="font-headline text-xl">
+          Mensajes Directos
+        </SidebarGroupLabel>
         <SidebarGroupAction asChild>
-           {/* For now, this will also open the create channel dialog as a placeholder */}
+          {/* For now, this will also open the create channel dialog as a placeholder */}
           <button onClick={() => setCreateChannelOpen(true)}>
             <Plus />
             <span className="sr-only">Nuevo Mensaje</span>
@@ -96,16 +145,16 @@ export function SidebarNav() {
         <SidebarMenu>
           {directMessages.map((dm) => (
             <SidebarMenuItem key={dm.id}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname === `/dm/${dm.id}`}
-                  tooltip={dm.name}
-                >
-                  <Link href={`/dm/${dm.id}`}>
-                    <User />
-                    <span>{dm.name}</span>
-                  </Link>
-                </SidebarMenuButton>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === `/dm/${dm.id}`}
+                tooltip={dm.name}
+              >
+                <Link href={`/dm/${dm.id}`}>
+                  <User />
+                  <span>{dm.name}</span>
+                </Link>
+              </SidebarMenuButton>
               <SidebarMenuAction
                 onClick={(e) => handleCall(e, dm.name)}
                 aria-label={`Llamar a ${dm.name}`}
