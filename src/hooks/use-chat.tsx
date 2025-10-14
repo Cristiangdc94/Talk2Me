@@ -3,8 +3,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
-import type { Message } from "@/lib/types";
-import { channels, directMessages, users } from "@/lib/mock-data";
+import type { Message, DirectMessage } from "@/lib/types";
+import { channels, directMessages as initialDirectMessages, users } from "@/lib/mock-data";
 import { Hash, Lock } from "lucide-react";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 
@@ -21,16 +21,23 @@ interface ChatContextType {
   openChat: (id: string) => void;
   closeChat: () => void;
   activeChatId: string | null;
-  directMessages: typeof directMessages;
+  directMessages: DirectMessage[];
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
+  const [directMessages, setDirectMessages] = useState<DirectMessage[]>(initialDirectMessages);
 
   const openChat = useCallback((id: string) => {
     setActiveChatId(id);
+    // When a chat is opened, mark its messages as read
+    setDirectMessages(prevDms =>
+      prevDms.map(dm =>
+        dm.id === id ? { ...dm, unreadCount: 0 } : dm
+      )
+    );
   }, []);
 
   const closeChat = useCallback(() => {
@@ -69,7 +76,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     }
     
     return null;
-  }, [activeChatId]);
+  }, [activeChatId, directMessages]);
 
 
   return (
