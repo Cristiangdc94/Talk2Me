@@ -58,6 +58,7 @@ export interface CompanyNewsArticle {
   imageUrl: string;
   link: string;
   timestamp: string;
+  likes?: string[];
 }
 
 export interface FriendStatus {

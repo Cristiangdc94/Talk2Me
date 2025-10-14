@@ -165,10 +165,10 @@ export const newsArticles: NewsArticle[] = [
 ];
 
 export const companyNews: CompanyNewsArticle[] = [
-  { id: 'cn1', companyName: 'InnovateCorp', title: 'InnovateCorp Lanza su Nuevo Producto "QuantumConnect"', summary: 'Nuestro equipo ha trabajado incansablemente para lanzar esta nueva plataforma que revolucionará la comunicación empresarial.', imageUrl: findImage('news-1'), link: '#', timestamp: 'hace 1 día' },
-  { id: 'cn2', companyName: 'DataSolutions', title: 'Resultados Financieros del Tercer Trimestre de DataSolutions', summary: 'Un crecimiento récord impulsado por nuestras soluciones de análisis de datos de vanguardia.', imageUrl: findImage('news-2'), link: '#', timestamp: 'hace 3 días' },
-  { id: 'cn3', companyName: 'InnovateCorp', title: 'Anuncio del Hackathon Interno de InnovateCorp', summary: 'Prepara tus ideas más innovadoras para nuestro hackathon anual. ¡Habrá grandes premios!', imageUrl: findImage('news-4'), link: '#', timestamp: 'hace 5 días' },
-  { id: 'cn4', companyName: 'QuantumLeap', title: 'QuantumLeap se Asocia con una Importante Empresa Tecnológica', summary: 'Esta alianza estratégica nos permitirá acelerar nuestra investigación en computación cuántica.', imageUrl: findImage('news-5'), link: '#', timestamp: 'hace 1 semana' },
+  { id: 'cn1', companyName: 'InnovateCorp', title: 'InnovateCorp Lanza su Nuevo Producto "QuantumConnect"', summary: 'Nuestro equipo ha trabajado incansablemente para lanzar esta nueva plataforma que revolucionará la comunicación empresarial.', imageUrl: findImage('news-1'), link: '#', timestamp: 'hace 1 día', likes: ['2', '4', '15'] },
+  { id: 'cn2', companyName: 'DataSolutions', title: 'Resultados Financieros del Tercer Trimestre de DataSolutions', summary: 'Un crecimiento récord impulsado por nuestras soluciones de análisis de datos de vanguardia.', imageUrl: findImage('news-2'), link: '#', timestamp: 'hace 3 días', likes: ['6', '16', '18', '1'] },
+  { id: 'cn3', companyName: 'InnovateCorp', title: 'Anuncio del Hackathon Interno de InnovateCorp', summary: 'Prepara tus ideas más innovadoras para nuestro hackathon anual. ¡Habrá grandes premios!', imageUrl: findImage('news-4'), link: '#', timestamp: 'hace 5 días', likes: ['3'] },
+  { id: 'cn4', companyName: 'QuantumLeap', title: 'QuantumLeap se Asocia con una Importante Empresa Tecnológica', summary: 'Esta alianza estratégica nos permitirá acelerar nuestra investigación en computación cuántica.', imageUrl: findImage('news-5'), link: '#', timestamp: 'hace 1 semana', likes: ['17', '19', '21', '2', '5'] },
 ];
 
 export const notifications: Notification[] = [
