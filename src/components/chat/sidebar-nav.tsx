@@ -142,7 +142,7 @@ export function SidebarNav() {
         </SidebarMenu>
       </SidebarGroup>
 
-      <SidebarSeparator className="h-0.5" />
+      <SidebarSeparator />
 
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">
@@ -170,7 +170,7 @@ export function SidebarNav() {
         </SidebarMenu>
       </SidebarGroup>
 
-      <SidebarSeparator className="h-0.5" />
+      <SidebarSeparator />
 
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">
