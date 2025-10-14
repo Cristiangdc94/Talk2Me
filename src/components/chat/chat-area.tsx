@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -26,6 +27,7 @@ interface ChatAreaProps {
   initialMessages: Message[];
   currentUser: User;
   chatType: "channel" | "dm";
+  showHead?: boolean;
 }
 
 export function ChatArea({
@@ -35,6 +37,7 @@ export function ChatArea({
   initialMessages,
   currentUser,
   chatType,
+  showHead = true,
 }: ChatAreaProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const { toast } = useToast();
@@ -86,35 +89,37 @@ export function ChatArea({
 
   return (
     <div className="flex flex-col h-full">
-      <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
-        {chatType === "dm" && (
-           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="h-5 w-5" />
-                <span className="sr-only">Más opciones</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuItem onClick={() => handleMenuAction('Detalles')}>
-                <Info className="mr-2 h-4 w-4" />
-                <span>Detalles</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleMenuAction('Bloquear')} className="text-destructive">
-                <Ban className="mr-2 h-4 w-4" />
-                <span>Bloquear</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleMenuAction('Eliminar')} className="text-destructive">
-                <Trash2 className="mr-2 h-4 w-4" />
-                <span>Eliminar</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
-        {icon}
-        <h2 className="text-xl font-headline font-semibold">{title}</h2>
-        <div className="flex-1" />
-      </header>
+      {showHead && (
+        <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
+          {chatType === "dm" && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <MoreVertical className="h-5 w-5" />
+                  <span className="sr-only">Más opciones</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem onClick={() => handleMenuAction('Detalles')}>
+                  <Info className="mr-2 h-4 w-4" />
+                  <span>Detalles</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleMenuAction('Bloquear')} className="text-destructive">
+                  <Ban className="mr-2 h-4 w-4" />
+                  <span>Bloquear</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleMenuAction('Eliminar')} className="text-destructive">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  <span>Eliminar</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          {icon}
+          <h2 className="text-xl font-headline font-semibold">{title}</h2>
+          <div className="flex-1" />
+        </header>
+      )}
 
       <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
           <div className="p-4">

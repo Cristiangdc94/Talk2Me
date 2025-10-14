@@ -64,13 +64,17 @@ function ChatWidget() {
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (widgetRef.current) {
-      setIsDragging(true);
       const widgetRect = widgetRef.current.getBoundingClientRect();
+      const initialLeft = widgetRect.left + window.scrollX;
+      const initialTop = widgetRect.top + window.scrollY;
+
       dragOffset.current = {
-        x: e.clientX - (widgetRect.left + position.x),
-        y: e.clientY - (widgetRect.top + position.y),
+        x: e.clientX - initialLeft,
+        y: e.clientY - initialTop,
       };
-      e.preventDefault(); // Prevent text selection while dragging
+      
+      setIsDragging(true);
+      e.preventDefault(); 
     }
   };
 
@@ -79,26 +83,29 @@ function ChatWidget() {
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - dragOffset.current.x,
-        y: e.clientY - dragOffset.current.y,
-      });
+    if (isDragging && widgetRef.current) {
+      const parentRect = widgetRef.current.parentElement?.getBoundingClientRect();
+      if(parentRect) {
+        const newX = e.clientX - dragOffset.current.x - parentRect.left;
+        const newY = e.clientY - dragOffset.current.y - parentRect.top;
+        setPosition({ x: newX, y: newY });
+      }
     }
   };
+  
 
   useEffect(() => {
     if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
     } else {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     }
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging]);
 
@@ -110,7 +117,11 @@ function ChatWidget() {
     <div 
       ref={widgetRef}
       className="fixed bottom-8 right-[calc(8rem+2rem)] z-50"
-      style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+      style={{ 
+        transform: `translate(${position.x}px, ${position.y}px)`, 
+        left: 'auto', 
+        top: 'auto'
+      }}
     >
        <Card className="w-96 h-[32rem] flex flex-col shadow-2xl">
         <CardHeader 
@@ -135,6 +146,7 @@ function ChatWidget() {
             initialMessages={activeChat.messages}
             currentUser={users[0]}
             chatType={activeChat.type}
+            showHead={false}
           />
         </CardContent>
       </Card>
