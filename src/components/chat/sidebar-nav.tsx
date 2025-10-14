@@ -37,16 +37,11 @@ export function SidebarNav() {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const [isNewsSectionOpen, setIsNewsSectionOpen] = useState(false);
-  const [isChatSectionOpen, setIsChatSectionOpen] = useState(true);
 
   useEffect(() => {
     setIsMounted(true);
     const isNewsActive = pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news");
     setIsNewsSectionOpen(isNewsActive);
-
-    const isChatActive = pathname.startsWith("/channel") || pathname.startsWith("/dm");
-    setIsChatSectionOpen(isChatActive);
-
   }, [pathname]);
 
 
@@ -137,19 +132,12 @@ export function SidebarNav() {
 
       <SidebarSeparator />
       
-      <Collapsible open={isChatSectionOpen} onOpenChange={setIsChatSectionOpen}>
-        <SidebarGroup>
-            <CollapsibleTrigger className="w-full">
-                 <SidebarGroupLabel className="font-headline text-xl justify-between">
-                    Chats
-                    <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
-                </SidebarGroupLabel>
-            </CollapsibleTrigger>
-        </SidebarGroup>
-         <CollapsibleContent>
-            <ChatSidebar />
-        </CollapsibleContent>
-      </Collapsible>
+      <SidebarGroup>
+        <SidebarGroupLabel className="font-headline text-xl">
+          Chats
+        </SidebarGroupLabel>
+      </SidebarGroup>
+      <ChatSidebar />
 
     </div>
   );
