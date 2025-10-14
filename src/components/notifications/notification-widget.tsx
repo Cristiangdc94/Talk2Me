@@ -16,15 +16,20 @@ export function NotificationWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const widgetRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
 
   const notificationCount = mockNotifications.length;
+  
+  useEffect(() => {
+    isDraggingRef.current = isDragging;
+  }, [isDragging]);
 
   useEffect(() => {
     // Set initial position only on the client-side
     setPosition({ x: window.innerWidth - 100, y: window.innerHeight - 100 });
-
+    
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
+      if (!isDraggingRef.current) return;
       e.preventDefault();
       setPosition({
         x: e.clientX - dragStartPos.current.x,
@@ -33,26 +38,19 @@ export function NotificationWidget() {
     };
 
     const handleMouseUp = () => {
+      if (!isDraggingRef.current) return;
       setIsDragging(false);
       document.body.style.cursor = 'default';
     };
-    
-    const handleMouseLeave = () => {
-      setIsDragging(false);
-       document.body.style.cursor = 'default';
-    }
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-    document.body.addEventListener('mouseleave', handleMouseLeave);
-
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
-      document.body.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [isDragging]);
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (widgetRef.current) {
