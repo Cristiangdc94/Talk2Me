@@ -233,9 +233,7 @@ export function SidebarNav() {
           </PopoverTrigger>
         </NewMessagePopover>
         <SidebarMenu>
-           {!isMounted
-            ? Array.from({ length: 4 }).map((_, i) => <SidebarMenuSkeleton key={i} showIcon />)
-            : directMessages.map((dm) => {
+          {directMessages.map((dm) => {
               const user = users.find((u) => u.id === dm.userId);
               if (!user) return null;
               const statusColor = {
