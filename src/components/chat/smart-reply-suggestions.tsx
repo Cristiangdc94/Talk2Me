@@ -5,8 +5,9 @@ import React, { useState, useEffect, useTransition, useRef } from "react";
 import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getSmartReplySuggestions } from "@/ai/flows/smart-reply-suggestions";
-import type { Message } from "@/lib/types";
+import type { Message, User } from "@/lib/types";
 import { Skeleton } from "../ui/skeleton";
+import { users } from "@/lib/mock-data";
 
 interface SmartReplySuggestionsProps {
   messages: Message[];
@@ -21,6 +22,7 @@ export function SmartReplySuggestions({
   const [isPending, startTransition] = useTransition();
   const [isRateLimited, setRateLimited] = useState(false);
   const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
+  const currentUser = users[0]; // In a real app, this would come from an auth context
 
   useEffect(() => {
     // Cleanup timer on unmount
@@ -32,7 +34,13 @@ export function SmartReplySuggestions({
   }, []);
   
   useEffect(() => {
-    if (messages.length > 0 && !isRateLimited) {
+    const lastMessage = messages[messages.length - 1];
+    const shouldFetchSuggestions = 
+      messages.length > 0 && 
+      !isRateLimited &&
+      lastMessage?.user.id !== currentUser.id;
+
+    if (shouldFetchSuggestions) {
       startTransition(async () => {
         try {
           // Format the last 3 messages for context
@@ -60,16 +68,14 @@ export function SmartReplySuggestions({
           }
         }
       });
-    } else if (isRateLimited) {
-      setSuggestions([]);
-    } else {
+    } else if (!shouldFetchSuggestions) {
       setSuggestions([]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages, isRateLimited]);
+  }, [messages, isRateLimited, currentUser.id]);
   
-  if (isRateLimited) {
-      return null; // Don't show anything if we are rate limited
+  if (isRateLimited && suggestions.length === 0) {
+      return null; // Don't show anything if we are rate limited and have no suggestions
   }
 
   if (isPending) {
