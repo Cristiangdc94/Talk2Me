@@ -175,7 +175,7 @@ export function SidebarNav() {
         <SidebarGroupLabel className="font-headline text-xl">
           Mensajes Directos
         </SidebarGroupLabel>
-        <SidebarGroupAction asChild>
+        <SidebarGroupAction>
           <NewMessagePopover />
         </SidebarGroupAction>
         <SidebarMenu>
