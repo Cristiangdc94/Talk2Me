@@ -166,7 +166,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
 
       <div className='space-y-8'>
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight mb-4">Opiniones de tus amigos</h2>
+          <h2 className="text-2xl font-semibold tracking-tight mb-4">Lo nuevo entre tus amigos</h2>
             <Carousel
             opts={{
               align: "start",
