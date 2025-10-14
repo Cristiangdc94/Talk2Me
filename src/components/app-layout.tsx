@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   SidebarProvider,
@@ -27,6 +28,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </h1>
           </div>
         </SidebarHeader>
+        <SidebarSeparator />
         <SidebarContent>
           <SidebarNav />
         </SidebarContent>
