@@ -59,7 +59,9 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const staggerOffset = index * 40;
-      const defaultX = 50 + staggerOffset; 
+      // Position relative to the main content area (approximated)
+      const sidebarWidth = 256; 
+      const defaultX = sidebarWidth + 50 + staggerOffset; 
       const defaultY = 100 + staggerOffset;
       setPosition({ x: defaultX, y: defaultY });
     }
@@ -178,7 +180,7 @@ function MinimizedChatBar() {
   }
 
   return (
-    <div className="absolute bottom-0 z-40 p-2 flex justify-center items-end gap-2 w-full">
+    <div className="fixed bottom-0 left-0 right-0 z-40 p-2 flex justify-center items-end gap-2">
       {minimizedChats.map(chat => (
         <Button
           key={chat.id}
@@ -230,7 +232,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       </SidebarContent>
                     </Sidebar>
                   </div>
-                  <div className="relative flex-1">
+                  <div className="flex-1">
                     <main className="flex-1 flex flex-col bg-background rounded-r-xl main-content-fade h-full">
                        <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:hidden">
                          <SidebarTrigger />
@@ -239,11 +241,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         {children}
                       </div>
                     </main>
-                    <ChatManager />
-                    <MinimizedChatBar />
-                    <NotificationWidget />
                   </div>
                 </div>
+                 {/* Chat widgets and notifications are now outside the main scrollable area */}
+                <ChatManager />
+                <MinimizedChatBar />
+                <NotificationWidget />
               </SidebarProvider>
             </div>
           )}
