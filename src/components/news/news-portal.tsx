@@ -118,15 +118,11 @@ export function NewsPortal() {
         currentPreferences={preferences}
       />
       <Tabs defaultValue="general" className="h-full flex flex-col">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-center mb-4">
           <TabsList className="p-1.5 bg-card">
             <TabsTrigger value="general" className="text-base px-4 py-2">Noticias Generales</TabsTrigger>
             <TabsTrigger value="foryou" className="text-base px-4 py-2">Para Ti</TabsTrigger>
           </TabsList>
-          <Button variant="outline" size="sm" onClick={() => setDialogOpen(true)}>
-            <Settings className="mr-2 h-4 w-4" />
-            Configurar
-          </Button>
         </div>
         <TabsContent value="general" className="flex-1">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
