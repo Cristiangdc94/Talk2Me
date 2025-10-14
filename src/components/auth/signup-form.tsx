@@ -70,7 +70,7 @@ export function SignupForm() {
       <CardHeader className="text-center">
         <div className="flex justify-center items-center gap-2 mb-4">
           <AppLogo className="h-8 w-8 text-primary" />
-          <CardTitle className="font-headline text-3xl">Talk2Me</CardTitle>
+          <CardTitle className="font-logo text-4xl">Talk2Me</CardTitle>
         </div>
         <CardDescription>Crea tu cuenta para empezar a chatear</CardDescription>
       </CardHeader>
