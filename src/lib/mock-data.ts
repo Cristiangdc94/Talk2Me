@@ -19,10 +19,10 @@ export const users: User[] = [
     } 
   },
   { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend', email: 'alice@example.com' },
-  { id: '3', name: 'Bob', avatarUrl: findImage('avatar-3'), status: 'busy', lastSeen: 'En una reunión', relationship: 'coworker', email: 'bob@example.com', company: 'InnovateCorp' },
-  { id: '4', name: 'Carlos', avatarUrl: findImage('avatar-4'), status: 'online', relationship: 'coworker', email: 'carlos@example.com', company: 'InnovateCorp' },
+  { id: '3', name: 'Bob', avatarUrl: findImage('avatar-3'), status: 'busy', lastSeen: 'En una reunión', relationship: 'coworker', email: 'bob@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': 'Jefe de proyecto' } },
+  { id: '4', name: 'Carlos', avatarUrl: findImage('avatar-4'), status: 'online', relationship: 'coworker', email: 'carlos@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': 'Empleado' } },
   { id: '5', name: 'Diana', avatarUrl: findImage('avatar-5'), status: 'offline', lastSeen: 'ayer', relationship: 'friend', email: 'diana@example.com' },
-  { id: '6', name: 'Eva', avatarUrl: findImage('avatar-6'), status: 'online', email: 'eva@example.com', relationship: 'coworker', company: 'DataSolutions' },
+  { id: '6', name: 'Eva', avatarUrl: findImage('avatar-6'), status: 'online', email: 'eva@example.com', relationship: 'coworker', company: 'DataSolutions', companyRoles: { 'DataSolutions': 'Jefe de proyecto' } },
   { id: '7', name: 'admin', avatarUrl: findImage('avatar-1'), status: 'online', role: 'admin', email: 'admin@example.com' },
   // New Friends
   { id: '8', name: 'Frank', avatarUrl: findImage('avatar-7'), status: 'online', relationship: 'friend', email: 'frank@example.com' },
@@ -33,13 +33,13 @@ export const users: User[] = [
   { id: '13', name: 'Mallory', avatarUrl: findImage('avatar-12'), status: 'online', relationship: 'friend', email: 'mallory@example.com' },
   { id: '14', name: 'Niaj', avatarUrl: findImage('avatar-13'), status: 'busy', lastSeen: 'Concentrado', relationship: 'friend', email: 'niaj@example.com' },
   // New Coworkers
-  { id: '15', name: 'Oscar', avatarUrl: findImage('avatar-14'), status: 'online', relationship: 'coworker', email: 'oscar@example.com', company: 'InnovateCorp' },
-  { id: '16', name: 'Peggy', avatarUrl: findImage('avatar-15'), status: 'offline', lastSeen: 'ayer', relationship: 'coworker', email: 'peggy@example.com', company: 'DataSolutions' },
-  { id: '17', name: 'Quentin', avatarUrl: findImage('avatar-16'), status: 'online', relationship: 'coworker', email: 'quentin@example.com', company: 'QuantumLeap' },
-  { id: '18', name: 'Rupert', avatarUrl: findImage('avatar-17'), status: 'busy', lastSeen: 'Presentando', relationship: 'coworker', email: 'rupert@example.com', company: 'DataSolutions' },
-  { id: '19', name: 'Sybil', avatarUrl: findImage('avatar-18'), status: 'online', relationship: 'coworker', email: 'sybil@example.com', company: 'QuantumLeap' },
-  { id: '20', name: 'Trent', avatarUrl: findImage('avatar-19'), status: 'offline', lastSeen: 'hace 3 horas', relationship: 'coworker', email: 'trent@example.com', company: 'InnovateCorp' },
-  { id: '21', name: 'Ursula', avatarUrl: findImage('avatar-20'), status: 'online', relationship: 'coworker', email: 'ursula@example.com', company: 'QuantumLeap' },
+  { id: '15', name: 'Oscar', avatarUrl: findImage('avatar-14'), status: 'online', relationship: 'coworker', email: 'oscar@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': 'Empleado' } },
+  { id: '16', name: 'Peggy', avatarUrl: findImage('avatar-15'), status: 'offline', lastSeen: 'ayer', relationship: 'coworker', email: 'peggy@example.com', company: 'DataSolutions', companyRoles: { 'DataSolutions': 'Empleado' } },
+  { id: '17', name: 'Quentin', avatarUrl: findImage('avatar-16'), status: 'online', relationship: 'coworker', email: 'quentin@example.com', company: 'QuantumLeap', companyRoles: { 'QuantumLeap': 'Administrador' } },
+  { id: '18', name: 'Rupert', avatarUrl: findImage('avatar-17'), status: 'busy', lastSeen: 'Presentando', relationship: 'coworker', email: 'rupert@example.com', company: 'DataSolutions', companyRoles: { 'DataSolutions': 'Empleado' } },
+  { id: '19', name: 'Sybil', avatarUrl: findImage('avatar-18'), status: 'online', relationship: 'coworker', email: 'sybil@example.com', company: 'QuantumLeap', companyRoles: { 'QuantumLeap': 'Empleado' } },
+  { id: '20', name: 'Trent', avatarUrl: findImage('avatar-19'), status: 'offline', lastSeen: 'hace 3 horas', relationship: 'coworker', email: 'trent@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': 'Miembro' } },
+  { id: '21', name: 'Ursula', avatarUrl: findImage('avatar-20'), status: 'online', relationship: 'coworker', email: 'ursula@example.com', company: 'QuantumLeap', companyRoles: { 'QuantumLeap': 'Miembro' } },
   { id: '22', name: 'Victor', avatarUrl: findImage('avatar-21'), status: 'busy', lastSeen: 'Almorzando', relationship: 'coworker', email: 'victor@example.com' }
 ];
 

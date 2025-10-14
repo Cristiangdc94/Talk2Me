@@ -4,12 +4,15 @@
 import { useState, useEffect } from 'react';
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User, CompanyRole } from "@/lib/types";
-import { Plus, Tag } from 'lucide-react';
+import { Plus, Tag, MoreVertical, Settings, UserPlus, MessageSquare, Trash2, LogOut, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
 import { users } from '@/lib/mock-data';
 import { Separator } from '../ui/separator';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { Button } from '../ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface CoworkersListProps {
   initialGroupedUsers: Record<string, User[]>;
@@ -36,6 +39,9 @@ export function CoworkersList({
   const [isCreateGroupOpen, setCreateGroupOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(users.find(u => u.id === '1'));
   const [isMounted, setIsMounted] = useState(false);
+  const { toast } = useToast();
+
+  const privilegedRoles: CompanyRole[] = ['Administrador', 'CEO', 'Jefe de proyecto'];
 
   useEffect(() => {
     setIsMounted(true);
@@ -51,11 +57,9 @@ export function CoworkersList({
             ...prev,
             [companyName]: []
         }));
-        // Set creator as administrator
         setCurrentUser(prevUser => {
             if (!prevUser) return prevUser;
             const newRoles = { ...prevUser.companyRoles, [companyName]: 'Administrador' as const };
-            // This is a mock update. In a real app, you'd save this to your backend.
             console.log(`User ${prevUser.name} is now Administrator of ${companyName}`);
             return { ...prevUser, companyRoles: newRoles };
         });
@@ -64,7 +68,7 @@ export function CoworkersList({
   };
   
   if (!isMounted) {
-    return null; // Or a loading spinner
+    return null;
   }
 
   return (
@@ -78,9 +82,53 @@ export function CoworkersList({
             <div className="flex gap-6 h-full">
             {Object.entries(groupedUsers).map(([company, users]) => {
                 const currentUserRole = currentUser?.companyRoles?.[company];
+                const isPrivileged = currentUserRole && privilegedRoles.includes(currentUserRole);
+
                 return (
                     <div key={company} className="w-[320px] shrink-0 h-full">
-                        <Card className="h-full flex flex-col bg-muted/50">
+                        <Card className="h-full flex flex-col bg-muted/50 relative group/card">
+                             <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="absolute top-3 right-3 h-7 w-7">
+                                        <MoreVertical className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    {isPrivileged ? (
+                                        <>
+                                            <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
+                                                <Settings className="mr-2 h-4 w-4" />
+                                                <span>Gestionar Grupo</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
+                                                <UserPlus className="mr-2 h-4 w-4" />
+                                                <span>Invitar gente</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
+                                                <MessageSquare className="mr-2 h-4 w-4" />
+                                                <span>Mensaje general</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem className="text-destructive" onClick={() => toast({variant: 'destructive', title: "Grupo eliminado"})}>
+                                                <Trash2 className="mr-2 h-4 w-4" />
+                                                <span>Eliminar Grupo</span>
+                                            </DropdownMenuItem>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
+                                                <Info className="mr-2 h-4 w-4" />
+                                                <span>Ver detalles</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => toast({title: "Has abandonado el grupo"})}>
+                                                <LogOut className="mr-2 h-4 w-4" />
+                                                <span>Abandonar el grupo</span>
+                                            </DropdownMenuItem>
+                                        </>
+                                    )}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+
                             <CardHeader>
                                 <CardTitle className='font-bold text-lg'>{company}</CardTitle>
                                 <CardDescription className='text-sm text-muted-foreground'>Descripción del grupo de la empresa.</CardDescription>
@@ -103,7 +151,7 @@ export function CoworkersList({
                                             ))
                                         ) : (
                                             <div className="text-center py-4 text-sm text-muted-foreground h-24 flex items-center justify-center">
-                                                No hay compañeros en este grupo.
+                                               No hay compañeros en este grupo.
                                             </div>
                                         )}
                                     </div>
