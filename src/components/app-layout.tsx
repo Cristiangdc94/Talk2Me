@@ -89,8 +89,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <NotificationWidget />
                   </div>
                 </div>
-                <ChatDialog />
               </SidebarProvider>
+              <ChatDialog />
             </div>
           )}
         </ChatProvider>
