@@ -1,6 +1,6 @@
 
 
-export type CompanyRole = 'Trabajador' | 'Partner' | 'Jefe de Proyecto';
+export type CompanyRole = 'Trabajador' | 'Partner' | 'Administrador';
 
 export interface User {
   id: string;

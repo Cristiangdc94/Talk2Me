@@ -3,10 +3,9 @@
 
 import { useState, useEffect } from 'react';
 import { UserListCard } from "@/components/chat/user-list-card";
-import { User, CompanyRole } from "@/lib/types";
+import { User } from "@/lib/types";
 import { Plus, Tag } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
 import { users } from '@/lib/mock-data';
@@ -35,7 +34,7 @@ export function CoworkersList({
 }: CoworkersListProps) {
   const [groupedUsers, setGroupedUsers] = useState(initialGroupedUsers);
   const [isCreateGroupOpen, setCreateGroupOpen] = useState(false);
-  const currentUser = users.find(u => u.id === '1');
+  const [currentUser, setCurrentUser] = useState(users.find(u => u.id === '1'));
 
   useEffect(() => {
     setGroupedUsers(initialGroupedUsers);
@@ -47,6 +46,14 @@ export function CoworkersList({
             ...prev,
             [companyName]: []
         }));
+        // Set creator as administrator
+        setCurrentUser(prevUser => {
+            if (!prevUser) return prevUser;
+            const newRoles = { ...prevUser.companyRoles, [companyName]: 'Administrador' as const };
+            // This is a mock update. In a real app, you'd save this to your backend.
+            console.log(`User ${prevUser.name} is now Administrator of ${companyName}`);
+            return { ...prevUser, companyRoles: newRoles };
+        });
     }
     setCreateGroupOpen(false);
   };
