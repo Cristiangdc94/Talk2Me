@@ -6,11 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
-  Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
@@ -42,7 +39,7 @@ import { User } from "@/lib/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { notFound, useRouter, useParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
@@ -118,10 +115,10 @@ export default function ManageCompanyGroupPage() {
   return (
     <Card className="w-full h-full max-w-4xl mx-auto my-6">
         <CardHeader>
-             <DialogTitle>Gestionar {companyName}</DialogTitle>
-            <DialogDescription>
+             <CardTitle>Gestionar {companyName}</CardTitle>
+            <CardDescription>
                 Actualiza los detalles del grupo y gestiona a sus miembros.
-            </DialogDescription>
+            </CardDescription>
         </CardHeader>
         <CardContent>
             <Form {...form}>
@@ -285,3 +282,5 @@ export default function ManageCompanyGroupPage() {
     </Card>
   );
 }
+
+    
