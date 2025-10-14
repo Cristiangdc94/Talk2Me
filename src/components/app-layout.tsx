@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   SidebarProvider,
@@ -11,7 +12,6 @@ import {
 import { AppLogo } from '@/components/icons';
 import { SidebarNav } from '@/components/chat/sidebar-nav';
 import { UserNav } from '@/components/chat/user-nav';
-import { MainNav } from '@/components/main-nav';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -36,13 +36,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
-          <header className="flex h-14 shrink-0 items-center border-b border-sidebar-border bg-sidebar px-4 text-sidebar-foreground">
-            <SidebarTrigger className="md:hidden" />
-            <div className="flex w-full items-center">
-              <MainNav />
-            </div>
-          </header>
           <main className="flex-1 overflow-auto bg-muted">
+            <SidebarTrigger className="md:hidden absolute top-4 left-4" />
             {children}
           </main>
         </div>
