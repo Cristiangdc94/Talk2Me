@@ -9,8 +9,8 @@ export function AddContactCard() {
     <Link href="/add-contact">
       <Card className="h-full flex flex-col items-center justify-center text-center transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer">
         <CardContent className="p-4 flex flex-col items-center justify-center gap-2">
-          <UserPlus className="h-8 w-8 text-muted-foreground" />
-          <p className="font-semibold">Añadir Contacto</p>
+          <UserPlus className="h-6 w-6 text-muted-foreground" />
+          <p className="font-semibold text-sm">Añadir Contacto</p>
         </CardContent>
       </Card>
     </Link>
