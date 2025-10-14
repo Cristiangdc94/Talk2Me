@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -9,7 +10,7 @@ import { notifications as mockNotifications } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
 export function NotificationWidget() {
-  const [position, setPosition] = useState({ x: window.innerWidth - 100, y: window.innerHeight - 100 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
@@ -18,6 +19,9 @@ export function NotificationWidget() {
   const notificationCount = mockNotifications.length;
 
   useEffect(() => {
+    // Set initial position only on the client-side
+    setPosition({ x: window.innerWidth - 100, y: window.innerHeight - 100 });
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
       e.preventDefault();

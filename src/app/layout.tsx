@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
-import { LayoutProvider } from "@/components/layout-provider";
+import { AppLayout } from "@/components/app-layout";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,8 +31,8 @@ export default function RootLayout({
           rel="stylesheet" 
         />
       </head>
-      <body className="font-body antialiased text-sm h-full bg-sidebar">
-        <LayoutProvider>{children}</LayoutProvider>
+      <body className="font-body antialiased text-sm min-h-screen bg-sidebar p-4">
+        <AppLayout>{children}</AppLayout>
         <Toaster />
       </body>
     </html>
