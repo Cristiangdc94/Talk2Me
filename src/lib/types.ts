@@ -4,6 +4,7 @@ export interface User {
   avatarUrl: string;
   status: 'online' | 'offline';
   lastSeen?: string;
+  role?: 'admin';
 }
 
 export interface Message {

@@ -46,20 +46,25 @@ export function LoginForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Simulate Firebase login
-    console.log("Simulating login with:", values);
-    toast({
-      title: "Login Successful",
-      description: "Welcome back! Redirecting you now...",
-    });
+    if (values.email === 'admin@example.com' && values.password === 'adminadmin') {
+      console.log('Admin login successful');
+      toast({
+        title: 'Admin Login Successful',
+        description: 'Welcome back, admin! Redirecting you now...',
+      });
+      Cookies.set('auth_token', 'mock_admin_token_for_demo', {expires: 1});
+    } else {
+      console.log('Simulating login with:', values);
+      toast({
+        title: 'Login Successful',
+        description: 'Welcome back! Redirecting you now...',
+      });
+      Cookies.set('auth_token', 'mock_user_token_for_demo', {expires: 1});
+    }
 
-    // Simulate setting an auth token
-    Cookies.set("auth_token", "mock_user_token_for_demo", { expires: 1 });
-    
-    // Redirect to the main app page after a short delay
     setTimeout(() => {
-      router.push("/");
-      router.refresh(); // Refresh to re-evaluate middleware and layout
+      router.push('/');
+      router.refresh();
     }, 1000);
   }
 

@@ -10,6 +10,7 @@ export const users: User[] = [
   { id: '4', name: 'Charlie', avatarUrl: findImage('avatar-4'), status: 'online' },
   { id: '5', name: 'Diana', avatarUrl: findImage('avatar-5'), status: 'offline', lastSeen: 'yesterday' },
   { id: '6', name: 'Eve', avatarUrl: findImage('avatar-6'), status: 'online' },
+  { id: '7', name: 'admin', avatarUrl: findImage('avatar-1'), status: 'online', role: 'admin' },
 ];
 
 export const channels: Channel[] = [
