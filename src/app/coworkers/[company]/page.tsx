@@ -43,7 +43,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { notFound, useRouter } from "next/navigation";
+import { notFound, useRouter, useParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -58,10 +58,11 @@ const formSchema = z.object({
 });
 
 
-export default function ManageCompanyGroupPage({ params }: { params: { company: string } }) {
+export default function ManageCompanyGroupPage() {
   const router = useRouter();
+  const params = useParams();
   const { toast } = useToast();
-  const companyName = decodeURIComponent(params.company);
+  const companyName = decodeURIComponent(params.company as string);
 
   // In a real app, you would fetch this data from an API
   const allMembers = React.useMemo(() => users.filter(u => u.companyRoles && u.companyRoles[companyName]), [companyName]);
