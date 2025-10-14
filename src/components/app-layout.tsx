@@ -37,8 +37,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <UserNav />
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>
-        <header className="flex items-center h-14 px-4 border-b">
+      <div className="flex flex-col h-screen">
+        <header className="flex items-center h-14 px-4 border-b shrink-0">
           <SidebarTrigger className="md:hidden" />
           <div className="flex-1">
             <MainNav />
@@ -46,7 +46,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <HeaderActions />
         </header>
         <main className="flex-1 overflow-auto p-4">{children}</main>
-      </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }
