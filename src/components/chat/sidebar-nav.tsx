@@ -13,17 +13,27 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { channels, directMessages } from "@/lib/mock-data";
+import { CreateChannelDialog } from "./create-channel-dialog";
+import { useState } from "react";
 
 export function SidebarNav() {
   const pathname = usePathname();
+  const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
+  const [isNewMessageOpen, setNewMessageOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-2">
+      <CreateChannelDialog open={isCreateChannelOpen} onOpenChange={setCreateChannelOpen} />
+      {/* A similar dialog can be created for new messages */}
+      {/* <NewMessageDialog open={isNewMessageOpen} onOpenChange={setNewMessageOpen} /> */}
+
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline">Channels</SidebarGroupLabel>
-        <SidebarGroupAction>
-          <Plus />
-          <span className="sr-only">Create Channel</span>
+        <SidebarGroupAction asChild>
+          <button onClick={() => setCreateChannelOpen(true)}>
+            <Plus />
+            <span className="sr-only">Create Channel</span>
+          </button>
         </SidebarGroupAction>
         <SidebarMenu>
           {channels.map((channel) => (
@@ -47,9 +57,12 @@ export function SidebarNav() {
 
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline">Direct Messages</SidebarGroupLabel>
-        <SidebarGroupAction>
-          <Plus />
-          <span className="sr-only">New Message</span>
+        <SidebarGroupAction asChild>
+           {/* For now, this will also open the create channel dialog as a placeholder */}
+          <button onClick={() => setCreateChannelOpen(true)}>
+            <Plus />
+            <span className="sr-only">New Message</span>
+          </button>
         </SidebarGroupAction>
         <SidebarMenu>
           {directMessages.map((dm) => (
