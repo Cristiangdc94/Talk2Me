@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -78,7 +79,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                        <SidebarTrigger />
                     </header>
                     <main className="flex-1 overflow-auto bg-background">
-                      <div className="w-full h-full">
+                      <div className="w-full">
                         {children}
                       </div>
                     </main>
