@@ -57,12 +57,14 @@ export function SidebarNav() {
   const [isNewMessagePopoverOpen, setNewMessagePopoverOpen] = useState(false);
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
   const [isMounted, setIsMounted] = useState(false);
+  const [isNewsSectionOpen, setIsNewsSectionOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    const isNewsActive = pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news");
+    setIsNewsSectionOpen(isNewsActive);
+  }, [pathname]);
 
-  const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news"), [pathname]);
 
   const handleCall = (event: React.MouseEvent, userName: string) => {
     event.preventDefault();
@@ -81,6 +83,36 @@ export function SidebarNav() {
      openChat(dmId);
   }
 
+  if (!isMounted) {
+    return (
+        <div className="flex flex-col gap-2">
+            <SidebarGroup>
+                <SidebarGroupLabel className="font-headline text-xl">Menú</SidebarGroupLabel>
+                <SidebarMenu>
+                    <SidebarMenuSkeleton />
+                    <SidebarMenuSkeleton />
+                    <SidebarMenuSkeleton />
+                </SidebarMenu>
+            </SidebarGroup>
+            <SidebarSeparator />
+            <SidebarGroup>
+                <SidebarGroupLabel className="font-headline text-xl">Canales</SidebarGroupLabel>
+                <SidebarMenu>
+                    {Array.from({ length: 3 }).map((_, i) => <SidebarMenuSkeleton key={i} showIcon />)}
+                </SidebarMenu>
+            </SidebarGroup>
+            <SidebarSeparator />
+            <SidebarGroup>
+                <SidebarGroupLabel className="font-headline text-xl">Mensajes Directos</SidebarGroupLabel>
+                <SidebarMenu>
+                    {Array.from({ length: 4 }).map((_, i) => <SidebarMenuSkeleton key={i} showIcon />)}
+                </SidebarMenu>
+            </SidebarGroup>
+        </div>
+    );
+  }
+
+
   return (
     <div className="flex flex-col gap-2">
       <CreateChannelDialog
@@ -93,11 +125,11 @@ export function SidebarNav() {
           Menú
         </SidebarGroupLabel>
         <SidebarMenu>
-           <Collapsible defaultOpen={isNewsSectionActive}>
+           <Collapsible open={isNewsSectionOpen} onOpenChange={setIsNewsSectionOpen}>
             <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
                     <SidebarMenuButton
-                        isActive={isNewsSectionActive}
+                        isActive={isNewsSectionOpen}
                         className="justify-between"
                         tooltip="Noticias"
                     >
