@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -10,6 +9,7 @@ import {
   Plus,
   Phone,
   X,
+  Search,
 } from 'lucide-react';
 import {
   SidebarGroup,
@@ -91,14 +91,14 @@ export function ChatSidebar() {
 
       <SidebarGroup>
         <SidebarGroupLabel>Mensajes Directos</SidebarGroupLabel>
-        <NewMessagePopover isOpen={isNewMessageOpen} setIsOpen={setNewMessageOpen}>
+         <NewMessagePopover isOpen={isNewMessageOpen} setIsOpen={setNewMessageOpen}>
           <SidebarGroupAction asChild>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="absolute right-3 top-3.5 h-5 w-5 p-0">
-                  <Plus className="h-4 w-4" />
-                  <span className="sr-only">Nuevo Mensaje</span>
-              </Button>
-            </PopoverTrigger>
+            <Button variant="ghost" size="icon" className="absolute right-3 top-3.5 h-5 w-5 p-0" asChild>
+              <Link href="/add-contact">
+                <Plus className="h-4 w-4" />
+                <span className="sr-only">Nuevo Mensaje</span>
+              </Link>
+            </Button>
           </SidebarGroupAction>
         </NewMessagePopover>
         <SidebarMenu>
@@ -108,43 +108,44 @@ export function ChatSidebar() {
             
             return (
               <SidebarMenuItem key={dm.id}>
-                <SidebarMenuButton
-                  onClick={() => openChat(dm.id)}
-                  isActive={activeChatIds.includes(dm.id)}
-                  tooltip={dm.name}
-                  className="group"
-                >
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute left-1"
-                    onClick={(e) => handleRemoveDM(e, dm.id)}
+                <div className="relative group">
+                  <SidebarMenuButton
+                    onClick={() => openChat(dm.id)}
+                    isActive={activeChatIds.includes(dm.id)}
+                    tooltip={dm.name}
                   >
-                    <X className="h-4 w-4" />
-                  </Button>
-                  <div className="flex items-center gap-2 overflow-hidden w-full pl-6">
-                    <UserAvatarWithStatus user={user} className="w-6 h-6" />
-                    <span className='truncate'>
-                      {dm.name}
-                    </span>
-                    {dm.unreadCount > 0 && (
-                      <Badge
-                        variant="destructive"
-                        className="h-5 min-w-[1.25rem] justify-center text-xs ml-auto"
-                      >
-                        {dm.unreadCount > 9 ? '+9' : dm.unreadCount}
-                      </Badge>
-                    )}
-                  </div>
-                </SidebarMenuButton>
-                {user.status !== 'offline' && (
-                  <SidebarMenuAction
-                    onClick={(e) => handleCall(e, dm.name)}
-                    aria-label={`Llamar a ${dm.name}`}
-                  >
-                    <Phone />
-                  </SidebarMenuAction>
-                )}
+                    <div className="flex items-center gap-2 overflow-hidden w-full pl-6">
+                      <UserAvatarWithStatus user={user} className="w-6 h-6" />
+                      <span className='truncate'>
+                        {dm.name}
+                      </span>
+                      {dm.unreadCount > 0 && (
+                        <Badge
+                          variant="destructive"
+                          className="h-5 min-w-[1.25rem] justify-center text-xs ml-auto"
+                        >
+                          {dm.unreadCount > 9 ? '+9' : dm.unreadCount}
+                        </Badge>
+                      )}
+                    </div>
+                  </SidebarMenuButton>
+                   <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute left-1 top-1/2 -translate-y-1/2"
+                      onClick={(e) => handleRemoveDM(e, dm.id)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  {user.status !== 'offline' && (
+                    <SidebarMenuAction
+                      onClick={(e) => handleCall(e, dm.name)}
+                      aria-label={`Llamar a ${dm.name}`}
+                    >
+                      <Phone />
+                    </SidebarMenuAction>
+                  )}
+                </div>
               </SidebarMenuItem>
             );
           })}
