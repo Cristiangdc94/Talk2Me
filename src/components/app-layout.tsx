@@ -12,7 +12,6 @@ import { AppLogo } from '@/components/icons';
 import { SidebarNav } from '@/components/chat/sidebar-nav';
 import { UserNav } from '@/components/chat/user-nav';
 import { MainNav } from '@/components/main-nav';
-import { HeaderActions } from './header-actions';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -41,8 +40,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <SidebarTrigger className="md:hidden" />
             <div className="flex items-center w-full">
               <MainNav />
-              <div className='flex-1'></div>
-              <HeaderActions />
+              <div className="flex-1" />
             </div>
           </header>
           <main className="flex-1 overflow-auto bg-muted">
