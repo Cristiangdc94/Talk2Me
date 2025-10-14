@@ -5,27 +5,28 @@ import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User } from "@/lib/types";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, GripVertical } from 'lucide-react';
-import { Card, CardContent } from '../ui/card';
+import { GripVertical } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface CoworkersListProps {
-  title: string;
-  description: string;
   initialGroupedUsers: Record<string, User[]>;
 }
 
 export function CoworkersList({
-  title,
-  description,
   initialGroupedUsers,
 }: CoworkersListProps) {
   const [groupedUsers, setGroupedUsers] = useState(initialGroupedUsers);
+  const [isBrowser, setIsBrowser] = useState(false);
 
   useEffect(() => {
     setGroupedUsers(initialGroupedUsers);
   }, [initialGroupedUsers]);
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
 
   const handleOnDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -59,77 +60,74 @@ export function CoworkersList({
       newGroupedUsers[sourceDroppableId] = sourceItems;
       newGroupedUsers[destDroppableId] = destItems;
 
-      // Clean up empty groups
-      if (newGroupedUsers[sourceDroppableId].length === 0) {
-        delete newGroupedUsers[sourceDroppableId];
-      }
+      // Do not delete empty groups as they serve as drop targets
+      // if (newGroupedUsers[sourceDroppableId].length === 0) {
+      //   delete newGroupedUsers[sourceDroppableId];
+      // }
     }
 
     setGroupedUsers(newGroupedUsers);
   };
+  
+  // react-beautiful-dnd doesn't work with SSR, so we only render it on the client
+  if (!isBrowser) {
+      return null;
+  }
 
   return (
-    <div className="flex flex-col h-full gap-6 p-4 sm:p-6">
-      <div className="shrink-0">
-        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-      
+    <div className="flex-1 overflow-x-auto px-4 sm:px-6 pb-6">
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div className="space-y-4">
+        <div className="flex gap-6 h-full">
           {Object.entries(groupedUsers).map(([company, users]) => (
-            <Collapsible key={company} defaultOpen>
-              <Card>
-                <CollapsibleTrigger className="w-full p-4 group">
-                  <div className='flex justify-between items-center'>
-                    <h3 className="text-lg font-semibold">{company}</h3>
-                    <ChevronDown className="h-5 w-5 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <CardContent className="p-4 pt-0">
-                    <Droppable droppableId={company} direction="vertical">
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.droppableProps}
-                          className={cn(
-                            "space-y-4 transition-colors", 
-                            snapshot.isDraggingOver ? 'bg-accent' : 'bg-transparent'
-                          )}
-                        >
-                          {users.map((user, index) => (
-                            <Draggable key={user.id} draggableId={user.id} index={index}>
-                              {(provided, snapshot) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  className={cn(
-                                    "relative group/item",
-                                    snapshot.isDragging && "shadow-lg rounded-lg"
-                                  )}
-                                >
-                                  <div {...provided.dragHandleProps} className="absolute top-2 right-2 p-1 bg-background/50 rounded-md opacity-0 group-hover/item:opacity-100 transition-opacity cursor-grab active:cursor-grabbing z-10">
-                                    <GripVertical className="h-5 w-5 text-muted-foreground" />
-                                  </div>
-                                  <UserListCard user={user} />
+            <div key={company} className="w-[320px] shrink-0 h-full">
+               <Card className="h-full flex flex-col bg-muted/50">
+                  <CardHeader>
+                    <CardTitle className='text-lg'>{company}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 overflow-hidden">
+                    <ScrollArea className="h-full">
+                        <Droppable droppableId={company} direction="vertical">
+                        {(provided, snapshot) => (
+                            <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={cn(
+                                "space-y-4 transition-colors p-1", 
+                                snapshot.isDraggingOver ? 'bg-accent' : 'bg-transparent'
+                            )}
+                            >
+                            {users.map((user, index) => (
+                                <Draggable key={user.id} draggableId={user.id} index={index}>
+                                {(provided, snapshot) => (
+                                    <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    className={cn(
+                                        "relative group/item",
+                                        snapshot.isDragging && "shadow-lg rounded-lg"
+                                    )}
+                                    >
+                                    <div {...provided.dragHandleProps} className="absolute top-2 right-2 p-1 bg-background/50 rounded-md opacity-0 group-hover/item:opacity-100 transition-opacity cursor-grab active:cursor-grabbing z-10">
+                                        <GripVertical className="h-5 w-5 text-muted-foreground" />
+                                    </div>
+                                    <UserListCard user={user} />
+                                    </div>
+                                )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                            {users.length === 0 && (
+                                <div className="text-center py-4 text-sm text-muted-foreground h-24 flex items-center justify-center">
+                                Arrastra un compañero aquí
                                 </div>
-                              )}
-                            </Draggable>
-                          ))}
-                          {provided.placeholder}
-                           {users.length === 0 && (
-                            <div className="text-center py-4 text-muted-foreground">
-                              Arrastra un compañero aquí
+                            )}
                             </div>
-                          )}
-                        </div>
-                      )}
-                    </Droppable>
+                        )}
+                        </Droppable>
+                    </ScrollArea>
                   </CardContent>
-                </CollapsibleContent>
               </Card>
-            </Collapsible>
+            </div>
           ))}
         </div>
       </DragDropContext>

@@ -27,10 +27,16 @@ export default function CoworkersPage() {
   }, []);
 
   return (
-    <CoworkersList
-      title="Compañeros"
-      description="Estos son tus compañeros de trabajo en Talk2Me, organizados por empresa."
-      initialGroupedUsers={coworkersByCompany}
-    />
+    <div className="h-full flex flex-col">
+        <div className="p-4 sm:p-6 shrink-0">
+            <h2 className="text-2xl font-semibold tracking-tight">Compañeros</h2>
+            <p className="text-sm text-muted-foreground">
+                Estos son tus compañeros de trabajo en Talk2Me, organizados por empresa.
+            </p>
+        </div>
+        <CoworkersList
+            initialGroupedUsers={coworkersByCompany}
+        />
+    </div>
   );
 }
