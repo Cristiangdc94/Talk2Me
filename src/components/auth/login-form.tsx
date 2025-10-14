@@ -71,7 +71,9 @@ export function LoginForm() {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="h-[72px] md:h-[68px]"></div>
+          <div className="h-[72px] md:h-[68px] flex items-center justify-center">
+            <p className="text-lg text-muted-foreground">¡Bienvenido!</p>
+          </div>
           <FormField
             control={form.control}
             name="email"
