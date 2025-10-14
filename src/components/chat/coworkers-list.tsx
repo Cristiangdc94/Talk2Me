@@ -58,6 +58,11 @@ export function CoworkersList({
       
       newGroupedUsers[sourceDroppableId] = sourceItems;
       newGroupedUsers[destDroppableId] = destItems;
+
+      // Clean up empty groups
+      if (newGroupedUsers[sourceDroppableId].length === 0) {
+        delete newGroupedUsers[sourceDroppableId];
+      }
     }
 
     setGroupedUsers(newGroupedUsers);
@@ -83,12 +88,15 @@ export function CoworkersList({
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <CardContent className="p-4 pt-0">
-                    <Droppable droppableId={company} direction="horizontal">
+                    <Droppable droppableId={company} direction="vertical">
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.droppableProps}
-                          className={cn("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-colors", snapshot.isDraggingOver ? 'bg-accent' : 'bg-transparent')}
+                          className={cn(
+                            "space-y-4 transition-colors", 
+                            snapshot.isDraggingOver ? 'bg-accent' : 'bg-transparent'
+                          )}
                         >
                           {users.map((user, index) => (
                             <Draggable key={user.id} draggableId={user.id} index={index}>
@@ -96,9 +104,12 @@ export function CoworkersList({
                                 <div
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
-                                  className="relative group/item"
+                                  className={cn(
+                                    "relative group/item",
+                                    snapshot.isDragging && "shadow-lg rounded-lg"
+                                  )}
                                 >
-                                  <div {...provided.dragHandleProps} className="absolute top-2 right-2 p-1 bg-background/50 rounded-md opacity-0 group-hover/item:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
+                                  <div {...provided.dragHandleProps} className="absolute top-2 right-2 p-1 bg-background/50 rounded-md opacity-0 group-hover/item:opacity-100 transition-opacity cursor-grab active:cursor-grabbing z-10">
                                     <GripVertical className="h-5 w-5 text-muted-foreground" />
                                   </div>
                                   <UserListCard user={user} />
@@ -107,6 +118,11 @@ export function CoworkersList({
                             </Draggable>
                           ))}
                           {provided.placeholder}
+                           {users.length === 0 && (
+                            <div className="text-center py-4 text-muted-foreground">
+                              Arrastra un compañero aquí
+                            </div>
+                          )}
                         </div>
                       )}
                     </Droppable>
