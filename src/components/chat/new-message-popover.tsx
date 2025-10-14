@@ -1,18 +1,23 @@
 
 "use client";
 
-import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Plus, User } from "lucide-react";
+import { Plus, User } from "lucide-react";
 import { users } from "@/lib/mock-data";
 import { useChat } from "@/hooks/use-chat";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
+import * as React from "react";
 
-export function NewMessagePopover() {
-  const [isOpen, setIsOpen] = useState(false);
+interface NewMessagePopoverProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export function NewMessagePopover({ children, isOpen, setIsOpen }: NewMessagePopoverProps) {
   const { openChat } = useChat();
 
   const contacts = users.filter(
@@ -32,12 +37,7 @@ export function NewMessagePopover() {
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <button>
-          <Plus className="h-4 w-4" />
-          <span className="sr-only">Nuevo Mensaje</span>
-        </button>
-      </PopoverTrigger>
+      {children}
       <PopoverContent className="w-80 p-0" side="right" align="start">
         <div className="p-4">
           <h4 className="font-medium leading-none">Nuevo Mensaje</h4>

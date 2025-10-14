@@ -24,6 +24,7 @@ import {
   SidebarMenuButton,
   SidebarMenuAction,
 } from "@/components/ui/sidebar";
+import { PopoverTrigger } from "@/components/ui/popover";
 import { channels as initialChannels, directMessages, users } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState, useMemo, useEffect } from "react";
@@ -50,6 +51,7 @@ export function SidebarNav() {
   const { toast } = useToast();
   const { openChat, activeChatId } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
+  const [isNewMessagePopoverOpen, setNewMessagePopoverOpen] = useState(false);
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
 
   const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou"), [pathname]);
@@ -175,9 +177,17 @@ export function SidebarNav() {
         <SidebarGroupLabel className="font-headline text-xl">
           Mensajes Directos
         </SidebarGroupLabel>
-        <SidebarGroupAction asChild>
-          <NewMessagePopover />
-        </SidebarGroupAction>
+        <NewMessagePopover
+          isOpen={isNewMessagePopoverOpen}
+          setIsOpen={setNewMessagePopoverOpen}
+        >
+          <PopoverTrigger asChild>
+            <SidebarGroupAction>
+              <Plus className="h-4 w-4" />
+              <span className="sr-only">Nuevo Mensaje</span>
+            </SidebarGroupAction>
+          </PopoverTrigger>
+        </NewMessagePopover>
         <SidebarMenu>
           {directMessages.map((dm) => {
             const user = users.find(u => u.id === dm.userId);
