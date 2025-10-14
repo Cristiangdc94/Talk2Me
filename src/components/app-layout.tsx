@@ -27,7 +27,7 @@ import { Card, CardContent, CardHeader } from './ui/card';
 import { ChatArea } from './chat/chat-area';
 import { users } from '@/lib/mock-data';
 import { Button } from './ui/button';
-import { X } from 'lucide-react';
+import { X, GripVertical } from 'lucide-react';
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -124,13 +124,16 @@ function ChatWidget() {
       }}
     >
        <Card className="w-96 h-[32rem] flex flex-col shadow-2xl">
-        <CardHeader 
-          className="flex flex-row items-center justify-between p-2 border-b cursor-grab active:cursor-grabbing"
-          onMouseDown={handleMouseDown}
-        >
-           <div className="flex items-center gap-3 p-2">
+        <CardHeader className="flex flex-row items-center justify-between p-2 border-b">
+          <div className="flex items-center gap-3 p-2 flex-1">
             {activeChat.icon}
-            <h2 className="font-semibold">{activeChat.title}</h2>
+            <h2 className="font-semibold truncate">{activeChat.title}</h2>
+          </div>
+          <div
+            className="cursor-grab active:cursor-grabbing px-2"
+            onMouseDown={handleMouseDown}
+          >
+            <GripVertical className="h-5 w-5 text-muted-foreground" />
           </div>
           <Button variant="ghost" size="icon" onClick={closeChat} className="cursor-pointer">
             <X className="h-4 w-4" />
