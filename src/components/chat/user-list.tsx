@@ -24,7 +24,7 @@ export function UserList({
 }: UserListProps) {
   return (
     <div className="flex flex-col h-full">
-      <Card className="mb-6">
+      <Card className="mb-6 shrink-0">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

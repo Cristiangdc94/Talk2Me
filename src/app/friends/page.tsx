@@ -6,15 +6,13 @@ export default function FriendsPage() {
     (user) => user.relationship === "friend" && user.id !== "1"
   );
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 sm:p-6 flex-1">
-        <UserList
-          title="Amigos"
-          description="Aquí puedes encontrar a todos tus amigos."
-          users={friends}
-          showAddContact
-        />
-      </div>
+    <div className="h-full p-4 sm:p-6">
+      <UserList
+        title="Amigos"
+        description="Aquí puedes encontrar a todos tus amigos."
+        users={friends}
+        showAddContact
+      />
     </div>
   );
 }
