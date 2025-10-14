@@ -14,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuAction,
 } from "@/components/ui/sidebar";
-import { channels, directMessages, users } from "@/lib/mock-data";
+import { channels, directMessages } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -23,10 +23,6 @@ export function SidebarNav() {
   const pathname = usePathname();
   const { toast } = useToast();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
-  const [isNewMessageOpen, setNewMessageOpen] = useState(false);
-
-  const friends = users.filter((u) => u.relationship === 'friend');
-  const coworkers = users.filter((u) => u.relationship === 'coworker');
 
   const handleCall = (event: React.MouseEvent, userName: string) => {
     event.preventDefault();
@@ -40,8 +36,6 @@ export function SidebarNav() {
   return (
     <div className="flex flex-col gap-2">
       <CreateChannelDialog open={isCreateChannelOpen} onOpenChange={setCreateChannelOpen} />
-      {/* A similar dialog can be created for new messages */}
-      {/* <NewMessageDialog open={isNewMessageOpen} onOpenChange={setNewMessageOpen} /> */}
 
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">Canales</SidebarGroupLabel>
@@ -103,66 +97,32 @@ export function SidebarNav() {
       </SidebarGroup>
 
       <SidebarGroup>
-        <SidebarGroupLabel className="font-headline text-xl">Amigos</SidebarGroupLabel>
-        <SidebarGroupAction asChild>
-          <button onClick={() => setCreateChannelOpen(true)}>
-            <Plus />
-            <span className="sr-only">Añadir Amigo</span>
-          </button>
-        </SidebarGroupAction>
+        <SidebarGroupLabel className="font-headline text-xl">Contactos</SidebarGroupLabel>
         <SidebarMenu>
-          {friends.map((friend) => (
-            <SidebarMenuItem key={friend.id}>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname === `/dm/${friend.id}`}
-                tooltip={friend.name}
-              >
-                <Link href={`/dm/${friend.id}`}>
-                  <Smile />
-                  <span>{friend.name}</span>
-                </Link>
-              </SidebarMenuButton>
-              <SidebarMenuAction
-                onClick={(e) => handleCall(e, friend.name)}
-                aria-label={`Llamar a ${friend.name}`}
-              >
-                <Phone />
-              </SidebarMenuAction>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroup>
-
-      <SidebarGroup>
-        <SidebarGroupLabel className="font-headline text-xl">Compañeros de trabajo</SidebarGroupLabel>
-        <SidebarGroupAction asChild>
-          <button onClick={() => setCreateChannelOpen(true)}>
-            <Plus />
-            <span className="sr-only">Añadir Compañero</span>
-          </button>
-        </SidebarGroupAction>
-        <SidebarMenu>
-          {coworkers.map((coworker) => (
-            <SidebarMenuItem key={coworker.id}>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname === `/dm/${coworker.id}`}
-                tooltip={coworker.name}
-              >
-                <Link href={`/dm/${coworker.id}`}>
-                  <Briefcase />
-                  <span>{coworker.name}</span>
-                </Link>
-              </SidebarMenuButton>
-              <SidebarMenuAction
-                onClick={(e) => handleCall(e, coworker.name)}
-                aria-label={`Llamar a ${coworker.name}`}
-              >
-                <Phone />
-              </SidebarMenuAction>
-            </SidebarMenuItem>
-          ))}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={pathname === `/friends`}
+              tooltip="Amigos"
+            >
+              <Link href={`/friends`}>
+                <Smile />
+                <span>Amigos</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={pathname === `/coworkers`}
+              tooltip="Compañeros"
+            >
+              <Link href={`/coworkers`}>
+                <Briefcase />
+                <span>Compañeros</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroup>
 
