@@ -222,3 +222,5 @@ export function NewsPortal({ view }: NewsPortalProps) {
 }
 
     
+
+    
