@@ -31,14 +31,14 @@ export function MessageInput({ onSendMessage }: MessageInputProps) {
     <div className="flex items-center gap-2">
       <Button variant="ghost" size="icon" className="shrink-0">
         <Paperclip className="w-5 h-5" />
-        <span className="sr-only">Attach file</span>
+        <span className="sr-only">Adjuntar archivo</span>
       </Button>
       <div className="flex-1 relative">
         <Textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder="Type a message..."
+          placeholder="Escribe un mensaje..."
           rows={1}
           className="pr-20 min-h-0 resize-none"
         />
@@ -50,7 +50,7 @@ export function MessageInput({ onSendMessage }: MessageInputProps) {
           disabled={!text.trim()}
         >
           <Send className="w-4 h-4" />
-          <span className="sr-only">Send</span>
+          <span className="sr-only">Enviar</span>
         </Button>
       </div>
     </div>

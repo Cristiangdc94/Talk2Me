@@ -28,8 +28,8 @@ export function UserNav() {
     // Simulate logout
     Cookies.remove("auth_token");
     toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out.",
+      title: "Sesión Cerrada",
+      description: "Has cerrado sesión correctamente.",
     });
     router.push("/login");
     router.refresh();
@@ -46,7 +46,7 @@ export function UserNav() {
             <UserAvatarWithStatus user={currentUser} />
             <div className="text-left group-data-[collapsible=icon]:hidden">
               <p className="font-medium text-sm text-sidebar-foreground">{currentUser.name}</p>
-              <p className="text-xs text-sidebar-foreground/70">Online</p>
+              <p className="text-xs text-sidebar-foreground/70">En línea</p>
             </div>
           </div>
           <ChevronUp className="w-4 h-4 text-sidebar-foreground/70 group-data-[collapsible=icon]:hidden" />
@@ -60,7 +60,7 @@ export function UserNav() {
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {/* This would be the user's email */}
-              you@example.com 
+              tú@ejemplo.com 
             </p>
           </div>
         </DropdownMenuLabel>
@@ -68,17 +68,17 @@ export function UserNav() {
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
+            <span>Perfil</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
+            <span>Ajustes</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>Cerrar sesión</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

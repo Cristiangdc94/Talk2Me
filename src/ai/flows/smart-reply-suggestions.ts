@@ -12,12 +12,12 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const SmartReplySuggestionsInputSchema = z.object({
-  messageHistory: z.string().describe('The recent message history in the conversation.'),
+  messageHistory: z.string().describe('El historial reciente de mensajes en la conversación.'),
 });
 export type SmartReplySuggestionsInput = z.infer<typeof SmartReplySuggestionsInputSchema>;
 
 const SmartReplySuggestionsOutputSchema = z.object({
-  suggestions: z.array(z.string()).describe('An array of suggested replies.'),
+  suggestions: z.array(z.string()).describe('Un array de respuestas sugeridas.'),
 });
 export type SmartReplySuggestionsOutput = z.infer<typeof SmartReplySuggestionsOutputSchema>;
 
@@ -29,14 +29,14 @@ const prompt = ai.definePrompt({
   name: 'smartReplySuggestionsPrompt',
   input: {schema: SmartReplySuggestionsInputSchema},
   output: {schema: SmartReplySuggestionsOutputSchema},
-  prompt: `You are a helpful AI assistant that suggests smart replies based on the current conversation.
+  prompt: `Eres un asistente de IA útil que sugiere respuestas inteligentes basadas en la conversación actual.
 
-  Given the following message history, suggest three short replies that the user could send.
+  Dado el siguiente historial de mensajes, sugiere tres respuestas cortas que el usuario podría enviar.
 
-  Message History:
+  Historial de Mensajes:
   {{messageHistory}}
 
-  Format your output as a JSON array of strings.
+  Formatea tu salida como un array de strings JSON.
   `, 
   config: {
     safetySettings: [

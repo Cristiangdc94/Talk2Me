@@ -4,8 +4,8 @@ import { LayoutProvider } from "@/components/layout-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Talk2Me",
-  description: "A modern real-time chat application.",
+  title: "Háblame",
+  description: "Una aplicación de chat moderna en tiempo real.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

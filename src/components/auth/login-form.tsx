@@ -29,8 +29,8 @@ import { AppLogo } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  email: z.string().email({ message: "Por favor, introduce una dirección de correo electrónico válida." }),
+  password: z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres." }),
 });
 
 export function LoginForm() {
@@ -49,23 +49,22 @@ export function LoginForm() {
     if (values.email === 'admin@example.com' && values.password === 'adminadmin') {
       console.log('Admin login successful');
       toast({
-        title: 'Admin Login Successful',
-        description: 'Welcome back, admin! Redirecting you now...',
+        title: 'Inicio de Sesión de Administrador Exitoso',
+        description: '¡Bienvenido de nuevo, administrador! Redirigiendo...',
       });
       Cookies.set('auth_token', 'mock_admin_token_for_demo', {expires: 1});
+      router.push('/');
+      router.refresh();
     } else {
       console.log('Simulating login with:', values);
       toast({
-        title: 'Login Successful',
-        description: 'Welcome back! Redirecting you now...',
+        title: 'Inicio de Sesión Exitoso',
+        description: '¡Bienvenido de nuevo! Redirigiendo...',
       });
       Cookies.set('auth_token', 'mock_user_token_for_demo', {expires: 1});
-    }
-
-    setTimeout(() => {
       router.push('/');
       router.refresh();
-    }, 1000);
+    }
   }
 
   return (
@@ -73,9 +72,9 @@ export function LoginForm() {
       <CardHeader className="text-center">
         <div className="flex justify-center items-center gap-2 mb-4">
           <AppLogo className="h-8 w-8 text-primary" />
-          <CardTitle className="font-headline text-3xl">Talk2Me</CardTitle>
+          <CardTitle className="font-headline text-3xl">Háblame</CardTitle>
         </div>
-        <CardDescription>Enter your credentials to access your account</CardDescription>
+        <CardDescription>Introduce tus credenciales para acceder a tu cuenta</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -85,9 +84,9 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Correo Electrónico</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input placeholder="nombre@ejemplo.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,7 +97,7 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Contraseña</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
@@ -107,16 +106,16 @@ export function LoginForm() {
               )}
             />
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Signing in..." : "Sign In"}
+              {form.formState.isSubmitting ? "Iniciando sesión..." : "Iniciar Sesión"}
             </Button>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex justify-center text-sm">
         <p>
-          Don&apos;t have an account?&nbsp;
+          ¿No tienes una cuenta?&nbsp;
           <Link href="/signup" className="text-primary hover:underline font-medium">
-            Sign up
+            Regístrate
           </Link>
         </p>
       </CardFooter>

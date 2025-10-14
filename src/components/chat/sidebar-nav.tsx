@@ -28,11 +28,11 @@ export function SidebarNav() {
       {/* <NewMessageDialog open={isNewMessageOpen} onOpenChange={setNewMessageOpen} /> */}
 
       <SidebarGroup>
-        <SidebarGroupLabel className="font-headline">Channels</SidebarGroupLabel>
+        <SidebarGroupLabel className="font-headline">Canales</SidebarGroupLabel>
         <SidebarGroupAction asChild>
           <button onClick={() => setCreateChannelOpen(true)}>
             <Plus />
-            <span className="sr-only">Create Channel</span>
+            <span className="sr-only">Crear Canal</span>
           </button>
         </SidebarGroupAction>
         <SidebarMenu>
@@ -56,12 +56,12 @@ export function SidebarNav() {
       </SidebarGroup>
 
       <SidebarGroup>
-        <SidebarGroupLabel className="font-headline">Direct Messages</SidebarGroupLabel>
+        <SidebarGroupLabel className="font-headline">Mensajes Directos</SidebarGroupLabel>
         <SidebarGroupAction asChild>
            {/* For now, this will also open the create channel dialog as a placeholder */}
           <button onClick={() => setCreateChannelOpen(true)}>
             <Plus />
-            <span className="sr-only">New Message</span>
+            <span className="sr-only">Nuevo Mensaje</span>
           </button>
         </SidebarGroupAction>
         <SidebarMenu>

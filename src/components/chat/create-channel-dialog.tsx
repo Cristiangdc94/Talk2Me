@@ -24,8 +24,8 @@ export function CreateChannelDialog(props: CreateChannelDialogProps) {
     const handleCreateChannel = () => {
         // In a real app, you would handle channel creation logic here
         toast({
-            title: "Channel Created",
-            description: "Your new channel has been successfully created.",
+            title: "Canal Creado",
+            description: "Tu nuevo canal ha sido creado exitosamente.",
         });
         // This should also trigger a refresh of the channel list
         if (props.onOpenChange) {
@@ -37,20 +37,20 @@ export function CreateChannelDialog(props: CreateChannelDialogProps) {
     <Dialog {...props}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create a new channel</DialogTitle>
+          <DialogTitle>Crear un nuevo canal</DialogTitle>
           <DialogDescription>
-            Channels are where your team communicates. They’re best when organized around a topic — #marketing, for example.
+            Los canales son donde tu equipo se comunica. Son mejores cuando se organizan en torno a un tema, #marketing, por ejemplo.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              Nombre
             </Label>
-            <Input id="name" placeholder="# e.g. marketing" className="col-span-3" />
+            <Input id="name" placeholder="# ej. marketing" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right">Visibility</Label>
+            <Label className="text-right">Visibilidad</Label>
             <RadioGroup defaultValue="public" className="col-span-3 space-y-2">
               <div>
                 <RadioGroupItem value="public" id="public" className="peer sr-only" />
@@ -59,10 +59,10 @@ export function CreateChannelDialog(props: CreateChannelDialogProps) {
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                 >
                     <div className="flex items-center w-full justify-between">
-                        <p className="font-semibold">Public</p>
+                        <p className="font-semibold">Público</p>
                         <Hash className="h-5 w-5"/>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">Anyone in your workspace can view and join this channel.</p>
+                    <p className="text-sm text-muted-foreground mt-2">Cualquiera en tu espacio de trabajo puede ver y unirse a este canal.</p>
                 </Label>
               </div>
               <div>
@@ -72,17 +72,17 @@ export function CreateChannelDialog(props: CreateChannelDialogProps) {
                   className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                 >
                     <div className="flex items-center w-full justify-between">
-                        <p className="font-semibold">Private</p>
+                        <p className="font-semibold">Privado</p>
                         <Lock className="h-5 w-5"/>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">Only specific people can view and join this channel.</p>
+                    <p className="text-sm text-muted-foreground mt-2">Solo personas específicas pueden ver y unirse a este canal.</p>
                 </Label>
               </div>
             </RadioGroup>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleCreateChannel}>Create Channel</Button>
+          <Button type="submit" onClick={handleCreateChannel}>Crear Canal</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

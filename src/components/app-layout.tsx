@@ -20,7 +20,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <AppLogo className="w-8 h-8 text-sidebar-primary-foreground" />
             <h1 className="font-headline text-2xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">
-              Talk2Me
+              Háblame
             </h1>
           </div>
         </SidebarHeader>

@@ -29,9 +29,9 @@ import { AppLogo } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  name: z.string().min(2, { message: "El nombre debe tener al menos 2 caracteres." }),
+  email: z.string().email({ message: "Por favor, introduce un correo electrónico válido." }),
+  password: z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres." }),
 });
 
 export function SignupForm() {
@@ -51,8 +51,8 @@ export function SignupForm() {
     // Simulate Firebase signup
     console.log("Simulating signup with:", values);
     toast({
-      title: "Account Created",
-      description: "Welcome to Talk2Me! Redirecting you now...",
+      title: "Cuenta Creada",
+      description: "¡Bienvenido a Háblame! Redirigiendo...",
     });
 
     // Simulate setting an auth token
@@ -70,9 +70,9 @@ export function SignupForm() {
       <CardHeader className="text-center">
         <div className="flex justify-center items-center gap-2 mb-4">
           <AppLogo className="h-8 w-8 text-primary" />
-          <CardTitle className="font-headline text-3xl">Talk2Me</CardTitle>
+          <CardTitle className="font-headline text-3xl">Háblame</CardTitle>
         </div>
-        <CardDescription>Create your account to start chatting</CardDescription>
+        <CardDescription>Crea tu cuenta para empezar a chatear</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -82,9 +82,9 @@ export function SignupForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nombre</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your Name" {...field} />
+                    <Input placeholder="Tu Nombre" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,9 +95,9 @@ export function SignupForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Correo Electrónico</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input placeholder="nombre@ejemplo.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -108,7 +108,7 @@ export function SignupForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Contraseña</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
@@ -117,16 +117,16 @@ export function SignupForm() {
               )}
             />
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Creating account..." : "Create Account"}
+              {form.formState.isSubmitting ? "Creando cuenta..." : "Crear Cuenta"}
             </Button>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex justify-center text-sm">
         <p>
-          Already have an account?&nbsp;
+          ¿Ya tienes una cuenta?&nbsp;
           <Link href="/login" className="text-primary hover:underline font-medium">
-            Sign in
+            Inicia sesión
           </Link>
         </p>
       </CardFooter>

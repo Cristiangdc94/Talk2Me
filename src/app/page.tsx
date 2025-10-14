@@ -6,10 +6,10 @@ export default function Home() {
       <div className="p-6 rounded-full bg-secondary">
         <MessageCircle className="w-16 h-16 text-primary" />
       </div>
-      <h1 className="text-4xl font-headline text-primary">Welcome to Talk2Me</h1>
+      <h1 className="text-4xl font-headline text-primary">Bienvenido a Háblame</h1>
       <p className="max-w-md text-muted-foreground">
-        Select a channel or a direct message from the sidebar to start a conversation.
-        Experience seamless communication with real-time messaging and AI-powered smart replies.
+        Selecciona un canal o un mensaje directo de la barra lateral para iniciar una conversación.
+        Experimenta una comunicación fluida con mensajería en tiempo real y respuestas inteligentes impulsadas por IA.
       </p>
     </div>
   );

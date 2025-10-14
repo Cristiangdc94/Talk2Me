@@ -26,13 +26,13 @@ export function SmartReplySuggestions({
           // Format the last 3 messages for context
           const messageHistory = messages
             .slice(-3)
-            .map((m) => `${m.user.name}: ${m.text || "(sent an image)"}`)
+            .map((m) => `${m.user.name}: ${m.text || "(envió una imagen)"}`)
             .join("\n");
             
           const result = await getSmartReplySuggestions({ messageHistory });
           setSuggestions(result.suggestions);
         } catch (error) {
-          console.error("Failed to get smart replies:", error);
+          console.error("Error al obtener respuestas inteligentes:", error);
           setSuggestions([]);
         }
       });
