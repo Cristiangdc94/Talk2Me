@@ -3,7 +3,7 @@
 
 import { useChat } from "@/hooks/use-chat";
 import { ChatArea } from "./chat-area";
-import { channels, directMessages, users } from "@/lib/mock-data";
+import { channels, users } from "@/lib/mock-data";
 import { Button } from "../ui/button";
 import { Hash, Lock, User, Phone, MoreVertical, Archive, Ban, Trash2 } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
@@ -26,7 +26,7 @@ const statusColor = {
 };
 
 export function ChatLayout() {
-    const { activeChat, activeChatId, openChat } = useChat();
+    const { activeChat, activeChatId, openChat, directMessages } = useChat();
     const { toast } = useToast();
 
     if (!activeChat) {

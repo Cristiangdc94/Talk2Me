@@ -27,7 +27,7 @@ import {
   SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import { PopoverTrigger } from "@/components/ui/popover";
-import { channels as initialChannels, directMessages, users } from "@/lib/mock-data";
+import { channels as initialChannels, users } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -52,7 +52,7 @@ const mainNavLinks = [
 export function SidebarNav() {
   const pathname = usePathname();
   const { toast } = useToast();
-  const { openChat, activeChatId } = useChat();
+  const { openChat, activeChatId, directMessages } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
   const [isNewMessagePopoverOpen, setNewMessagePopoverOpen] = useState(false);
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
