@@ -28,11 +28,15 @@ import { useChat } from '@/hooks/use-chat';
 import { UserAvatarWithStatus } from './user-avatar-with-status';
 import type { Channel } from '@/lib/types';
 import { Badge } from '../ui/badge';
+import { NewMessagePopover } from './new-message-popover';
+import { PopoverTrigger } from '../ui/popover';
+import { Button } from '../ui/button';
 
 export function ChatSidebar() {
   const { toast } = useToast();
   const { openChat, activeChatIds, directMessages } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
+  const [isNewMessageOpen, setNewMessageOpen] = useState(false);
   const [channels] = useState<Channel[]>(initialChannels);
 
   const handleCall = (event: React.MouseEvent, userName: string) => {
@@ -76,12 +80,16 @@ export function ChatSidebar() {
 
       <SidebarGroup>
         <SidebarGroupLabel>Mensajes Directos</SidebarGroupLabel>
-        <SidebarGroupAction asChild>
-          <Link href="/add-contact">
-            <Plus className="h-4 w-4" />
-            <span className="sr-only">Nuevo Mensaje</span>
-          </Link>
-        </SidebarGroupAction>
+        <NewMessagePopover isOpen={isNewMessageOpen} setIsOpen={setNewMessageOpen}>
+          <SidebarGroupAction asChild>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="icon" className="absolute right-3 top-3.5 h-5 w-5 p-0">
+                  <Plus className="h-4 w-4" />
+                  <span className="sr-only">Nuevo Mensaje</span>
+              </Button>
+            </PopoverTrigger>
+          </SidebarGroupAction>
+        </NewMessagePopover>
         <SidebarMenu>
           {directMessages.map((dm) => {
             const user = users.find((u) => u.id === dm.userId);

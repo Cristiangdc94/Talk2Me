@@ -3,13 +3,14 @@
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { Plus, User } from "lucide-react";
+import { Plus, User, Search } from "lucide-react";
 import { users } from "@/lib/mock-data";
 import { useChat } from "@/hooks/use-chat";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import * as React from "react";
+import Link from "next/link";
 
 interface NewMessagePopoverProps {
   children: React.ReactNode;
@@ -37,7 +38,9 @@ export function NewMessagePopover({ children, isOpen, setIsOpen }: NewMessagePop
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      {children}
+      <PopoverTrigger asChild>
+        {children}
+      </PopoverTrigger>
       <PopoverContent className="w-80 p-0" side="right" align="start">
         <div className="p-4">
           <h4 className="font-medium leading-none">Nuevo Mensaje</h4>
@@ -79,6 +82,15 @@ export function NewMessagePopover({ children, isOpen, setIsOpen }: NewMessagePop
                  )}
             </div>
         </ScrollArea>
+        <Separator />
+        <div className="p-2">
+            <Button variant="ghost" className="w-full justify-start" asChild>
+                <Link href="/add-contact" onClick={() => setIsOpen(false)}>
+                    <Search className="mr-2 h-4 w-4" />
+                    Buscar a alguien
+                </Link>
+            </Button>
+        </div>
       </PopoverContent>
     </Popover>
   );
