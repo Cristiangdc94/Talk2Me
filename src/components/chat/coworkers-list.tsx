@@ -15,50 +15,19 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useChat } from '@/hooks/use-chat';
-import { generateCompanyLogo } from '@/ai/flows/generate-company-logo';
 import { Skeleton } from '../ui/skeleton';
 
 interface CoworkersListProps {
   initialGroupedUsers: Record<string, User[]>;
 }
 
-function CompanyLogo({ companyName }: { companyName: string }) {
-    const [logoUrl, setLogoUrl] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const generateLogo = async () => {
-            try {
-                const { logoDataUri } = await generateCompanyLogo({ companyName });
-                setLogoUrl(logoDataUri);
-            } catch (error) {
-                console.error(`Failed to generate logo for ${companyName}`, error);
-                setLogoUrl(null); // Fallback to icon
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        generateLogo();
-    }, [companyName]);
-
+function CompanyLogoPlaceholder() {
     return (
         <div className="mt-2 h-16 w-full bg-background/50 rounded-md flex items-center justify-center">
-            {isLoading ? (
-                <Skeleton className="h-12 w-12 rounded-lg" />
-            ) : logoUrl ? (
-                <Image
-                    src={logoUrl}
-                    alt={`${companyName} Logo`}
-                    width={64}
-                    height={64}
-                    className="object-contain h-12 w-auto"
-                />
-            ) : (
-                <div className='text-center text-muted-foreground'>
-                    <Building2 className="h-5 w-5 mx-auto" />
-                    <p className='text-xs font-semibold mt-1'>Logo</p>
-                </div>
-            )}
+            <div className='text-center text-muted-foreground'>
+                <Building2 className="h-5 w-5 mx-auto" />
+                <p className='text-xs font-semibold mt-1'>Logo</p>
+            </div>
         </div>
     );
 }
@@ -204,7 +173,7 @@ export function CoworkersList({
                             <CardHeader>
                                 <CardTitle className='font-bold text-lg'>{company}</CardTitle>
                                 <CardDescription className='text-sm text-muted-foreground'>Descripción del grupo de la empresa.</CardDescription>
-                                <CompanyLogo companyName={company} />
+                                <CompanyLogoPlaceholder />
                             </CardHeader>
                             <CardContent className="flex-1 overflow-hidden p-0">
                                 <ScrollArea className="h-full">

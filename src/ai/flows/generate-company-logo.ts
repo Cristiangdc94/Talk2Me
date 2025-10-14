@@ -30,7 +30,9 @@ export type GenerateCompanyLogoOutput = z.infer<
 export async function generateCompanyLogo(
   input: GenerateCompanyLogoInput
 ): Promise<GenerateCompanyLogoOutput> {
-  return generateCompanyLogoFlow(input);
+  // This feature is disabled due to billing restrictions on the Imagen API.
+  // Returning a placeholder.
+  return Promise.resolve({ logoDataUri: '' });
 }
 
 const promptTemplate = `Generate a simple, modern, flat, vector-style logo for a company named '{{companyName}}'. The logo should be on a clean, solid background. Do not include any text in the logo.`;
@@ -42,11 +44,15 @@ const generateCompanyLogoFlow = ai.defineFlow(
     outputSchema: GenerateCompanyLogoOutputSchema,
   },
   async ({ companyName }) => {
+    // This flow is currently disabled to prevent API errors on non-billed accounts.
+    // To re-enable, uncomment the following lines and ensure your project has billing enabled.
+    /*
     const { media } = await ai.generate({
       model: 'googleai/imagen-4.0-fast-generate-001',
       prompt: promptTemplate.replace('{{companyName}}', companyName),
     });
-
     return { logoDataUri: media.url };
+    */
+    return { logoDataUri: '' };
   }
 );
