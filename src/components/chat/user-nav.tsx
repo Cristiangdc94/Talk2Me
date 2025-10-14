@@ -39,67 +39,67 @@ export function UserNav() {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="w-full h-auto justify-start p-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:w-auto group-data-[collapsible=icon]:h-10"
-        >
-          <div className="flex items-center w-full gap-2">
+    <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:justify-center">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex items-center gap-2 p-0 h-auto group-data-[collapsible=icon]:p-2 data-[state=open]:bg-sidebar-accent"
+          >
             <UserAvatarWithStatus user={currentUser} />
             <div className="text-left group-data-[collapsible=icon]:hidden">
               <p className="font-medium text-sm text-sidebar-foreground">{currentUser.name}</p>
               <p className="text-xs text-sidebar-foreground/70">En línea</p>
             </div>
-            <div className="ml-auto flex items-center gap-1 group-data-[collapsible=icon]:hidden">
-              <ThemeToggle />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-9 w-9">
-                    <Settings className="h-[1.2rem] w-[1.2rem]" />
-                    <span className="sr-only">Ajustes</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" side="top" className="mb-2 w-56">
-                   <DropdownMenuItem onClick={() => setDialogOpen(true)}>
-                    <Newspaper className="mr-2 h-4 w-4" />
-                    <span>Preferencias de Noticias</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56 mb-2" align="start" side="top" forceMount>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {currentUser.name}
+              </p>
+              <p className="text-xs leading-none text-muted-foreground">
+                tú@ejemplo.com
+              </p>
             </div>
-          </div>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 mb-2" align="start" side="top" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {currentUser.name}
-            </p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {/* This would be the user's email */}
-              tú@ejemplo.com 
-            </p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Perfil</span>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              <span>Perfil</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Ajustes</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onSelect={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Cerrar sesión</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Ajustes</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={handleLogout}>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Cerrar sesión</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      
+      <div className="ml-auto flex items-center gap-1 group-data-[collapsible=icon]:hidden">
+        <ThemeToggle />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Settings className="h-[1.2rem] w-[1.2rem]" />
+              <span className="sr-only">Ajustes</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="top" className="mb-2 w-56">
+            <DropdownMenuItem onClick={() => setDialogOpen(true)}>
+              <Newspaper className="mr-2 h-4 w-4" />
+              <span>Preferencias de Noticias</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
   );
 }
