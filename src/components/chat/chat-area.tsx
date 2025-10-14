@@ -84,8 +84,8 @@ export function ChatArea({
         )}
       </header>
 
-      <div className="flex-1 overflow-y-auto">
-        <ScrollArea className="h-full" viewportRef={scrollViewportRef}>
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
           <div className="p-4 space-y-6">
             {messages.map((message) => (
               <div key={message.id} className="flex items-start gap-4 animate-accordion-down">
