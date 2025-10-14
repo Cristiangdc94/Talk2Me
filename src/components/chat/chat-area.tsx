@@ -255,9 +255,6 @@ export function ChatArea({
       </ScrollArea>
       
       <footer className="p-4 border-t shrink-0 space-y-2 bg-background">
-        {chatType === 'dm' && (
-            <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
-        )}
         <MessageInput 
           onSendMessage={handleSendMessage} 
           onCall={handleCall}
