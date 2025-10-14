@@ -65,7 +65,7 @@ export function AddContactForm() {
   };
 
   return (
-    <div className="flex items-start justify-center h-full pt-20">
+    <div className="mt-16 mx-auto pl-20">
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle>Añadir Contacto</CardTitle>
