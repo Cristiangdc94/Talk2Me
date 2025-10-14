@@ -52,7 +52,7 @@ const mainNavLinks = [
 export function SidebarNav() {
   const pathname = usePathname();
   const { toast } = useToast();
-  const { openChat, activeChatId, setActiveChatId } = useChat();
+  const { openChat, activeChatId } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
   const [isNewMessagePopoverOpen, setNewMessagePopoverOpen] = useState(false);
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
