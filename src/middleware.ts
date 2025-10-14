@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const PROTECTED_ROUTES_EXACT = ['/'];
+const PROTECTED_ROUTES_EXACT: string[] = [];
 const PROTECTED_ROUTES_PREFIX = [
   '/channel', 
   '/dm', 
