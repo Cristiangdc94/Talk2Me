@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuAction,
+  SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import { PopoverTrigger } from "@/components/ui/popover";
 import { channels as initialChannels, directMessages, users } from "@/lib/mock-data";
@@ -184,51 +185,53 @@ export function SidebarNav() {
           Mensajes Directos
         </SidebarGroupLabel>
         <NewMessagePopover isOpen={isNewMessagePopoverOpen} setIsOpen={setNewMessagePopoverOpen}>
-          <SidebarGroupAction asChild>
-              <PopoverTrigger asChild>
-                <button>
-                  <Plus className="h-4 w-4" />
-                  <span className="sr-only">Nuevo Mensaje</span>
-                </button>
-              </PopoverTrigger>
-          </SidebarGroupAction>
+          <PopoverTrigger asChild>
+            <SidebarGroupAction asChild>
+              <button>
+                <Plus className="h-4 w-4" />
+                <span className="sr-only">Nuevo Mensaje</span>
+              </button>
+            </SidebarGroupAction>
+          </PopoverTrigger>
         </NewMessagePopover>
         <SidebarMenu>
-          {isMounted && directMessages.map((dm) => {
-            const user = users.find(u => u.id === dm.userId);
-            if (!user) return null;
-            const statusColor = {
-                online: 'text-green-500',
-                busy: 'text-red-500',
-                offline: 'text-muted-foreground',
-            };
-            return (
-              <SidebarMenuItem key={dm.id}>
-                <SidebarMenuButton
-                  onClick={() => handleDMClick(dm.id)}
-                  isActive={activeChatId === dm.id}
-                  tooltip={dm.name}
-                  className="justify-between"
-                >
-                  <div className="flex items-center gap-2 overflow-hidden">
-                    <UserAvatarWithStatus user={user} className="w-6 h-6" />
-                    <span className={cn("truncate", statusColor[user.status])}>{dm.name}</span>
-                    {dm.unreadCount && dm.unreadCount > 0 && (
-                      <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
-                        {dm.unreadCount > 9 ? '+9' : dm.unreadCount}
-                      </Badge>
-                    )}
-                  </div>
-                </SidebarMenuButton>
-                <SidebarMenuAction
-                  onClick={(e) => handleCall(e, dm.name)}
-                  aria-label={`Llamar a ${dm.name}`}
-                >
-                  <Phone />
-                </SidebarMenuAction>
-              </SidebarMenuItem>
-            );
-          })}
+           {!isMounted
+            ? Array.from({ length: 4 }).map((_, i) => <SidebarMenuSkeleton key={i} showIcon />)
+            : directMessages.map((dm) => {
+              const user = users.find((u) => u.id === dm.userId);
+              if (!user) return null;
+              const statusColor = {
+                online: "text-green-500",
+                busy: "text-red-500",
+                offline: "text-muted-foreground",
+              };
+              return (
+                <SidebarMenuItem key={dm.id}>
+                  <SidebarMenuButton
+                    onClick={() => handleDMClick(dm.id)}
+                    isActive={activeChatId === dm.id}
+                    tooltip={dm.name}
+                    className="justify-between"
+                  >
+                    <div className="flex items-center gap-2 overflow-hidden">
+                      <UserAvatarWithStatus user={user} className="w-6 h-6" />
+                      <span className={cn("truncate", statusColor[user.status])}>{dm.name}</span>
+                      {dm.unreadCount && dm.unreadCount > 0 && (
+                        <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
+                          {dm.unreadCount > 9 ? "+9" : dm.unreadCount}
+                        </Badge>
+                      )}
+                    </div>
+                  </SidebarMenuButton>
+                  <SidebarMenuAction
+                    onClick={(e) => handleCall(e, dm.name)}
+                    aria-label={`Llamar a ${dm.name}`}
+                  >
+                    <Phone />
+                  </SidebarMenuAction>
+                </SidebarMenuItem>
+              );
+            })}
         </SidebarMenu>
       </SidebarGroup>
     </div>
