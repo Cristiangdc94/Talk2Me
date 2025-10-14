@@ -118,7 +118,7 @@ export const directMessages: DirectMessage[] = [
     userId: '2',
     name: 'Alice',
     type: 'private',
-    unreadCount: 0,
+    unreadCount: 3,
     messages: [
       { id: 'dm1', text: 'Oye, ¿tienes un minuto para hablar?', timestamp: '2:15 PM', user: users[1], status: 'read' },
       { id: 'dm2', text: 'Claro, ¿qué pasa?', timestamp: '2:16 PM', user: users[0], status: 'sent' },
@@ -129,7 +129,7 @@ export const directMessages: DirectMessage[] = [
     userId: '3',
     name: 'Bob',
     type: 'private',
-    unreadCount: 0,
+    unreadCount: 1,
     messages: [
       { id: 'dm_b1', text: 'Reunión en 5', timestamp: '3:00 PM', user: users[2], status: 'read' },
     ],
@@ -149,7 +149,7 @@ export const directMessages: DirectMessage[] = [
     userId: '5',
     name: 'Diana',
     type: 'private',
-    unreadCount: 0,
+    unreadCount: 1,
     messages: [
       { id: 'dm4', text: '¡Hola! ¿Estás libre para una llamada rápida?', timestamp: 'hace 4 horas', user: users[4], status: 'read' },
     ]
@@ -159,7 +159,7 @@ export const directMessages: DirectMessage[] = [
     userId: '6',
     name: 'Eva',
     type: 'private',
-    unreadCount: 0,
+    unreadCount: 10,
     messages: [
       { id: 'dm_e1', text: 'Revisa por favor los informes de DataSolutions.', timestamp: 'hace 2 horas', user: users[5], status: 'read' }
     ]

@@ -22,6 +22,8 @@ import { NotificationWidget } from './notifications/notification-widget';
 import { NewsPreferencesProvider } from '@/hooks/use-news-preferences';
 import { ChatProvider } from '@/hooks/use-chat';
 import { cn } from '@/lib/utils';
+import { MainNav } from './main-nav';
+import { HeaderActions } from './header-actions';
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (

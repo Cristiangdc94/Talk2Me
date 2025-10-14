@@ -3,8 +3,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
-import type { Message, DirectMessage } from "@/lib/types";
-import { channels, directMessages as initialDms, users } from "@/lib/mock-data";
+import type { Message } from "@/lib/types";
+import { channels, directMessages, users } from "@/lib/mock-data";
 import { Hash, Lock } from "lucide-react";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 
@@ -21,14 +21,13 @@ interface ChatContextType {
   openChat: (id: string) => void;
   closeChat: () => void;
   activeChatId: string | null;
-  directMessages: DirectMessage[];
+  directMessages: typeof directMessages;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
-  const [directMessages, setDirectMessages] = useState<DirectMessage[]>(initialDms);
 
   const openChat = useCallback((id: string) => {
     setActiveChatId(id);
@@ -70,7 +69,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     }
     
     return null;
-  }, [activeChatId, directMessages]);
+  }, [activeChatId]);
 
 
   return (

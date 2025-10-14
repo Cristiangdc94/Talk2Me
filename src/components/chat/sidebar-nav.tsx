@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -18,6 +19,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import { ChatSidebar } from "./chat-sidebar";
 import { useState, useEffect } from "react";
 import { SidebarSeparator } from "../ui/sidebar";
 import {
@@ -25,7 +27,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-import { ChatSidebar } from "./chat-sidebar";
 
 const mainNavLinks = [
     { href: "/friends", label: "Amigos", icon: Users },
@@ -36,11 +37,16 @@ export function SidebarNav() {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const [isNewsSectionOpen, setIsNewsSectionOpen] = useState(false);
+  const [isChatSectionOpen, setIsChatSectionOpen] = useState(true);
 
   useEffect(() => {
     setIsMounted(true);
     const isNewsActive = pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news");
     setIsNewsSectionOpen(isNewsActive);
+
+    const isChatActive = pathname.startsWith("/channel") || pathname.startsWith("/dm");
+    setIsChatSectionOpen(isChatActive);
+
   }, [pathname]);
 
 
@@ -131,7 +137,19 @@ export function SidebarNav() {
 
       <SidebarSeparator />
       
-      <ChatSidebar isInsideMainSidebar={true} />
+      <Collapsible open={isChatSectionOpen} onOpenChange={setIsChatSectionOpen}>
+        <SidebarGroup>
+            <CollapsibleTrigger className="w-full">
+                 <SidebarGroupLabel className="font-headline text-xl justify-between">
+                    Chats
+                    <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
+                </SidebarGroupLabel>
+            </CollapsibleTrigger>
+        </SidebarGroup>
+         <CollapsibleContent>
+            <ChatSidebar />
+        </CollapsibleContent>
+      </Collapsible>
 
     </div>
   );

@@ -8,9 +8,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ChatLayout } from "./chat-layout";
+import { ChatArea } from "./chat-area";
+import { users } from "@/lib/mock-data";
 
 export function ChatDialog() {
   const { activeChat, closeChat } = useChat();
@@ -26,14 +28,22 @@ export function ChatDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="w-screen h-screen max-w-none p-0 gap-0 border-0">
-        <DialogTitle className="sr-only">
-          {activeChat?.title || "Chat"}
-        </DialogTitle>
-        <DialogDescription className="sr-only">
-          {`Una ventana de chat para ${activeChat?.type === 'channel' ? 'el canal' : 'la conversación con'} ${activeChat?.title}.`}
-        </DialogDescription>
+        <DialogHeader className="sr-only">
+          <DialogTitle>{activeChat?.title || "Chat"}</DialogTitle>
+          <DialogDescription>
+             {`Una ventana de chat para ${activeChat?.type === 'channel' ? 'el canal' : 'la conversación con'} ${activeChat?.title}.`}
+          </DialogDescription>
+        </DialogHeader>
         {activeChat && (
-          <ChatLayout />
+           <ChatArea
+            key={activeChat.id}
+            chatId={activeChat.id}
+            title={activeChat.title}
+            icon={activeChat.icon}
+            initialMessages={activeChat.messages}
+            currentUser={users[0]}
+            chatType={activeChat.type}
+          />
         )}
       </DialogContent>
     </Dialog>
