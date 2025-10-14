@@ -104,68 +104,71 @@ export function ChatArea({
         )}
       </header>
 
-      <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
-          <div className="p-4 space-y-4 flex flex-col justify-end min-h-full">
-            {messages.map((message) => {
-              const isSentByCurrentUser = message.user.id === currentUser.id;
-              return (
-                <div 
-                  key={message.id} 
-                  className={cn(
-                    "flex items-end gap-3 w-full",
-                    isSentByCurrentUser ? "justify-end" : "justify-start"
-                  )}
-                >
-                  {!isSentByCurrentUser && (
-                    <UserAvatarWithStatus user={message.user} className="shrink-0" />
-                  )}
+      <div className="flex-1 flex flex-col-reverse overflow-hidden">
+        <footer className="p-4 border-t shrink-0 space-y-2 bg-background">
+          {chatType === 'dm' && (
+              <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
+          )}
+          <MessageInput onSendMessage={handleSendMessage} />
+        </footer>
+        
+        <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
+            <div className="p-4 space-y-4">
+              {messages.map((message) => {
+                const isSentByCurrentUser = message.user.id === currentUser.id;
+                return (
                   <div 
+                    key={message.id} 
                     className={cn(
-                      "p-3 rounded-lg max-w-sm md:max-w-md",
-                      isSentByCurrentUser 
-                        ? "bg-primary text-primary-foreground" 
-                        : "bg-muted"
+                      "flex items-end gap-3 w-full",
+                      isSentByCurrentUser ? "justify-end" : "justify-start"
                     )}
                   >
-                     {!isSentByCurrentUser && <p className="font-bold text-xs mb-1">{message.user.name}</p>}
-                    {message.text && <p className="text-sm">{message.text}</p>}
-                    {message.imageUrl && (
-                      <div className="mt-2">
-                         <Image
-                          src={message.imageUrl}
-                          alt="Chat image"
-                          width={400}
-                          height={300}
-                          className="rounded-lg object-cover"
-                          data-ai-hint="landscape nature"
-                        />
-                      </div>
+                    {!isSentByCurrentUser && (
+                      <UserAvatarWithStatus user={message.user} className="shrink-0" />
                     )}
-                    <div className="flex justify-end items-center gap-2 mt-1">
-                      <time className={cn(
-                        "text-xs", 
-                        isSentByCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground"
-                      )}>
-                        {message.timestamp}
-                      </time>
-                      {isSentByCurrentUser && <MessageStatus status={message.status} />}
+                    <div 
+                      className={cn(
+                        "p-3 rounded-lg max-w-sm md:max-w-md",
+                        isSentByCurrentUser 
+                          ? "bg-primary text-primary-foreground" 
+                          : "bg-muted"
+                      )}
+                    >
+                       {!isSentByCurrentUser && <p className="font-bold text-xs mb-1">{message.user.name}</p>}
+                      {message.text && <p className="text-sm">{message.text}</p>}
+                      {message.imageUrl && (
+                        <div className="mt-2">
+                           <Image
+                            src={message.imageUrl}
+                            alt="Chat image"
+                            width={400}
+                            height={300}
+                            className="rounded-lg object-cover"
+                            data-ai-hint="landscape nature"
+                          />
+                        </div>
+                      )}
+                      <div className="flex justify-end items-center gap-2 mt-1">
+                        <time className={cn(
+                          "text-xs", 
+                          isSentByCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground"
+                        )}>
+                          {message.timestamp}
+                        </time>
+                        {isSentByCurrentUser && <MessageStatus status={message.status} />}
+                      </div>
                     </div>
+                    {isSentByCurrentUser && (
+                      <UserAvatarWithStatus user={message.user} className="shrink-0" />
+                    )}
                   </div>
-                  {isSentByCurrentUser && (
-                    <UserAvatarWithStatus user={message.user} className="shrink-0" />
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
         </ScrollArea>
+      </div>
 
-      <footer className="p-4 border-t shrink-0 space-y-2 bg-background">
-        {chatType === 'dm' && (
-            <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
-        )}
-        <MessageInput onSendMessage={handleSendMessage} />
-      </footer>
     </div>
   );
 }
