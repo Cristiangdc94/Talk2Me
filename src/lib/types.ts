@@ -23,3 +23,13 @@ export interface Channel {
 }
 
 export interface DirectMessage extends Channel {}
+
+export interface NewsArticle {
+  id: string;
+  category: 'technology' | 'business' | 'sports' | 'health' | 'entertainment';
+  location: 'local' | 'global';
+  title: string;
+  summary: string;
+  imageUrl: string;
+  link: string;
+}

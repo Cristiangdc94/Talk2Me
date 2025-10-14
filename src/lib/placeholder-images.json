@@ -41,6 +41,42 @@
       "description": "A beautiful landscape sent in a chat message",
       "imageUrl": "https://picsum.photos/seed/chatimage1/400/300",
       "imageHint": "landscape nature"
+    },
+    {
+      "id": "news-1",
+      "description": "AI Future",
+      "imageUrl": "https://picsum.photos/seed/news1/600/400",
+      "imageHint": "technology abstract"
+    },
+    {
+      "id": "news-2",
+      "description": "Global Markets",
+      "imageUrl": "https://picsum.photos/seed/news2/600/400",
+      "imageHint": "city skyline"
+    },
+    {
+      "id": "news-3",
+      "description": "Local Sports",
+      "imageUrl": "https://picsum.photos/seed/news3/600/400",
+      "imageHint": "stadium sport"
+    },
+    {
+      "id": "news-4",
+      "description": "Programming Code",
+      "imageUrl": "https://picsum.photos/seed/news4/600/400",
+      "imageHint": "code programming"
+    },
+    {
+      "id": "news-5",
+      "description": "Public Health Campaign",
+      "imageUrl": "https://picsum.photos/seed/news5/600/400",
+      "imageHint": "health doctor"
+    },
+    {
+      "id": "news-6",
+      "description": "Sports Highlights",
+      "imageUrl": "https://picsum.photos/seed/news6/600/400",
+      "imageHint": "basketball action"
     }
   ]
 }
