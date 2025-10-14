@@ -12,6 +12,7 @@ import { Settings } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
+import { HeaderActions } from '../header-actions';
 
 export function NewsPortal() {
   const [location, setLocation] = useState<string | null>(null);
@@ -57,7 +58,7 @@ export function NewsPortal() {
   if (isLoading) {
     return (
       <div className="space-y-4">
-        <Skeleton className="h-10 w-48" />
+        <Skeleton className="h-10 w-full" />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Skeleton className="h-64 w-full" />
           <Skeleton className="h-64 w-full" />
@@ -81,6 +82,7 @@ export function NewsPortal() {
             <TabsTrigger value="general">Noticias Generales</TabsTrigger>
             <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
           </TabsList>
+          <HeaderActions />
         </div>
         <TabsContent value="general">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

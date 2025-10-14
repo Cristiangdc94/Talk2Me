@@ -8,6 +8,7 @@ import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status"
 import { MessageInput } from "@/components/chat/message-input";
 import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
 import type { Message, User } from "@/lib/types";
+import { HeaderActions } from "../header-actions";
 
 interface ChatAreaProps {
   chatId: string;
@@ -60,9 +61,11 @@ export function ChatArea({
 
   return (
     <div className="flex flex-col h-full">
-      <header className="flex items-center gap-3 p-4 border-b shrink-0">
+      <header className="flex items-center gap-3 p-4 shrink-0">
         {icon}
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
+        <div className="flex-1" />
+        <HeaderActions />
       </header>
 
       <div className="flex-1 overflow-hidden">
