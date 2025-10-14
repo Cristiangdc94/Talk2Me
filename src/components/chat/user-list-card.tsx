@@ -61,38 +61,36 @@ export function UserListCard({ user, currentUserRole, userRole }: UserListCardPr
 
   return (
     <Card className="h-full flex flex-col text-center transition-all hover:shadow-lg hover:-translate-y-1 relative group">
+      {userRole && (
+        <Badge variant="secondary" className="absolute top-2 right-2 z-10">
+          {userRole}
+        </Badge>
+      )}
       {!isCurrentUser && (
-        <>
-          {userRole && (
-            <Badge variant="secondary" className="absolute top-2 right-2 z-10">
-              {userRole}
-            </Badge>
-          )}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                <MoreVertical className="h-4 w-4" />
-                <span className="sr-only">Más opciones</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuItem onClick={handleIgnore}>
-                <ShieldAlert className="mr-2 h-4 w-4" />
-                <span>Ignorar</span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+              <MoreVertical className="h-4 w-4" />
+              <span className="sr-only">Más opciones</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem onClick={handleIgnore}>
+              <ShieldAlert className="mr-2 h-4 w-4" />
+              <span>Ignorar</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleBlock}>
+              <Ban className="mr-2 h-4 w-4" />
+              <span>Bloquear</span>
+            </DropdownMenuItem>
+            {canDelete && (
+              <DropdownMenuItem onClick={handleDelete} className="text-destructive">
+                <Trash2 className="mr-2 h-4 w-4" />
+                <span>Eliminar</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleBlock}>
-                <Ban className="mr-2 h-4 w-4" />
-                <span>Bloquear</span>
-              </DropdownMenuItem>
-              {canDelete && (
-                <DropdownMenuItem onClick={handleDelete} className="text-destructive">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  <span>Eliminar</span>
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
 
       <CardHeader className="flex-1 flex flex-col items-center justify-center p-4">
