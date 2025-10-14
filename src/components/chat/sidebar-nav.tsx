@@ -74,25 +74,11 @@ export function SidebarNav() {
   };
 
   const handleChannelClick = (channel: (typeof channels)[0]) => {
-     openChat({
-      id: channel.id,
-      type: "channel",
-      title: channel.name,
-      icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
-      messages: channel.messages,
-    });
+     openChat(channel.id);
   }
 
   const handleDMClick = (dm: (typeof directMessages)[0]) => {
-    const recipient = users.find((u) => u.id === dm.userId);
-    if (!recipient) return;
-     openChat({
-      id: dm.id,
-      type: "dm",
-      title: dm.name,
-      icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
-      messages: dm.messages,
-    });
+     openChat(dm.id);
   }
 
   return (

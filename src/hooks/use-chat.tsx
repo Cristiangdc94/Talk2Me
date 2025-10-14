@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { createContext, useContext, useState, useCallback } from "react";
@@ -16,7 +17,7 @@ interface ChatState {
 
 interface ChatContextType {
   activeChat: ChatState | null;
-  openChat: (chat: ChatState) => void;
+  openChat: (id: string) => void;
   closeChat: () => void;
   activeChatId: string | null;
   setActiveChatId: (id: string | null) => void;
@@ -31,8 +32,8 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     setActiveChatIdState(id);
   }, []);
 
-  const openChat = useCallback((chat: ChatState) => {
-    setActiveChatIdState(chat.id);
+  const openChat = useCallback((id: string) => {
+    setActiveChatIdState(id);
   }, []);
 
   const closeChat = useCallback(() => {
