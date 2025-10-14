@@ -36,3 +36,10 @@ export interface NewsArticle {
   imageUrl: string;
   link: string;
 }
+
+export interface FriendStatus {
+  id: string;
+  user: User;
+  statusText: string;
+  timestamp: string;
+}

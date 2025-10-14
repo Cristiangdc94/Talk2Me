@@ -1,5 +1,5 @@
 
-import { User, Channel, DirectMessage, NewsArticle } from './types';
+import { User, Channel, DirectMessage, NewsArticle, FriendStatus } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 const findImage = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || '';
@@ -12,6 +12,15 @@ export const users: User[] = [
   { id: '5', name: 'Diana', avatarUrl: findImage('avatar-5'), status: 'offline', lastSeen: 'ayer', relationship: 'friend', email: 'diana@example.com' },
   { id: '6', name: 'Eva', avatarUrl: findImage('avatar-6'), status: 'online', email: 'eva@example.com' },
   { id: '7', name: 'admin', avatarUrl: findImage('avatar-1'), status: 'online', role: 'admin', email: 'admin@example.com' },
+];
+
+const friends = users.filter(u => u.relationship === 'friend');
+
+export const friendStatuses: FriendStatus[] = [
+  { id: 's1', user: friends[0], statusText: '¡Qué interesante el nuevo lenguaje de programación! Definitivamente tengo que probarlo.', timestamp: 'hace 2 horas' },
+  { id: 's2', user: friends[1], statusText: 'No puedo creer la victoria del equipo local anoche. ¡Qué partidazo!', timestamp: 'hace 5 horas' },
+  { id: 's3', user: friends[0], statusText: 'La nueva campaña de salud es justo lo que la ciudad necesitaba. ¡Bravo!', timestamp: 'hace 1 día' },
+  { id: 's4', user: friends[1], statusText: 'Pensando en las implicaciones de la IA para el futuro... da un poco de vértigo.', timestamp: 'hace 2 días' },
 ];
 
 export const channels: Channel[] = [

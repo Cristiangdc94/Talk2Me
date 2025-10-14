@@ -4,7 +4,7 @@
 import { useState, useEffect, useTransition } from 'react';
 import Cookies from 'js-cookie';
 import { NewsArticleCard } from './news-article-card';
-import { newsArticles } from '@/lib/mock-data';
+import { newsArticles, friendStatuses } from '@/lib/mock-data';
 import type { NewsArticle } from '@/lib/types';
 import { Button } from '../ui/button';
 import { Loader2, Settings, PlusCircle } from 'lucide-react';
@@ -13,6 +13,9 @@ import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
 import { generateNewsArticles } from '@/ai/flows/generate-news-articles';
 import { Card, CardContent } from '@/components/ui/card';
+import { FriendStatusCard } from './friend-status-card';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Separator } from '../ui/separator';
 
 function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGenerating: boolean }) {
   return (
@@ -122,23 +125,58 @@ export function NewsPortal({ view }: NewsPortalProps) {
         onSave={handleSavePreferences}
         currentPreferences={preferences}
       />
-      {view === 'foryou' && preferences.length === 0 ? (
-         <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-muted/50 min-h-[400px]">
-             <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
-             <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
-             <Button onClick={() => setDialogOpen(true)}>
-                 <Settings className="mr-2 h-4 w-4" />
-                 Abrir Preferencias
-             </Button>
-         </div>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {newsToShow.map((article) => (
-            <NewsArticleCard key={article.id} article={article} />
-          ))}
-          <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
-        </div>
-      )}
+
+      <div className='space-y-8'>
+        {view === 'foryou' && (
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight mb-4">Opiniones de tus amigos</h2>
+             <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {friendStatuses.map((status) => (
+                  <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                    <div className="p-1 h-full">
+                       <FriendStatusCard status={status} />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="ml-12" />
+              <CarouselNext className="mr-12" />
+            </Carousel>
+          </div>
+        )}
+        
+        {view === 'foryou' && <Separator />}
+
+        {view === 'foryou' && preferences.length === 0 ? (
+          <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-muted/50 min-h-[400px]">
+              <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
+              <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
+              <Button onClick={() => setDialogOpen(true)}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Abrir Preferencias
+              </Button>
+          </div>
+        ) : (
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight mb-4">
+              {view === 'foryou' ? 'Para Tí' : 'Noticias Generales'}
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {newsToShow.map((article) => (
+                <NewsArticleCard key={article.id} article={article} />
+              ))}
+              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }
