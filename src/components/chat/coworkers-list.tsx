@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { UserListCard } from "@/components/chat/user-list-card";
-import { User } from "@/lib/types";
+import { User, CompanyRole } from "@/lib/types";
 import { Plus, Tag } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
@@ -35,6 +35,11 @@ export function CoworkersList({
   const [groupedUsers, setGroupedUsers] = useState(initialGroupedUsers);
   const [isCreateGroupOpen, setCreateGroupOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(users.find(u => u.id === '1'));
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     setGroupedUsers(initialGroupedUsers);
@@ -57,6 +62,10 @@ export function CoworkersList({
     }
     setCreateGroupOpen(false);
   };
+  
+  if (!isMounted) {
+    return null; // Or a loading spinner
+  }
 
   return (
     <>
@@ -88,12 +97,13 @@ export function CoworkersList({
                             <CardContent className="flex-1 overflow-hidden p-0">
                                 <ScrollArea className="h-full">
                                     <div className="space-y-4 transition-colors p-4 min-h-[100px]">
-                                        {users.map((user) => (
-                                            <UserListCard key={user.id} user={user} />
-                                        ))}
-                                        {users.length === 0 && (
+                                        {users.length > 0 ? (
+                                            users.map((user) => (
+                                                <UserListCard key={user.id} user={user} currentUserRole={currentUserRole} />
+                                            ))
+                                        ) : (
                                             <div className="text-center py-4 text-sm text-muted-foreground h-24 flex items-center justify-center">
-                                            No hay compañeros en este grupo.
+                                                No hay compañeros en este grupo.
                                             </div>
                                         )}
                                     </div>

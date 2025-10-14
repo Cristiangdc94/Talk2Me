@@ -14,6 +14,8 @@ export const users: User[] = [
     email: 'you@example.com',
     companyRoles: {
       'InnovateCorp': 'CEO',
+      'DataSolutions': 'Partner',
+      'QuantumLeap': 'Partner',
     } 
   },
   { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend', email: 'alice@example.com' },

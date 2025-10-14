@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MessageSquare, Phone, MoreVertical, ShieldAlert, Trash2, Ban } from "lucide-react";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { useToast } from "@/hooks/use-toast";
-import type { User } from "@/lib/types";
+import type { User, CompanyRole } from "@/lib/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,11 +17,15 @@ import {
 
 interface UserListCardProps {
   user: User;
+  currentUserRole?: CompanyRole;
 }
 
-export function UserListCard({ user }: UserListCardProps) {
+export function UserListCard({ user, currentUserRole }: UserListCardProps) {
   const { toast } = useToast();
   
+  const privilegedRoles: CompanyRole[] = ['Administrador', 'CEO', 'Jefe de proyecto'];
+  const canDelete = currentUserRole && privilegedRoles.includes(currentUserRole);
+
   const handleCall = () => {
     toast({
       title: `Llamando a ${user.name}...`,
@@ -70,10 +74,12 @@ export function UserListCard({ user }: UserListCardProps) {
             <Ban className="mr-2 h-4 w-4" />
             <span>Bloquear</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDelete} className="text-destructive">
-            <Trash2 className="mr-2 h-4 w-4" />
-            <span>Eliminar</span>
-          </DropdownMenuItem>
+          {canDelete && (
+            <DropdownMenuItem onClick={handleDelete} className="text-destructive">
+              <Trash2 className="mr-2 h-4 w-4" />
+              <span>Eliminar</span>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 
