@@ -54,11 +54,8 @@ export function SignupForm() {
     // Simulate setting an auth token
     Cookies.set("auth_token", "mock_new_user_token_for_demo", { expires: 1 });
     
-    // Redirect to the main app page after a short delay
-    setTimeout(() => {
-      router.push("/");
-      router.refresh();
-    }, 1000);
+    // Force a full page reload to ensure the new auth state is recognized.
+    window.location.href = '/';
   }
 
   return (

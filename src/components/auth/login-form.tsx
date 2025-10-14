@@ -49,16 +49,14 @@ export function LoginForm() {
         description: '¡Bienvenido de nuevo, administrador! Redirigiendo...',
       });
       Cookies.set('auth_token', 'mock_admin_token_for_demo', {expires: 1});
-      router.push('/');
-      router.refresh();
+      window.location.href = '/';
     } else {
       toast({
         title: 'Inicio de Sesión Exitoso',
         description: '¡Bienvenido de nuevo! Redirigiendo...',
       });
       Cookies.set('auth_token', 'mock_user_token_for_demo', {expires: 1});
-      router.push('/');
-      router.refresh();
+      window.location.href = '/';
     }
   }
 
