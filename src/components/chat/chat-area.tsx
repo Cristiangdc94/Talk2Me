@@ -3,16 +3,21 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Phone } from "lucide-react";
+import { Phone, MoreVertical, Trash2, Ban, Info } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 import { MessageInput } from "@/components/chat/message-input";
 import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
 import type { Message, User } from "@/lib/types";
 import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { MessageStatus } from "./message-status";
 
 interface ChatAreaProps {
   chatId: string;
@@ -51,7 +56,6 @@ export function ChatArea({
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       user: currentUser,
-      status: 'sent'
     };
     
     setMessages(prevMessages => [...prevMessages, newMessage]);
@@ -68,9 +72,45 @@ export function ChatArea({
     });
   };
 
+  const handleMenuAction = (action: 'Eliminar' | 'Bloquear' | 'Detalles') => {
+    let description = '';
+    if (action === 'Eliminar') description = `Has eliminado el chat con ${title}.`;
+    if (action === 'Bloquear') description = `Has bloqueado a ${title}.`;
+    if (action === 'Detalles') description = `Mostrando detalles de ${title}.`;
+
+    toast({
+      title: `${action} Chat`,
+      description: `${description} (Simulación)`,
+    });
+  }
+
   return (
     <div className="flex flex-col h-full">
       <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
+        {chatType === "dm" && (
+           <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-5 w-5" />
+                <span className="sr-only">Más opciones</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem onClick={() => handleMenuAction('Detalles')}>
+                <Info className="mr-2 h-4 w-4" />
+                <span>Detalles</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleMenuAction('Bloquear')} className="text-destructive">
+                <Ban className="mr-2 h-4 w-4" />
+                <span>Bloquear</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleMenuAction('Eliminar')} className="text-destructive">
+                <Trash2 className="mr-2 h-4 w-4" />
+                <span>Eliminar</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
         {icon}
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
         <div className="flex-1" />
@@ -121,7 +161,11 @@ export function ChatArea({
                           )}>
                             {message.timestamp}
                           </time>
-                          {isSentByCurrentUser && <MessageStatus status={message.status} />}
+                          {isSentByCurrentUser && (
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary-foreground/70">
+                                <path d="M2.5 8L5.5 11L13.5 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          )}
                         </div>
                       </div>
                       {isSentByCurrentUser && (
