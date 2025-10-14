@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -12,11 +11,11 @@ import { Button } from '../ui/button';
 import { Settings } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
+import { useNewsPreferences } from '@/hooks/use-news-preferences';
 
 export function NewsPortal() {
   const [location, setLocation] = useState<string | null>(null);
-  const [preferences, setPreferences] = useState<string[]>([]);
-  const [isDialogOpen, setDialogOpen] = useState(false);
+  const { preferences, setPreferences, isDialogOpen, setDialogOpen } = useNewsPreferences();
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export function NewsPortal() {
     if (savedPrefs) {
       setPreferences(JSON.parse(savedPrefs));
     }
-  }, []);
+  }, [setPreferences]);
 
   const handleSavePreferences = (newPrefs: string[]) => {
     setPreferences(newPrefs);
@@ -82,10 +81,6 @@ export function NewsPortal() {
             <TabsTrigger value="general">Noticias Generales</TabsTrigger>
             <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
           </TabsList>
-          <Button variant="ghost" size="icon" onClick={() => setDialogOpen(true)}>
-            <Settings className="h-5 w-5" />
-            <span className="sr-only">Configurar noticias</span>
-          </Button>
         </div>
         <TabsContent value="general">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
