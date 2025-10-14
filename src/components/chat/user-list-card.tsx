@@ -23,10 +23,18 @@ export function UserListCard({ user }: UserListCardProps) {
 
   const handleCall = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast({
-      title: `Llamando a ${user.name}...`,
-      description: "Esta función es una demostración.",
-    });
+    if (user.status === 'online') {
+      toast({
+        title: `Llamando a ${user.name}...`,
+        description: "Esta función es una demostración.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: `No se puede llamar a ${user.name}`,
+        description: `El usuario está ${user.status === 'offline' ? 'desconectado' : 'ocupado'}.`,
+      });
+    }
   };
 
   return (
@@ -39,7 +47,11 @@ export function UserListCard({ user }: UserListCardProps) {
           <UserAvatarWithStatus user={user} />
           <div>
             <p className="font-semibold">{user.name}</p>
-            <p className="text-sm text-muted-foreground">{user.status === 'online' ? 'En línea' : user.lastSeen}</p>
+            <p className="text-sm text-muted-foreground">
+              {user.status === 'online' ? 'En línea' : 
+               user.status === 'busy' ? 'Ocupado' :
+               user.lastSeen}
+            </p>
           </div>
         </div>
         <Button variant="ghost" size="icon" onClick={handleCall}>

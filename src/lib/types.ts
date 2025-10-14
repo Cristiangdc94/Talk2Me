@@ -3,7 +3,7 @@ export interface User {
   id: string;
   name: string;
   avatarUrl: string;
-  status: 'online' | 'offline';
+  status: 'online' | 'offline' | 'busy';
   lastSeen?: string;
   role?: 'admin';
   relationship?: 'friend' | 'coworker';

@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import type { User } from "@/lib/types";
@@ -9,6 +10,11 @@ interface UserAvatarWithStatusProps {
 
 export function UserAvatarWithStatus({ user, className }: UserAvatarWithStatusProps) {
   const nameInitial = user.name.charAt(0).toUpperCase();
+  const statusColor = {
+    online: 'bg-green-500',
+    offline: 'bg-gray-400',
+    busy: 'bg-orange-500',
+  };
 
   return (
     <div className="relative">
@@ -19,7 +25,7 @@ export function UserAvatarWithStatus({ user, className }: UserAvatarWithStatusPr
       <span
         className={cn(
           "absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full border-2 border-background",
-          user.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
+          statusColor[user.status]
         )}
       />
     </div>
