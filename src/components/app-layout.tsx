@@ -53,7 +53,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           {isAuthPage ? (
             <AuthLayout>{children}</AuthLayout>
           ) : (
-            <div className="mx-auto max-w-[1920px] h-full rounded-xl">
+            <div className="mx-auto max-w-[1920px] h-full rounded-xl overflow-hidden">
               <SidebarProvider>
                 <div className="h-full flex bg-background rounded-xl">
                   <Sidebar>
