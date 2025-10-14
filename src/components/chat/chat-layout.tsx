@@ -133,14 +133,6 @@ export function ChatLayout() {
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
-                                        <Button 
-                                            variant="ghost" 
-                                            size="icon" 
-                                            className="h-7 w-7"
-                                            onClick={(e) => handleCall(e, dm.name)}
-                                        >
-                                            <Phone className="h-4 w-4" />
-                                        </Button>
                                     </div>
                                 </div>
                             )
