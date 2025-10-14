@@ -83,4 +83,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  .sidebar-border-gradient {
+    border-image: linear-gradient(
+        to bottom,
+        hsl(var(--sidebar-border)),
+        hsl(var(--sidebar-border) / 0),
+        hsl(var(--sidebar-border))
+      )
+      1;
+  }
 }
