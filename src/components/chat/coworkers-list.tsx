@@ -94,7 +94,7 @@ export function CoworkersList({
   
   const handleCorporateChat = (companyName: string) => {
     const channelId = `channel-${companyName.toLowerCase().replace(/\s/g, '-')}-chat`;
-    const channelExists = channels.find(c => c.id === channelId);
+    const channelExists = initialChannels.find(c => c.id === channelId) || channels.find(c => c.id === channelId);
     if (channelExists) {
         openChat(channelId);
     } else {
@@ -131,7 +131,8 @@ export function CoworkersList({
 
                 return (
                     <div key={company} className="w-[320px] shrink-0 h-full">
-                        <Card className="h-full flex flex-col bg-muted/50 relative overflow-hidden group/card">
+                        <Card className="h-full flex flex-col bg-muted/50 group/card overflow-hidden">
+
                              <div className="absolute top-3 right-3 flex items-center gap-1">
                                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleCorporateChat(company)}>
                                     <MessageSquare className="h-4 w-4" />
