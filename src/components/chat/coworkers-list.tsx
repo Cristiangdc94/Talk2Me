@@ -104,7 +104,16 @@ export function CoworkersList({
   
   const handleCorporateChat = (companyName: string) => {
     const channelId = `channel-${companyName.toLowerCase().replace(/\s/g, '-')}-chat`;
-    openChat(channelId);
+    const channelExists = channels.find(c => c.id === channelId);
+    if (channelExists) {
+        openChat(channelId);
+    } else {
+        toast({
+            variant: "destructive",
+            title: "Canal no encontrado",
+            description: `El canal de chat para ${companyName} aún no ha sido creado.`
+        });
+    }
   };
 
   const handleSaveManagedGroup = (originalName: string, newName: string, newDescription: string, newUsers: string[]) => {
