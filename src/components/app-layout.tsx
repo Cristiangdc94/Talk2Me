@@ -17,7 +17,7 @@ import { HeaderActions } from "./header-actions";
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-background">
+      <div className="flex h-screen bg-background text-foreground">
         <Sidebar>
           <SidebarHeader className="p-4">
             <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <HeaderActions />
             </div>
           </header>
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex-1 overflow-auto bg-muted/50">{children}</main>
         </div>
       </div>
     </SidebarProvider>
