@@ -25,6 +25,7 @@ export function CoworkersList({
   }, [initialGroupedUsers]);
 
   useEffect(() => {
+    // react-beautiful-dnd doesn't work with SSR, so we ensure it only renders on the client.
     setIsBrowser(true);
   }, []);
 
@@ -59,11 +60,6 @@ export function CoworkersList({
       
       newGroupedUsers[sourceDroppableId] = sourceItems;
       newGroupedUsers[destDroppableId] = destItems;
-
-      // Do not delete empty groups as they serve as drop targets
-      // if (newGroupedUsers[sourceDroppableId].length === 0) {
-      //   delete newGroupedUsers[sourceDroppableId];
-      // }
     }
 
     setGroupedUsers(newGroupedUsers);
@@ -92,7 +88,7 @@ export function CoworkersList({
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className={cn(
-                                "space-y-4 transition-colors p-1", 
+                                "space-y-4 transition-colors p-1 min-h-[100px]", 
                                 snapshot.isDraggingOver ? 'bg-accent' : 'bg-transparent'
                             )}
                             >
