@@ -73,7 +73,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       <UserNav />
                     </SidebarFooter>
                   </Sidebar>
-                  <div className="flex-1 flex flex-col overflow-hidden">
+                  <div className="flex-1 flex flex-col overflow-hidden rounded-tl-xl rounded-bl-xl">
                      <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:hidden">
                        <SidebarTrigger />
                     </header>
