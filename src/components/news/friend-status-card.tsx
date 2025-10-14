@@ -11,7 +11,7 @@ interface FriendStatusCardProps {
 
 export function FriendStatusCard({ status }: FriendStatusCardProps) {
   return (
-    <Card className="h-full w-full">
+    <Card className="h-full w-full bg-card">
       <CardHeader className="flex flex-row items-center gap-3 space-y-0 p-4">
         <UserAvatarWithStatus user={status.user} />
         <div className="grid gap-1">

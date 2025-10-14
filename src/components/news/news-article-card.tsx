@@ -20,7 +20,7 @@ export function NewsArticleCard({ article }: NewsArticleCardProps) {
 
   return (
     <Link href={article.link} target="_blank" rel="noopener noreferrer">
-      <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
+      <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 bg-card">
         <CardHeader className="p-0">
           <div className="relative h-48 w-full">
             <Image

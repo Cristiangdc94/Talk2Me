@@ -32,7 +32,7 @@ function CompanyNewsCard({ article, currentUserId }: { article: CompanyNewsArtic
         .join(', ');
 
     return (
-        <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col">
+        <Card className="h-full overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col bg-card">
             <CardHeader className="p-0">
                  <Link href={article.link} target="_blank" rel="noopener noreferrer" className="block relative h-48 w-full">
                     <Image
