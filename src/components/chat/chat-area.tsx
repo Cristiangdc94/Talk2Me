@@ -23,28 +23,6 @@ interface ChatAreaProps {
   chatType: "channel" | "dm";
 }
 
-const assignMessageStatus = (msgs: Message[], currentUserId: string): Message[] => {
-    let lastSentMessageId: string | null = null;
-    // Find the ID of the last message sent by the current user
-    for (let i = msgs.length - 1; i >= 0; i--) {
-      if (msgs[i].user.id === currentUserId) {
-        lastSentMessageId = msgs[i].id;
-        break;
-      }
-    }
-
-    // Map over messages to assign status
-    return msgs.map(msg => {
-      if (msg.user.id === currentUserId) {
-        // If it's the last sent message, status is 'sent', otherwise 'read'
-        return { ...msg, status: msg.id === lastSentMessageId ? 'sent' : 'read' };
-      }
-      // Messages from other users don't need a status
-      return msg;
-    });
-};
-
-
 export function ChatArea({
   chatId,
   title,
@@ -53,14 +31,13 @@ export function ChatArea({
   currentUser,
   chatType,
 }: ChatAreaProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newMessages = assignMessageStatus(initialMessages, currentUser.id);
-    setMessages(newMessages);
-  }, [initialMessages, currentUser.id]);
+    setMessages(initialMessages);
+  }, [initialMessages]);
 
   useEffect(() => {
     if (scrollViewportRef.current) {
@@ -74,11 +51,10 @@ export function ChatArea({
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       user: currentUser,
+      status: 'read'
     };
     
-    // Create new list of messages and assign statuses
-    const updatedMessages = assignMessageStatus([...messages, newMessage], currentUser.id);
-    setMessages(updatedMessages);
+    setMessages(prevMessages => [...prevMessages, newMessage]);
   };
   
   const handleSuggestionClick = (suggestion: string) => {
