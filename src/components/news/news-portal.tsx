@@ -2,16 +2,17 @@
 
 import { useState, useEffect, useTransition } from 'react';
 import Cookies from 'js-cookie';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { NewsArticleCard } from './news-article-card';
 import { newsArticles } from '@/lib/mock-data';
 import type { NewsArticle } from '@/lib/types';
 import { Button } from '../ui/button';
-import { Loader2, Settings, Sparkles, PlusCircle } from 'lucide-react';
+import { Loader2, Settings, PlusCircle } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
 import { generateNewsArticles } from '@/ai/flows/generate-news-articles';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 
 function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGenerating: boolean }) {
   return (
@@ -91,6 +92,10 @@ export function NewsPortal() {
     (article) => article.location === location || article.location === 'global'
   );
 
+  const preferredNews = generalNews.filter(
+    (article) => preferences.length === 0 || preferences.includes(article.category)
+  );
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -112,14 +117,45 @@ export function NewsPortal() {
         onSave={handleSavePreferences}
         currentPreferences={preferences}
       />
-      <div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {generalNews.map((article) => (
-            <NewsArticleCard key={article.id} article={article} />
-          ))}
-          <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
+      <Tabs defaultValue="general" className="h-full flex flex-col">
+        <div className="flex items-center justify-between mb-4">
+          <TabsList>
+            <TabsTrigger value="general">Noticias Generales</TabsTrigger>
+            <TabsTrigger value="foryou">Para Ti</TabsTrigger>
+          </TabsList>
+          <Button variant="outline" size="sm" onClick={() => setDialogOpen(true)}>
+            <Settings className="mr-2 h-4 w-4" />
+            Configurar
+          </Button>
         </div>
-      </div>
+        <TabsContent value="general" className="flex-1">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {generalNews.map((article) => (
+              <NewsArticleCard key={article.id} article={article} />
+            ))}
+            <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
+          </div>
+        </TabsContent>
+        <TabsContent value="foryou" className="flex-1">
+           {preferences.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {preferredNews.map((article) => (
+                <NewsArticleCard key={article.id} article={article} />
+              ))}
+              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
+            </div>
+           ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-muted/50">
+                <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
+                <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
+                <Button onClick={() => setDialogOpen(true)}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    Abrir Preferencias
+                </Button>
+            </div>
+           )}
+        </TabsContent>
+      </Tabs>
     </>
   );
 }
