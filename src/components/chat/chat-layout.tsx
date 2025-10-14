@@ -5,12 +5,19 @@ import { useChat } from "@/hooks/use-chat";
 import { ChatArea } from "./chat-area";
 import { channels, directMessages, users } from "@/lib/mock-data";
 import { Button } from "../ui/button";
-import { Hash, Lock, User, Phone } from "lucide-react";
+import { Hash, Lock, User, Phone, MoreVertical, Archive, Ban, Trash2 } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { Badge } from "../ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function ChatLayout() {
     const { activeChat, activeChatId, openChat } = useChat();
@@ -28,6 +35,30 @@ export function ChatLayout() {
           description: "Esta función es una demostración.",
         });
     };
+
+    const handleArchive = (userName: string) => {
+        toast({
+            title: 'Chat Archivado',
+            description: `Tu conversación con ${userName} ha sido archivada.`,
+        });
+    };
+
+    const handleBlock = (userName: string) => {
+        toast({
+            variant: 'destructive',
+            title: 'Usuario Bloqueado',
+            description: `Has bloqueado a ${userName}. No recibirás más mensajes de este usuario.`,
+        });
+    };
+
+    const handleDelete = (userName: string) => {
+        toast({
+            variant: 'destructive',
+            title: 'Amigo Eliminado',
+            description: `${userName} ha sido eliminado de tu lista de amigos.`,
+        });
+    };
+
 
     return (
         <div className="flex h-full w-full bg-background">
@@ -73,14 +104,43 @@ export function ChatLayout() {
                                             )}
                                         </div>
                                     </Button>
-                                    <Button 
-                                        variant="ghost" 
-                                        size="icon" 
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 opacity-0 group-hover:opacity-100"
-                                        onClick={(e) => handleCall(e, dm.name)}
-                                    >
-                                        <Phone className="h-4 w-4" />
-                                    </Button>
+                                    <div className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-auto flex items-center opacity-0 group-hover:opacity-100 gap-1">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button 
+                                                    variant="ghost" 
+                                                    size="icon" 
+                                                    className="h-7 w-7"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    <MoreVertical className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent side="right" align="start" onClick={(e) => e.stopPropagation()}>
+                                                <DropdownMenuItem onClick={() => handleArchive(dm.name)}>
+                                                    <Archive className="mr-2 h-4 w-4" />
+                                                    <span>Archivar chat</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => handleBlock(dm.name)}>
+                                                    <Ban className="mr-2 h-4 w-4" />
+                                                    <span>Bloquear</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(dm.name)}>
+                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    <span>Eliminar amigo</span>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                        <Button 
+                                            variant="ghost" 
+                                            size="icon" 
+                                            className="h-7 w-7"
+                                            onClick={(e) => handleCall(e, dm.name)}
+                                        >
+                                            <Phone className="h-4 w-4" />
+                                        </Button>
+                                    </div>
                                 </div>
                             )
                         })}
