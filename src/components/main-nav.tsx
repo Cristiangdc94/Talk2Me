@@ -17,16 +17,16 @@ export function MainNav({ activeTab, onTabChange }: MainNavProps) {
   ];
 
   return (
-    <div className="border-b">
-      <nav className="flex space-x-4" aria-label="Tabs">
+    <div className="bg-sidebar rounded-t-lg p-2">
+      <nav className="flex space-x-2" aria-label="Tabs">
         {navItems.map((item) => (
           <Button
             key={item.id}
             variant="ghost"
             onClick={() => onTabChange(item.id)}
             className={cn(
-              'rounded-none border-b-2 border-transparent px-4 py-2 text-base font-medium text-muted-foreground hover:text-primary',
-              activeTab === item.id ? 'border-primary text-primary' : ''
+              'flex-1 justify-center rounded-md px-3 py-2 text-base font-medium text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground',
+              activeTab === item.id ? 'bg-sidebar-accent text-sidebar-accent-foreground shadow-sm' : ''
             )}
           >
             {item.label}
