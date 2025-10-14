@@ -37,8 +37,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <UserNav />
           </SidebarFooter>
         </Sidebar>
-        <div className="flex flex-col flex-1 h-screen w-full">
-          <header className="flex items-center h-14 px-4 border-b shrink-0 bg-background">
+        <div className="flex flex-col flex-1 h-screen overflow-hidden">
+          <header className="flex items-center h-14 px-4 border-b shrink-0 bg-background w-full">
             <SidebarTrigger className="md:hidden" />
             <div className="flex items-center w-full">
               <MainNav />
