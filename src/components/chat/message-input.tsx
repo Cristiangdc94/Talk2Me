@@ -82,7 +82,7 @@ export function MessageInput({
           onKeyDown={handleKeyPress}
           placeholder="Escribe un mensaje..."
           rows={1}
-          className="pr-20 min-h-0 resize-none"
+          className="pr-14 min-h-0 resize-none"
         />
         <Button
           type="submit"
