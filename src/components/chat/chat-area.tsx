@@ -62,11 +62,9 @@ export function ChatArea({
   }, [chatId, initialMessages, currentUser.id]);
 
   useEffect(() => {
-    // Scroll to bottom when new messages are added or on initial load
+    // Scroll to bottom when messages change
     if (scrollViewportRef.current) {
-      scrollViewportRef.current.scrollTo({
-        top: scrollViewportRef.current.scrollHeight
-      });
+      scrollViewportRef.current.scrollTop = scrollViewportRef.current.scrollHeight;
     }
   }, [messages, chatId]);
 
@@ -107,7 +105,7 @@ export function ChatArea({
       </header>
 
       <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
-          <div className="p-4 space-y-4">
+          <div className="p-4 space-y-4 flex flex-col justify-end min-h-full">
             {messages.map((message) => {
               const isSentByCurrentUser = message.user.id === currentUser.id;
               return (
