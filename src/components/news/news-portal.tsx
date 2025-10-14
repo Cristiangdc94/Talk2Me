@@ -118,13 +118,10 @@ export function NewsPortal() {
         currentPreferences={preferences}
       />
       <Tabs defaultValue="general">
-        <div className="flex items-center mb-4">
-          <TabsList>
-            <TabsTrigger value="general">Noticias Generales</TabsTrigger>
-            <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
-          </TabsList>
-          <div className="flex-1" />
-        </div>
+        <TabsList className='mb-4'>
+          <TabsTrigger value="general">Noticias Generales</TabsTrigger>
+          <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
+        </TabsList>
         <TabsContent value="general">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {generalNews.map((article) => (

@@ -9,7 +9,6 @@ import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status"
 import { MessageInput } from "@/components/chat/message-input";
 import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
 import type { Message, User } from "@/lib/types";
-import { HeaderActions } from "../header-actions";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
 
