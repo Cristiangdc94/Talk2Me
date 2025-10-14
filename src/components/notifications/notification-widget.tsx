@@ -10,6 +10,7 @@ import { NotificationList } from "./notification-list";
 import { ThemeToggle } from "../theme-toggle";
 import { useChat } from "@/hooks/use-chat";
 import type { Notification } from "@/lib/types";
+import { SidebarTrigger } from "../ui/sidebar";
 
 export function NotificationWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,8 @@ export function NotificationWidget() {
     <div
       className="fixed z-50 flex items-center gap-2 bottom-8 right-8"
     >
-        <div className="bg-primary text-primary-foreground rounded-full shadow-lg">
+        <div className="bg-primary text-primary-foreground rounded-full shadow-lg flex items-center">
+            <SidebarTrigger />
             <ThemeToggle />
         </div>
         <Popover open={isOpen} onOpenChange={setIsOpen}>

@@ -233,8 +233,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="flex-1">
                     <main className="flex-1 flex flex-col bg-background rounded-r-xl main-content-fade h-full">
-                       <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:flex">
-                         <SidebarTrigger />
+                       <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0">
                       </header>
                       <div className="w-full overflow-auto">
                         {children}
