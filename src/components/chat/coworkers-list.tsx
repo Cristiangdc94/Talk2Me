@@ -6,7 +6,7 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User } from "@/lib/types";
 import { GripVertical, Plus } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
@@ -41,7 +41,6 @@ export function CoworkersList({
   }, [initialGroupedUsers]);
 
   useEffect(() => {
-    // react-beautiful-dnd doesn't work with SSR, so we ensure it only renders on the client.
     setIsBrowser(true);
   }, []);
 
@@ -58,18 +57,15 @@ export function CoworkersList({
     const newGroupedUsers = { ...groupedUsers };
 
     if (sourceDroppableId === destDroppableId) {
-      // Reordering within the same list
       const items = Array.from(newGroupedUsers[sourceDroppableId]);
       const [reorderedItem] = items.splice(source.index, 1);
       items.splice(destination.index, 0, reorderedItem);
       newGroupedUsers[sourceDroppableId] = items;
     } else {
-      // Moving from one list to another
       const sourceItems = Array.from(newGroupedUsers[sourceDroppableId]);
       const destItems = Array.from(newGroupedUsers[destDroppableId] || []);
       const [movedItem] = sourceItems.splice(source.index, 1);
       
-      // Update company property of the moved item
       movedItem.company = destDroppableId === 'Otros' ? undefined : destDroppableId;
 
       destItems.splice(destination.index, 0, movedItem);
@@ -91,7 +87,6 @@ export function CoworkersList({
     setCreateGroupOpen(false);
   };
   
-  // react-beautiful-dnd doesn't work with SSR, so we only render it on the client
   if (!isBrowser) {
       return null;
   }
@@ -110,7 +105,8 @@ export function CoworkersList({
                 <div key={company} className="w-[320px] shrink-0 h-full">
                 <Card className="h-full flex flex-col bg-muted/50">
                     <CardHeader>
-                        <CardTitle className='text-lg'>{company}</CardTitle>
+                        <CardTitle className='font-bold text-lg'>{company}</CardTitle>
+                        <CardDescription className='text-sm text-muted-foreground'>Descripción del grupo de la empresa.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1 overflow-hidden p-0">
                         <ScrollArea className="h-full">
