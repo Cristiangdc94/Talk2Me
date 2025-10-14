@@ -100,7 +100,7 @@ export function ChatLayout() {
                                             <span className={cn("font-medium truncate", statusColor[user.status])}>{dm.name}</span>
                                             {dm.unreadCount && dm.unreadCount > 0 && (
                                                 <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs shrink-0">
-                                                {dm.unreadCount > 9 ? "+9" : dm.unreadCount}
+                                                    {dm.unreadCount > 9 ? "+9" : dm.unreadCount}
                                                 </Badge>
                                             )}
                                         </div>
