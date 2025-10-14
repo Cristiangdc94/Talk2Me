@@ -82,22 +82,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-@layer utilities {
-  .sidebar-border-gradient {
-    border-color: transparent;
-    position: relative;
-  }
-  .sidebar-border-gradient::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, transparent, hsl(var(--border)), transparent);
-  }
-  .dark .sidebar-border-gradient::after {
-    background: linear-gradient(to bottom, transparent, hsl(var(--border)), transparent);
-  }
-}
