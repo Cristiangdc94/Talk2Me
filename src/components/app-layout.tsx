@@ -11,6 +11,7 @@ import {
 import { AppLogo } from '@/components/icons';
 import { SidebarNav } from '@/components/chat/sidebar-nav';
 import { UserNav } from '@/components/chat/user-nav';
+import { ChatDialog } from './chat/chat-dialog';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -35,16 +36,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <div className="flex flex-1 flex-col overflow-hidden">
-          <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
+           <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
              <SidebarTrigger />
           </header>
           <main className="flex-1 overflow-auto bg-background">
-            <div className="h-full">
+            <div className="w-full h-full">
               {children}
             </div>
           </main>
         </div>
       </div>
+      <ChatDialog />
     </SidebarProvider>
   );
 }

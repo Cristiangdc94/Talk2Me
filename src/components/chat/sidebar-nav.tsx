@@ -1,4 +1,3 @@
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -25,7 +24,7 @@ import {
   SidebarMenuButton,
   SidebarMenuAction,
 } from "@/components/ui/sidebar";
-import { channels, directMessages } from "@/lib/mock-data";
+import { channels, directMessages, users } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -36,6 +35,8 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { cn } from "@/lib/utils";
+import { useChat } from "@/hooks/use-chat";
+import { UserAvatarWithStatus } from "./user-avatar-with-status";
 
 const mainNavLinks = [
   { href: "/friends", label: "Amigos", icon: Users },
@@ -46,6 +47,7 @@ const mainNavLinks = [
 export function SidebarNav() {
   const pathname = usePathname();
   const { toast } = useToast();
+  const { openChat, activeChatId } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
 
   const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou"), [pathname]);
@@ -58,6 +60,28 @@ export function SidebarNav() {
       description: "Esta función es una demostración.",
     });
   };
+
+  const handleChannelClick = (channel: (typeof channels)[0]) => {
+     openChat({
+      id: channel.id,
+      type: "channel",
+      title: channel.name,
+      icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
+      messages: channel.messages,
+    });
+  }
+
+  const handleDMClick = (dm: (typeof directMessages)[0]) => {
+    const recipient = users.find((u) => u.id === dm.id);
+    if (!recipient) return;
+     openChat({
+      id: dm.id,
+      type: "dm",
+      title: dm.name,
+      icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
+      messages: dm.messages,
+    });
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -136,14 +160,12 @@ export function SidebarNav() {
           {channels.map((channel) => (
             <SidebarMenuItem key={channel.id}>
               <SidebarMenuButton
-                asChild
-                isActive={pathname === `/channel/${channel.id}`}
+                onClick={() => handleChannelClick(channel)}
+                isActive={activeChatId === channel.id}
                 tooltip={channel.name}
               >
-                <Link href={`/channel/${channel.id}`}>
-                  {channel.type === "private" ? <Lock /> : <Hash />}
-                  <span>{channel.name}</span>
-                </Link>
+                {channel.type === "private" ? <Lock /> : <Hash />}
+                <span>{channel.name}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
@@ -167,14 +189,12 @@ export function SidebarNav() {
           {directMessages.map((dm) => (
             <SidebarMenuItem key={dm.id}>
               <SidebarMenuButton
-                asChild
-                isActive={pathname === `/dm/${dm.id}`}
+                onClick={() => handleDMClick(dm)}
+                isActive={activeChatId === dm.id}
                 tooltip={dm.name}
               >
-                <Link href={`/dm/${dm.id}`}>
-                  <User />
-                  <span>{dm.name}</span>
-                </Link>
+                <User />
+                <span>{dm.name}</span>
               </SidebarMenuButton>
               <SidebarMenuAction
                 onClick={(e) => handleCall(e, dm.name)}

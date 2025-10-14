@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { AppLayout } from "@/components/app-layout";
 import { NewsPreferencesProvider } from "@/hooks/use-news-preferences";
+import { ChatProvider } from "@/hooks/use-chat";
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -47,9 +48,9 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <NewsPreferencesProvider>
-        <div className="mx-auto max-w-[1920px] h-full border-x">
+        <ChatProvider>
           <AppLayout>{children}</AppLayout>
-        </div>
+        </ChatProvider>
       </NewsPreferencesProvider>
     </ThemeProvider>
   );
