@@ -218,11 +218,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <div className="border-transparent">
                     <Sidebar>
                       <SidebarHeader className="p-4 flex flex-col gap-4">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-start gap-4">
                           <h1 className="font-headline text-3xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">
                             Talk2Me
                           </h1>
-                           <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
                         </div>
                         <UserNav />
                       </SidebarHeader>
@@ -234,7 +233,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="flex-1">
                     <main className="flex-1 flex flex-col bg-background rounded-r-xl main-content-fade h-full">
-                       <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:hidden">
+                       <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 md:flex">
                          <SidebarTrigger />
                       </header>
                       <div className="w-full overflow-auto">
