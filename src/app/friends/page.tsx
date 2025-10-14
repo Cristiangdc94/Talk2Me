@@ -6,11 +6,11 @@ export default function FriendsPage() {
     (user) => user.relationship === "friend" && user.id !== "1"
   );
   return (
-      <UserList
-        title="Amigos"
-        description="Aquí puedes encontrar a todos tus amigos."
-        users={friends}
-        showAddContact
-      />
+    <UserList
+      title="Amigos"
+      description="Aquí puedes encontrar a todos tus amigos."
+      users={friends}
+      showAddContact
+    />
   );
 }

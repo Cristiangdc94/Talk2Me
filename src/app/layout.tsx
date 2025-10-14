@@ -32,10 +32,8 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased text-sm h-full bg-muted">
-        <div className="mx-auto max-w-[1920px] h-full border-x">
-          <LayoutProvider>{children}</LayoutProvider>
-          <Toaster />
-        </div>
+        <LayoutProvider>{children}</LayoutProvider>
+        <Toaster />
       </body>
     </html>
   );

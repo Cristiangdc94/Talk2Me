@@ -31,7 +31,7 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
 
   if (!mounted) {
     // Return a skeleton or null until the client is mounted to avoid hydration mismatches
-    return null;
+    return <div className="h-full w-full" />;
   }
   
   if (isAuthPage) {
@@ -47,7 +47,7 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <NewsPreferencesProvider>
-        <div className="h-full">
+        <div className="mx-auto max-w-[1920px] h-full border-x">
           <AppLayout>{children}</AppLayout>
         </div>
       </NewsPreferencesProvider>

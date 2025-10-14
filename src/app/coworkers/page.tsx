@@ -6,10 +6,10 @@ export default function CoworkersPage() {
     (user) => user.relationship === "coworker" && user.id !== "1"
   );
   return (
-      <UserList
-        title="Compañeros"
-        description="Estos son tus compañeros de trabajo en Talk2Me."
-        users={coworkers}
-      />
+    <UserList
+      title="Compañeros"
+      description="Estos son tus compañeros de trabajo en Talk2Me."
+      users={coworkers}
+    />
   );
 }
