@@ -26,7 +26,8 @@ import { Card, CardHeader, CardContent } from './ui/card';
 import { ChatArea } from './chat/chat-area';
 import { users } from '@/lib/mock-data';
 import { Button } from './ui/button';
-import { X, GripVertical, Minus, ArrowUp } from 'lucide-react';
+import { X, GripVertical, Minus, ArrowUp, Camera } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -55,6 +56,40 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef({ x: 0, y: 0 });
   const widgetRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const [showVideo, setShowVideo] = useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (showVideo) {
+      const getCameraPermission = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          setHasCameraPermission(true);
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        } catch (error) {
+          console.error("Error accessing camera:", error);
+          setHasCameraPermission(false);
+          toast({
+            variant: "destructive",
+            title: "Acceso a la Cámara Denegado",
+            description: "Por favor, habilita los permisos de la cámara en la configuración de tu navegador.",
+          });
+        }
+      };
+      getCameraPermission();
+    } else {
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
+            stream.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
+        }
+    }
+  }, [showVideo, toast]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -120,9 +155,13 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
           <div className="flex items-center gap-3 p-2 flex-1">
             {chat.icon}
             <h2 className="font-semibold truncate">{chat.title}</h2>
+            <Button variant="ghost" size="icon" onClick={() => setShowVideo(!showVideo)}>
+              <Camera className={cn("h-5 w-5", showVideo && "text-destructive")} />
+              <span className="sr-only">{showVideo ? 'Desactivar' : 'Activar'} webcam</span>
+            </Button>
           </div>
           <div className="flex items-center">
-            <div className="cursor-grab active:cursor-grabbing px-2" onMouseDown={handleMouseDown}>
+             <div className="cursor-grab active:cursor-grabbing px-2" onMouseDown={handleMouseDown}>
               <GripVertical className="h-5 w-5 text-muted-foreground" />
             </div>
             <Button variant="ghost" size="icon" onClick={() => toggleMinimizeChat(chat.id)} className="cursor-pointer h-8 w-8">
@@ -145,6 +184,9 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
             currentUser={users[0]}
             chatType={chat.type}
             showHead={false}
+            showVideo={showVideo}
+            videoRef={videoRef}
+            hasCameraPermission={hasCameraPermission}
           />
         </CardContent>
       </Card>

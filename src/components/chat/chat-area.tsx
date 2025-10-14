@@ -30,6 +30,9 @@ interface ChatAreaProps {
   currentUser: User;
   chatType: "channel" | "dm";
   showHead?: boolean;
+  showVideo?: boolean;
+  videoRef?: React.RefObject<HTMLVideoElement>;
+  hasCameraPermission?: boolean | null;
 }
 
 export function ChatArea({
@@ -40,19 +43,27 @@ export function ChatArea({
   currentUser,
   chatType,
   showHead = true,
+  showVideo: showVideoProp,
+  videoRef: videoRefProp,
+  hasCameraPermission: hasCameraPermissionProp,
 }: ChatAreaProps) {
   const { activeChats, addMessage, setNotifications } = useChat();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
-  const [showVideo, setShowVideo] = useState(false);
-  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  
+  const internalVideoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = videoRefProp || internalVideoRef;
+  
+  const [internalShowVideo, setInternalShowVideo] = useState(false);
+  const showVideo = showVideoProp !== undefined ? showVideoProp : internalShowVideo;
+  
+  const [internalHasCameraPermission, setInternalHasCameraPermission] = useState<boolean | null>(null);
+  const hasCameraPermission = hasCameraPermissionProp !== undefined ? hasCameraPermissionProp : internalHasCameraPermission;
 
   const currentChat = activeChats.find(chat => chat.id === chatId);
 
   useEffect(() => {
-    // When the active chat changes, update the messages
     if (currentChat) {
         setMessages(currentChat.messages);
     }
@@ -65,33 +76,36 @@ export function ChatArea({
   }, [messages, chatId]);
 
   useEffect(() => {
-    if (showVideo) {
-      const getCameraPermission = async () => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          setHasCameraPermission(true);
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
+    // This effect is for the standalone ChatArea that manages its own state
+    if (showVideoProp === undefined && videoRefProp === undefined) {
+      if (showVideo) {
+        const getCameraPermission = async () => {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            setInternalHasCameraPermission(true);
+            if (videoRef.current) {
+              videoRef.current.srcObject = stream;
+            }
+          } catch (error) {
+            console.error("Error accessing camera:", error);
+            setInternalHasCameraPermission(false);
+            toast({
+              variant: "destructive",
+              title: "Acceso a la Cámara Denegado",
+              description: "Por favor, habilita los permisos de la cámara en la configuración de tu navegador.",
+            });
           }
-        } catch (error) {
-          console.error("Error accessing camera:", error);
-          setHasCameraPermission(false);
-          toast({
-            variant: "destructive",
-            title: "Acceso a la Cámara Denegado",
-            description: "Por favor, habilita los permisos de la cámara en la configuración de tu navegador.",
-          });
-        }
-      };
-      getCameraPermission();
-    } else {
-        if (videoRef.current && videoRef.current.srcObject) {
-            const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-            videoRef.current.srcObject = null;
-        }
+        };
+        getCameraPermission();
+      } else {
+          if (videoRef.current && videoRef.current.srcObject) {
+              const stream = videoRef.current.srcObject as MediaStream;
+              stream.getTracks().forEach(track => track.stop());
+              videoRef.current.srcObject = null;
+          }
+      }
     }
-  }, [showVideo, toast]);
+  }, [showVideo, toast, showVideoProp, videoRefProp, videoRef]);
 
 
   const handleReceiveMessage = (text: string, sender: User, isAutoReply: boolean = false) => {
@@ -103,7 +117,6 @@ export function ChatArea({
       user: sender,
     };
     
-    // Only create a notification if the chat is not active or it's not an auto-reply
     const shouldNotify = !activeChats.some(chat => chat.id === chatId);
 
     if (shouldNotify) {
@@ -132,7 +145,6 @@ export function ChatArea({
     
     addMessage(chatId, newMessage);
 
-    // Simulate receiving a reply after a short delay
     setTimeout(() => {
         const recipient = users.find(u => u.id === (chatId.startsWith('dm-') ? chatId.substring(3) : ''));
         if (recipient) {
@@ -249,7 +261,7 @@ export function ChatArea({
             )}
             {icon}
             <h2 className="text-xl font-headline font-semibold">{title}</h2>
-            <Button variant="ghost" size="icon" onClick={() => setShowVideo(!showVideo)}>
+            <Button variant="ghost" size="icon" onClick={() => setInternalShowVideo(!showVideo)}>
               <Camera className={cn("h-5 w-5", showVideo && "text-destructive")} />
               <span className="sr-only">{showVideo ? 'Desactivar' : 'Activar'} webcam</span>
             </Button>
