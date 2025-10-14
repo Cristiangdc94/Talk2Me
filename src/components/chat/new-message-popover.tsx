@@ -11,6 +11,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface NewMessagePopoverProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ interface NewMessagePopoverProps {
 
 export function NewMessagePopover({ children, isOpen, setIsOpen }: NewMessagePopoverProps) {
   const { openChat } = useChat();
+  const router = useRouter();
 
   const contacts = users.filter(
     (user) => (user.relationship === "friend" || user.relationship === "coworker") && user.id !== "1"
@@ -34,6 +36,12 @@ export function NewMessagePopover({ children, isOpen, setIsOpen }: NewMessagePop
     const dmId = `dm-${userId}`;
     openChat(dmId);
     setIsOpen(false);
+  };
+  
+  const handleAddContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(false);
+    router.push('/add-contact');
   };
 
   return (

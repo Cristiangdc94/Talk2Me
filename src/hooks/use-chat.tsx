@@ -202,7 +202,12 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
 
     if (newChatState) {
-      setActiveChats(prev => [...prev, { ...newChatState, isMinimized: false, hasUnread: false }]);
+      setActiveChats(prev => {
+        if (prev.length >= 3) { // Limit to 3 open chats
+          return [...prev.slice(1), { ...newChatState, isMinimized: false, hasUnread: false }];
+        }
+        return [...prev, { ...newChatState, isMinimized: false, hasUnread: false }];
+      });
       if (window.location.pathname !== '/') {
         router.push('/');
       }

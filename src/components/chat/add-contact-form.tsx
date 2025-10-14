@@ -28,6 +28,7 @@ import { User } from "@/lib/types";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { Separator } from "../ui/separator";
 import { useChat } from "@/hooks/use-chat";
+import { useRouter } from "next/navigation";
 
 const searchSchema = z.object({
   query: z.string().min(2, "La búsqueda debe tener al menos 2 caracteres."),
@@ -37,6 +38,7 @@ export function AddContactForm() {
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [searched, setSearched] = useState(false);
   const { openChat } = useChat();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
@@ -60,6 +62,7 @@ export function AddContactForm() {
   const handleStartChat = (userId: string) => {
     const dmId = `dm-${userId}`;
     openChat(dmId);
+    router.push('/');
   };
 
   return (
