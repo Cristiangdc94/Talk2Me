@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -22,8 +21,8 @@ export function MainNav() {
           asChild
           variant="ghost"
           className={cn(
-            'justify-center rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground',
-            pathname === item.href ? 'bg-accent text-accent-foreground shadow-sm' : ''
+            'justify-center rounded-md px-3 py-2 text-base font-medium bg-sidebar text-sidebar-foreground hover:bg-sidebar/90',
+            pathname === item.href ? 'bg-primary text-primary-foreground shadow-sm' : ''
           )}
         >
           <Link href={item.href}>{item.label}</Link>
