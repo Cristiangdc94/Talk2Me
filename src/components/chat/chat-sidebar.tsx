@@ -163,9 +163,9 @@ export function ChatSidebar({ isInsideMainSidebar = false }: ChatSidebarProps) {
                         <div className="flex items-center gap-2 overflow-hidden">
                         <UserAvatarWithStatus user={user} className="w-6 h-6" />
                         <span className={cn("truncate", statusColor[user.status])}>{dm.name}</span>
-                        {dm.unreadCount && dm.unreadCount > 0 && (
+                        {dm.unreadCount !== undefined && (
                             <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
-                            {dm.unreadCount > 9 ? "+9" : dm.unreadCount}
+                            {dm.unreadCount}
                             </Badge>
                         )}
                         </div>

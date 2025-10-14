@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
@@ -31,14 +32,6 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
   const openChat = useCallback((id: string) => {
     setActiveChatId(id);
-    // Mark DM as read
-    if (id.startsWith('dm-')) {
-      setDirectMessages(prevDms => 
-        prevDms.map(dm => 
-          dm.id === id ? { ...dm, unreadCount: 0 } : dm
-        )
-      );
-    }
   }, []);
 
   const closeChat = useCallback(() => {
@@ -62,7 +55,6 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     }
 
     if (activeChatId.startsWith('dm-')) {
-        // Use the state version of direct messages
         const dm = directMessages.find(d => d.id === activeChatId);
         if (dm) {
           const recipient = users.find((u) => u.id === dm.userId);
