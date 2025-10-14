@@ -19,7 +19,7 @@ import { SidebarNav } from '@/components/chat/sidebar-nav';
 import { UserNav } from '@/components/chat/user-nav';
 import { NotificationWidget } from './notifications/notification-widget';
 import { NewsPreferencesProvider } from '@/hooks/use-news-preferences';
-import { ChatProvider, useChat } from '@/hooks/use-chat';
+import { ChatProvider, useChat, ChatState } from '@/hooks/use-chat';
 import { cn } from '@/lib/utils';
 import { MainNav } from './main-nav';
 import { HeaderActions } from './header-actions';
@@ -50,30 +50,20 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ChatWidget() {
-  const { activeChat, closeChat } = useChat();
+function DraggableChatWidget({ chat }: { chat: ChatState }) {
+  const { closeChat } = useChat();
   const [position, setPosition] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef({ x: 0, y: 0 });
   const widgetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Set initial position only on the client
     if (typeof window !== 'undefined') {
       const defaultX = window.innerWidth - 450;
       const defaultY = window.innerHeight - 560;
       setPosition({ x: defaultX, y: defaultY });
     }
-  }, []);
-
-  useEffect(() => {
-    // Reset position to default when a new chat is opened, but keep it within bounds
-    if (activeChat?.id && typeof window !== 'undefined') {
-        const defaultX = window.innerWidth - 450;
-        const defaultY = window.innerHeight - 560;
-        setPosition({ x: defaultX, y: defaultY });
-    }
-  }, [activeChat?.id]);
+  }, [chat.id]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (widgetRef.current) {
@@ -82,9 +72,8 @@ function ChatWidget() {
         x: e.clientX - widgetRect.left,
         y: e.clientY - widgetRect.top,
       };
-      
       setIsDragging(true);
-      e.preventDefault(); 
+      e.preventDefault();
     }
   };
 
@@ -108,58 +97,67 @@ function ChatWidget() {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     }
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging]);
 
-  if (!activeChat || position.x === null || position.y === null) {
+  if (position.x === null || position.y === null) {
     return null;
   }
 
   return (
-    <div 
+    <div
       ref={widgetRef}
       className="fixed z-50"
-      style={{ 
-        left: `${position.x}px`, 
-        top: `${position.y}px`,
-      }}
+      style={{ left: `${position.x}px`, top: `${position.y}px` }}
     >
-       <Card className="w-96 h-[32rem] flex flex-col shadow-2xl overflow-hidden">
+      <Card className="w-96 h-[32rem] flex flex-col shadow-2xl overflow-hidden bg-card">
         <CardHeader className="flex flex-row items-center justify-between p-2 border-b">
           <div className="flex items-center gap-3 p-2 flex-1">
-            {activeChat.icon}
-            <h2 className="font-semibold truncate">{activeChat.title}</h2>
+            {chat.icon}
+            <h2 className="font-semibold truncate">{chat.title}</h2>
           </div>
-          <div
-            className="cursor-grab active:cursor-grabbing px-2"
-            onMouseDown={handleMouseDown}
-          >
+          <div className="cursor-grab active:cursor-grabbing px-2" onMouseDown={handleMouseDown}>
             <GripVertical className="h-5 w-5 text-muted-foreground" />
           </div>
-          <Button variant="ghost" size="icon" onClick={closeChat} className="cursor-pointer">
+          <Button variant="ghost" size="icon" onClick={() => closeChat(chat.id)} className="cursor-pointer">
             <X className="h-4 w-4" />
             <span className="sr-only">Cerrar chat</span>
           </Button>
         </CardHeader>
         <CardContent className='flex-1 overflow-hidden p-0'>
           <ChatArea
-            key={activeChat.id}
-            chatId={activeChat.id}
-            title={activeChat.title}
-            icon={activeChat.icon}
-            initialMessages={activeChat.messages}
+            key={chat.id}
+            chatId={chat.id}
+            title={chat.title}
+            icon={chat.icon}
+            initialMessages={chat.messages}
             currentUser={users[0]}
-            chatType={activeChat.type}
+            chatType={chat.type}
             showHead={false}
           />
         </CardContent>
       </Card>
     </div>
-  )
+  );
+}
+
+function ChatManager() {
+  const { activeChats } = useChat();
+
+  if (!activeChats || activeChats.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      {activeChats.map(chat => (
+        <DraggableChatWidget key={chat.id} chat={chat} />
+      ))}
+    </>
+  );
 }
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -204,7 +202,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         {children}
                       </div>
                     </main>
-                    <ChatWidget />
+                    <ChatManager />
                     <NotificationWidget />
                   </div>
                 </div>

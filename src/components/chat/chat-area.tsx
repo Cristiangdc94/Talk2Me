@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -39,17 +40,19 @@ export function ChatArea({
   chatType,
   showHead = true,
 }: ChatAreaProps) {
-  const { activeChat, addMessage, setNotifications } = useChat();
+  const { activeChats, addMessage, setNotifications } = useChat();
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
 
+  const currentChat = activeChats.find(chat => chat.id === chatId);
+
   useEffect(() => {
     // When the active chat changes, update the messages
-    if (activeChat?.id === chatId) {
-        setMessages(activeChat.messages);
+    if (currentChat) {
+        setMessages(currentChat.messages);
     }
-  }, [activeChat, chatId]);
+  }, [currentChat, chatId]);
 
   useEffect(() => {
     if (scrollViewportRef.current) {
@@ -67,7 +70,7 @@ export function ChatArea({
     };
     
     // Only create a notification if the chat is not active or it's not an auto-reply
-    const shouldNotify = activeChat?.id !== chatId;
+    const shouldNotify = !activeChats.some(chat => chat.id === chatId);
 
     if (shouldNotify) {
       const newNotification: Notification = {

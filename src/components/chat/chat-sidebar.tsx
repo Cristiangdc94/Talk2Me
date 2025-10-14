@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -38,7 +39,7 @@ import { Badge } from '../ui/badge';
 
 export function ChatSidebar() {
   const { toast } = useToast();
-  const { openChat, activeChatId, directMessages } = useChat();
+  const { openChat, activeChatIds, directMessages } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
   const [isNewMessagePopoverOpen, setNewMessagePopoverOpen] = useState(false);
   const [channels] = useState<Channel[]>(initialChannels);
@@ -71,7 +72,7 @@ export function ChatSidebar() {
             <SidebarMenuItem key={channel.id}>
               <SidebarMenuButton
                 onClick={() => openChat(channel.id)}
-                isActive={activeChatId === channel.id}
+                isActive={activeChatIds.includes(channel.id)}
                 tooltip={channel.name}
               >
                 {channel.type === 'private' ? <Lock /> : <Hash />}
@@ -110,7 +111,7 @@ export function ChatSidebar() {
               <SidebarMenuItem key={dm.id}>
                 <SidebarMenuButton
                   onClick={() => openChat(dm.id)}
-                  isActive={activeChatId === dm.id}
+                  isActive={activeChatIds.includes(dm.id)}
                   tooltip={dm.name}
                 >
                   <div className="flex items-center gap-2 overflow-hidden w-full">

@@ -8,7 +8,7 @@ import { channels, directMessages as initialDirectMessages, users, notifications
 import { Hash, Lock } from "lucide-react";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 
-interface ChatState {
+export interface ChatState {
   id: string;
   type: "channel" | "dm";
   title: string;
@@ -17,10 +17,10 @@ interface ChatState {
 }
 
 interface ChatContextType {
-  activeChat: ChatState | null;
+  activeChats: ChatState[];
   openChat: (id: string) => void;
-  closeChat: () => void;
-  activeChatId: string | null;
+  closeChat: (id: string) => void;
+  activeChatIds: string[];
   directMessages: DirectMessage[];
   addMessage: (chatId: string, message: Message, incrementUnread?: boolean) => void;
   notifications: Notification[];
@@ -39,7 +39,7 @@ const randomMessages = [
 ];
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
-  const [activeChatId, setActiveChatId] = useState<string | null>(null);
+  const [activeChatIds, setActiveChatIds] = useState<string[]>([]);
   const [directMessages, setDirectMessages] = useState<DirectMessage[]>(initialDirectMessages);
   const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
 
@@ -58,7 +58,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const interval = setInterval(() => {
         // Pick a random DM that is not the active one
-        const availableDms = directMessages.filter(dm => dm.id !== activeChatId);
+        const availableDms = directMessages.filter(dm => !activeChatIds.includes(dm.id));
         if (availableDms.length === 0) return;
 
         const randomDm = availableDms[Math.floor(Math.random() * availableDms.length)];
@@ -113,12 +113,17 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     }, 30000); // Every 30 seconds
 
     return () => clearInterval(interval);
-  }, [activeChatId, addMessage, directMessages]);
+  }, [activeChatIds, addMessage, directMessages]);
 
 
   const openChat = useCallback((id: string) => {
-    setActiveChatId(id);
-    // When a chat is opened, mark its messages as read
+    setActiveChatIds(prevIds => {
+      if (prevIds.includes(id)) {
+        return prevIds;
+      }
+      return [...prevIds, id];
+    });
+
     setDirectMessages(prevDms =>
       prevDms.map(dm =>
         dm.id === id ? { ...dm, unreadCount: 0 } : dm
@@ -129,47 +134,48 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
      );
   }, []);
 
-  const closeChat = useCallback(() => {
-    setActiveChatId(null);
+  const closeChat = useCallback((id: string) => {
+    setActiveChatIds(prevIds => prevIds.filter(chatId => chatId !== id));
   }, []);
 
-  const activeChat = useMemo(() => {
-    if (!activeChatId) return null;
+  const activeChats = useMemo(() => {
+    if (!activeChatIds.length) return [];
 
-    if (activeChatId.startsWith('channel-')) {
-        const channel = channels.find(c => c.id === activeChatId);
-        if (channel) {
-          return {
-            id: channel.id,
-            type: "channel" as const,
-            title: channel.name,
-            icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
-            messages: channel.messages,
-          };
-        }
-    }
+    return activeChatIds.map(id => {
+      if (id.startsWith('channel-')) {
+          const channel = channels.find(c => c.id === id);
+          if (channel) {
+            return {
+              id: channel.id,
+              type: "channel" as const,
+              title: channel.name,
+              icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
+              messages: channel.messages,
+            };
+          }
+      }
 
-    if (activeChatId.startsWith('dm-')) {
-        const dm = directMessages.find(d => d.id === activeChatId);
-        if (dm) {
-          const recipient = users.find((u) => u.id === dm.userId);
-          if (!recipient) return null;
-          return {
-            id: dm.id,
-            type: "dm" as const,
-            title: dm.name,
-            icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
-            messages: dm.messages,
-          };
-        }
-    }
-    
-    return null;
-  }, [activeChatId, directMessages]);
+      if (id.startsWith('dm-')) {
+          const dm = directMessages.find(d => d.id === id);
+          if (dm) {
+            const recipient = users.find((u) => u.id === dm.userId);
+            if (!recipient) return null;
+            return {
+              id: dm.id,
+              type: "dm" as const,
+              title: dm.name,
+              icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
+              messages: dm.messages,
+            };
+          }
+      }
+      return null;
+    }).filter((chat): chat is ChatState => chat !== null);
+  }, [activeChatIds, directMessages]);
 
 
   return (
-    <ChatContext.Provider value={{ activeChat, openChat, closeChat, activeChatId, directMessages, addMessage, notifications, setNotifications }}>
+    <ChatContext.Provider value={{ activeChats, openChat, closeChat, activeChatIds, directMessages, addMessage, notifications, setNotifications }}>
       {children}
     </ChatContext.Provider>
   );
