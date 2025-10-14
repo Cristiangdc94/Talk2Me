@@ -60,12 +60,14 @@ export function NewsPortal({ view }: NewsPortalProps) {
   const [isRateLimited, setRateLimited] = useState(false);
   const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
   const currentUser = users.find(u => u.id === '1');
+  const [isMounted, setIsMounted] = useState(false);
 
   const autoplayPlugin = useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true, loop: true })
   );
 
   useEffect(() => {
+    setIsMounted(true);
     // Fetch location
     navigator.geolocation.getCurrentPosition(
       () => {
@@ -165,7 +167,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
   
   const newsToShow = view === 'foryou' ? preferredNews : generalNews;
 
-  if (isLoading || !currentUser) {
+  if (!isMounted || isLoading || !currentUser) {
     return (
       <div className="space-y-4">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
