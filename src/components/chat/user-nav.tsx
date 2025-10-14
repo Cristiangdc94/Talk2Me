@@ -18,7 +18,6 @@ import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { users } from "@/lib/mock-data";
 import { LogOut, Settings, User, Newspaper } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { ThemeToggle } from "../theme-toggle";
 import { useNewsPreferences } from "@/hooks/use-news-preferences";
 
 export function UserNav() {
@@ -88,7 +87,10 @@ export function UserNav() {
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="group-data-[collapsible=icon]:hidden">
-        <ThemeToggle />
+        <Button variant="ghost" size="icon">
+            <Settings className="h-5 w-5" />
+            <span className="sr-only">Ajustes</span>
+        </Button>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { NotificationList } from "./notification-list";
 import { notifications as mockNotifications } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "../theme-toggle";
 
 export function NotificationWidget() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -33,18 +34,27 @@ export function NotificationWidget() {
 
     const handleMouseUp = () => {
       setIsDragging(false);
+      document.body.style.cursor = 'default';
     };
+    
+    const handleMouseLeave = () => {
+      setIsDragging(false);
+       document.body.style.cursor = 'default';
+    }
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
+    document.body.addEventListener('mouseleave', handleMouseLeave);
+
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      document.body.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [isDragging]);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (widgetRef.current) {
       const rect = widgetRef.current.getBoundingClientRect();
       dragStartPos.current = {
@@ -52,12 +62,7 @@ export function NotificationWidget() {
         y: e.clientY - rect.top,
       };
       setIsDragging(true);
-    }
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isDragging) {
-      e.stopPropagation();
+      document.body.style.cursor = 'grabbing';
     }
   };
   
@@ -66,34 +71,41 @@ export function NotificationWidget() {
   return (
     <div
       ref={widgetRef}
-      className={cn("fixed z-50 cursor-grab active:cursor-grabbing", isDragging && "select-none")}
+      className={cn("fixed z-50 flex items-center gap-2", isDragging && "select-none")}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
       }}
-      onMouseDown={handleMouseDown}
-      onClick={handleClick}
     >
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <div className="relative">
-            <button className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-              {isOpen ? <X className="h-7 w-7" /> : <Bell className="h-7 w-7" />}
-            </button>
-            {!isOpen && notificationCount > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-6 w-6 justify-center rounded-full"
-              >
-                {notificationCount}
-              </Badge>
-            )}
-          </div>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="end" sideOffset={15}>
-          <NotificationList notifications={mockNotifications} />
-        </PopoverContent>
-      </Popover>
+        <div className="bg-background/80 backdrop-blur-sm rounded-full">
+            <ThemeToggle />
+        </div>
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+            <PopoverTrigger asChild>
+            <div className="relative cursor-grab active:cursor-grabbing" onMouseDown={(e) => e.stopPropagation()}>
+                <button 
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        handleMouseDown(e);
+                    }}
+                >
+                {isOpen ? <X className="h-7 w-7" /> : <Bell className="h-7 w-7" />}
+                </button>
+                {!isOpen && notificationCount > 0 && (
+                <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-6 w-6 justify-center rounded-full"
+                >
+                    {notificationCount}
+                </Badge>
+                )}
+            </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="end" sideOffset={15}>
+            <NotificationList notifications={mockNotifications} />
+            </PopoverContent>
+        </Popover>
     </div>
   );
 }
