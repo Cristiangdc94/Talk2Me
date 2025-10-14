@@ -385,5 +385,3 @@ export function ManageGroupsSettings() {
         </div>
     );
 }
-
-    
