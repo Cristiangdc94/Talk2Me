@@ -3,16 +3,14 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Phone, Check, CheckCheck } from "lucide-react";
+import { Phone } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 import { MessageInput } from "@/components/chat/message-input";
 import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
 import type { Message, User } from "@/lib/types";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { users } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 import { MessageStatus } from "./message-status";
 
@@ -25,6 +23,28 @@ interface ChatAreaProps {
   chatType: "channel" | "dm";
 }
 
+const assignMessageStatus = (msgs: Message[], currentUserId: string): Message[] => {
+    let lastSentMessageId: string | null = null;
+    // Find the ID of the last message sent by the current user
+    for (let i = msgs.length - 1; i >= 0; i--) {
+      if (msgs[i].user.id === currentUserId) {
+        lastSentMessageId = msgs[i].id;
+        break;
+      }
+    }
+
+    // Map over messages to assign status
+    return msgs.map(msg => {
+      if (msg.user.id === currentUserId) {
+        // If it's the last sent message, status is 'sent', otherwise 'read'
+        return { ...msg, status: msg.id === lastSentMessageId ? 'sent' : 'read' };
+      }
+      // Messages from other users don't need a status
+      return msg;
+    });
+};
+
+
 export function ChatArea({
   chatId,
   title,
@@ -33,36 +53,16 @@ export function ChatArea({
   currentUser,
   chatType,
 }: ChatAreaProps) {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
 
-  const assignMessageStatus = (msgs: Message[], currentUserId: string): Message[] => {
-    let lastSentMessageId: string | null = null;
-    for (let i = msgs.length - 1; i >= 0; i--) {
-      if (msgs[i].user.id === currentUserId) {
-        lastSentMessageId = msgs[i].id;
-        break;
-      }
-    }
-
-    return msgs.map(msg => {
-      if (msg.user.id === currentUserId) {
-        if (msg.id === lastSentMessageId) {
-          return { ...msg, status: 'sent' };
-        }
-        return { ...msg, status: 'read' };
-      }
-      return msg;
-    });
-  };
+  useEffect(() => {
+    const newMessages = assignMessageStatus(initialMessages, currentUser.id);
+    setMessages(newMessages);
+  }, [initialMessages, currentUser.id]);
 
   useEffect(() => {
-    setMessages(assignMessageStatus(initialMessages, currentUser.id));
-  }, [chatId, initialMessages, currentUser.id]);
-
-  useEffect(() => {
-    // Scroll to bottom when messages change
     if (scrollViewportRef.current) {
       scrollViewportRef.current.scrollTop = scrollViewportRef.current.scrollHeight;
     }
@@ -74,9 +74,11 @@ export function ChatArea({
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       user: currentUser,
-      status: 'sent',
     };
-    setMessages((prev) => assignMessageStatus([...prev, newMessage], currentUser.id));
+    
+    // Create new list of messages and assign statuses
+    const updatedMessages = assignMessageStatus([...messages, newMessage], currentUser.id);
+    setMessages(updatedMessages);
   };
   
   const handleSuggestionClick = (suggestion: string) => {
