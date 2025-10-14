@@ -180,9 +180,11 @@ export function SidebarNav() {
         </SidebarGroupLabel>
         <NewMessagePopover isOpen={isNewMessagePopoverOpen} setIsOpen={setNewMessagePopoverOpen}>
             <SidebarGroupAction asChild>
-                <PopoverTrigger>
+                <PopoverTrigger asChild>
+                  <button>
                     <Plus className="h-4 w-4" />
                     <span className="sr-only">Nuevo Mensaje</span>
+                  </button>
                 </PopoverTrigger>
             </SidebarGroupAction>
         </NewMessagePopover>
@@ -208,8 +210,8 @@ export function SidebarNav() {
                     <span className={cn("truncate", statusColor[user.status])}>{dm.name}</span>
                   </div>
                    {dm.unreadCount && dm.unreadCount > 0 && (
-                    <Badge variant="destructive" className={cn("h-5 min-w-[1.25rem] justify-center text-xs", dm.unreadCount > 9 && "p-0 h-3 w-3")}>
-                      {dm.unreadCount > 9 ? '' : dm.unreadCount}
+                    <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
+                      {dm.unreadCount > 9 ? '+9' : dm.unreadCount}
                     </Badge>
                   )}
                 </SidebarMenuButton>
