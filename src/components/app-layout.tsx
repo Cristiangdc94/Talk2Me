@@ -122,13 +122,13 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
             <h2 className="font-semibold truncate">{chat.title}</h2>
           </div>
           <div className="flex items-center">
+            <div className="cursor-grab active:cursor-grabbing px-2" onMouseDown={handleMouseDown}>
+              <GripVertical className="h-5 w-5 text-muted-foreground" />
+            </div>
             <Button variant="ghost" size="icon" onClick={() => toggleMinimizeChat(chat.id)} className="cursor-pointer h-8 w-8">
               <Minus className="h-4 w-4" />
               <span className="sr-only">Minimizar chat</span>
             </Button>
-            <div className="cursor-grab active:cursor-grabbing px-2" onMouseDown={handleMouseDown}>
-              <GripVertical className="h-5 w-5 text-muted-foreground" />
-            </div>
             <Button variant="ghost" size="icon" onClick={() => closeChat(chat.id)} className="cursor-pointer h-8 w-8">
               <X className="h-4 w-4" />
               <span className="sr-only">Cerrar chat</span>
