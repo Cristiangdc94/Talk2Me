@@ -30,7 +30,7 @@ function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGe
         ) : (
           <>
             <PlusCircle className="h-12 w-12 text-muted-foreground" />
-            <p className="mt-4 font-semibold">Generar más noticias</p>
+            <p className="mt-4 font-semibold">Más noticias</p>
           </>
         )}
       </CardContent>
