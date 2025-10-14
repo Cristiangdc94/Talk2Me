@@ -12,7 +12,6 @@ import { Loader2, Settings, Sparkles, PlusCircle } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
-import { HeaderActions } from '../header-actions';
 import { generateNewsArticles } from '@/ai/flows/generate-news-articles';
 
 function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGenerating: boolean }) {
@@ -124,7 +123,6 @@ export function NewsPortal() {
             <TabsTrigger value="general">Noticias Generales</TabsTrigger>
             <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
           </TabsList>
-          <HeaderActions />
         </div>
         <TabsContent value="general">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
