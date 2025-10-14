@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -15,15 +16,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { users } from "@/lib/mock-data";
-import { LogOut, Settings, User, Newspaper } from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { ThemeToggle } from "../theme-toggle";
-import { useNewsPreferences } from "@/hooks/use-news-preferences";
 
 export function UserNav() {
   const router = useRouter();
   const { toast } = useToast();
-  const { setDialogOpen } = useNewsPreferences();
   // In a real app, you'd get the current user from an auth context
   const currentUser = users[0];
 
@@ -44,10 +42,10 @@ export function UserNav() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 p-0 h-auto group-data-[collapsible=icon]:p-2 data-[state=open]:bg-sidebar-accent"
+            className="flex items-center gap-2 p-0 h-auto group-data-[collapsible=icon]:p-2 data-[state=open]:bg-sidebar-accent w-full"
           >
             <UserAvatarWithStatus user={currentUser} />
-            <div className="text-left group-data-[collapsible=icon]:hidden">
+            <div className="text-left group-data-[collapsible=icon]:hidden flex-1">
               <p className="font-medium text-sm text-sidebar-foreground">{currentUser.name}</p>
               <p className="text-xs text-sidebar-foreground/70">En línea</p>
             </div>
@@ -82,24 +80,6 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      
-      <div className="ml-auto flex items-center gap-1 group-data-[collapsible=icon]:hidden">
-        <ThemeToggle />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-              <Settings className="h-[1.2rem] w-[1.2rem]" />
-              <span className="sr-only">Ajustes</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" side="top" className="mb-2 w-56">
-            <DropdownMenuItem onClick={() => setDialogOpen(true)}>
-              <Newspaper className="mr-2 h-4 w-4" />
-              <span>Preferencias de Noticias</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
     </div>
   );
 }

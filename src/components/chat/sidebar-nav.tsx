@@ -1,3 +1,4 @@
+
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -8,10 +9,6 @@ import {
   Plus,
   User,
   Phone,
-  Newspaper,
-  Users,
-  Briefcase,
-  Search,
 } from "lucide-react";
 
 import {
@@ -49,58 +46,6 @@ export function SidebarNav() {
         open={isCreateChannelOpen}
         onOpenChange={setCreateChannelOpen}
       />
-
-      <SidebarGroup>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild isActive={pathname === "/"} tooltip="Noticias">
-              <Link href="/">
-                <Newspaper />
-                <span>Noticias</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname === "/friends"}
-              tooltip="Amigos"
-            >
-              <Link href="/friends">
-                <Users />
-                <span>Amigos</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname === "/coworkers"}
-              tooltip="Compañeros"
-            >
-              <Link href="/coworkers">
-                <Briefcase />
-                <span>Compañeros</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname === "/add-contact"}
-              tooltip="Buscar"
-            >
-              <Link href="/add-contact">
-                <Search />
-                <span>Buscar</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarGroup>
-
-      <SidebarSeparator />
-
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">
           Canales
