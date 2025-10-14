@@ -3,20 +3,64 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User, CompanyRoleDetails, Channel } from "@/lib/types";
-import { Plus, MoreVertical, Settings, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
+import { Plus, MoreVertical, Settings, MessageSquare, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
 import { users, channels as initialChannels } from '@/lib/mock-data';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useChat } from '@/hooks/use-chat';
+import { generateCompanyLogo } from '@/ai/flows/generate-company-logo';
+import { Skeleton } from '../ui/skeleton';
 
 interface CoworkersListProps {
   initialGroupedUsers: Record<string, User[]>;
+}
+
+function CompanyLogo({ companyName }: { companyName: string }) {
+    const [logoUrl, setLogoUrl] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const generateLogo = async () => {
+            try {
+                const { logoDataUri } = await generateCompanyLogo({ companyName });
+                setLogoUrl(logoDataUri);
+            } catch (error) {
+                console.error(`Failed to generate logo for ${companyName}`, error);
+                setLogoUrl(null); // Fallback to icon
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        generateLogo();
+    }, [companyName]);
+
+    return (
+        <div className="mt-2 h-16 w-full bg-background/50 rounded-md flex items-center justify-center">
+            {isLoading ? (
+                <Skeleton className="h-12 w-12 rounded-lg" />
+            ) : logoUrl ? (
+                <Image
+                    src={logoUrl}
+                    alt={`${companyName} Logo`}
+                    width={64}
+                    height={64}
+                    className="object-contain h-12 w-auto"
+                />
+            ) : (
+                <div className='text-center text-muted-foreground'>
+                    <Building2 className="h-5 w-5 mx-auto" />
+                    <p className='text-xs font-semibold mt-1'>Logo</p>
+                </div>
+            )}
+        </div>
+    );
 }
 
 function CreateGroupCard({ onClick }: { onClick: () => void }) {
@@ -125,7 +169,6 @@ export function CoworkersList({
             <div className="flex gap-6 h-full">
             {Object.entries(groupedUsers).map(([company, userList]) => {
                 const currentUserRoleDetails = currentUser?.companyRoles?.[company];
-                const isPrivileged = currentUserRoleDetails && privilegedRoles.includes(currentUserRoleDetails.role);
 
                 const sortedUsers = [...userList].sort((a, b) => {
                     const roleA = a.companyRoles?.[company];
@@ -161,12 +204,7 @@ export function CoworkersList({
                             <CardHeader>
                                 <CardTitle className='font-bold text-lg'>{company}</CardTitle>
                                 <CardDescription className='text-sm text-muted-foreground'>Descripción del grupo de la empresa.</CardDescription>
-                                <div className="mt-2 h-16 w-full bg-background/50 rounded-md flex items-center justify-center">
-                                    <div className='text-center text-muted-foreground'>
-                                        <Building2 className="h-5 w-5 mx-auto" />
-                                        <p className='text-xs font-semibold mt-1'>Logo de la Empresa</p>
-                                    </div>
-                                </div>
+                                <CompanyLogo companyName={company} />
                             </CardHeader>
                             <CardContent className="flex-1 overflow-hidden p-0">
                                 <ScrollArea className="h-full">
