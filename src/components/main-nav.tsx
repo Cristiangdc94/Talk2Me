@@ -16,7 +16,7 @@ export function MainNav() {
   ];
 
   return (
-    <nav className="hidden md:flex items-center space-x-1 rounded-lg p-1 bg-muted flex-1">
+    <nav className="hidden md:flex items-center space-x-1 rounded-lg p-1 bg-muted">
       {navItems.map((item) => (
         <Button
           key={item.href}
