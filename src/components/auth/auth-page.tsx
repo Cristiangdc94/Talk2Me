@@ -39,9 +39,6 @@ export function AuthPage() {
         </div>
       </CardContent>
       <CardFooter className="p-2 bg-muted/30 justify-center">
-        <p className="text-xs text-muted-foreground">
-          Tu nueva aplicación de chat moderna.
-        </p>
       </CardFooter>
     </Card>
   );
