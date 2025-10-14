@@ -50,6 +50,7 @@ interface NewsPortalProps {
 }
 
 export function NewsPortal({ view }: NewsPortalProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const [location, setLocation] = useState<string | null>(null);
   const { preferences, setPreferences, isDialogOpen, setDialogOpen } = useNewsPreferences();
   const [isLoading, setLoading] = useState(true);
@@ -60,34 +61,38 @@ export function NewsPortal({ view }: NewsPortalProps) {
   const [isRateLimited, setRateLimited] = useState(false);
   const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
   const currentUser = users.find(u => u.id === '1');
-  const [isMounted, setIsMounted] = useState(false);
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true, loop: true })
+    Autoplay({ delay: 4000, stopOnInteraction: true })
   );
 
   useEffect(() => {
     setIsMounted(true);
-    // Fetch location
-    navigator.geolocation.getCurrentPosition(
-      () => {
-        // For this demo, we'll just simulate a "local" location is available
-        setLocation('local');
-        setLoading(false);
-      },
-      () => {
-        // If user denies, we default to global news
-        setLocation('global');
-        setLoading(false);
-      }
-    );
+  }, []);
 
-    // Fetch preferences from cookies
-    const savedPrefs = Cookies.get('news-preferences');
-    if (savedPrefs) {
-      setPreferences(JSON.parse(savedPrefs));
+  useEffect(() => {
+    if (isMounted) {
+      // Fetch location
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          // For this demo, we'll just simulate a "local" location is available
+          setLocation('local');
+          setLoading(false);
+        },
+        () => {
+          // If user denies, we default to global news
+          setLocation('global');
+          setLoading(false);
+        }
+      );
+
+      // Fetch preferences from cookies
+      const savedPrefs = Cookies.get('news-preferences');
+      if (savedPrefs) {
+        setPreferences(JSON.parse(savedPrefs));
+      }
     }
-  }, [setPreferences]);
+  }, [isMounted, setPreferences]);
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -275,3 +280,5 @@ export function NewsPortal({ view }: NewsPortalProps) {
     </>
   );
 }
+
+    
