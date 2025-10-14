@@ -215,7 +215,7 @@ export function ChatArea({
         </header>
       )}
 
-      <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
+      <ScrollArea className="flex-1 overflow-auto" viewportRef={scrollViewportRef}>
         <div className="p-4">
           <div className="space-y-4">
             {messages.map((message) => {
@@ -253,7 +253,7 @@ export function ChatArea({
         </div>
       </ScrollArea>
       
-      <footer className="p-4 border-t shrink-0 space-y-2 bg-background">
+      <footer className="p-4 border-t shrink-0">
         <MessageInput 
           onSendMessage={handleSendMessage} 
           onCall={handleCall}
