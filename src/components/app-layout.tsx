@@ -2,7 +2,7 @@
 
 "use client";
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import {
@@ -52,20 +52,76 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
 
 function ChatWidget() {
   const { activeChat, closeChat } = useChat();
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragOffset = useRef({ x: 0, y: 0 });
+  const widgetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Reset position when a new chat is opened
+    setPosition({ x: 0, y: 0 });
+  }, [activeChat?.id]);
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (widgetRef.current) {
+      setIsDragging(true);
+      const widgetRect = widgetRef.current.getBoundingClientRect();
+      dragOffset.current = {
+        x: e.clientX - (widgetRect.left + position.x),
+        y: e.clientY - (widgetRect.top + position.y),
+      };
+      e.preventDefault(); // Prevent text selection while dragging
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - dragOffset.current.x,
+        y: e.clientY - dragOffset.current.y,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    } else {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]);
 
   if (!activeChat) {
     return null;
   }
 
   return (
-    <div className="fixed bottom-8 right-[calc(8rem+2rem)] z-50">
+    <div 
+      ref={widgetRef}
+      className="fixed bottom-8 right-[calc(8rem+2rem)] z-50"
+      style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+    >
        <Card className="w-96 h-[32rem] flex flex-col shadow-2xl">
-        <CardHeader className="flex flex-row items-center justify-between p-2 border-b">
+        <CardHeader 
+          className="flex flex-row items-center justify-between p-2 border-b cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+        >
            <div className="flex items-center gap-3 p-2">
             {activeChat.icon}
             <h2 className="font-semibold">{activeChat.title}</h2>
           </div>
-          <Button variant="ghost" size="icon" onClick={closeChat}>
+          <Button variant="ghost" size="icon" onClick={closeChat} className="cursor-pointer">
             <X className="h-4 w-4" />
             <span className="sr-only">Cerrar chat</span>
           </Button>
