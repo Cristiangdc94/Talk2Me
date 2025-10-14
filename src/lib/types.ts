@@ -50,4 +50,6 @@ export interface Notification {
   text: string;
   timestamp: string;
   link?: string;
+  chatId?: string;
+  chatType?: 'channel' | 'dm';
 }

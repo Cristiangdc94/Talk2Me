@@ -9,7 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { Notification } from "@/lib/types";
+import type { Notification, User } from "@/lib/types";
+import { useChat } from "@/hooks/use-chat";
+import { useRouter } from "next/navigation";
+import { channels, directMessages, users } from "@/lib/mock-data";
+import { Hash, Lock } from "lucide-react";
+import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 
 interface NotificationListProps {
   notifications: Notification[];
@@ -35,11 +40,45 @@ const groupNotifications = (notifications: Notification[]) => {
 
 export function NotificationList({ notifications, onNotificationClick }: NotificationListProps) {
   const groupedNotifications = groupNotifications(notifications);
+  const { openChat } = useChat();
+  const router = useRouter();
 
   const groupTitles = {
     message: "Mensajes no leídos",
     call: "Llamadas perdidas",
     news: "Noticias para ti",
+  };
+
+  const handleNotificationClick = (item: Notification) => {
+    if (item.chatId && item.chatType) {
+      if (item.chatType === 'channel') {
+        const channel = channels.find(c => c.id === item.chatId);
+        if (channel) {
+          openChat({
+            id: channel.id,
+            type: "channel",
+            title: channel.name,
+            icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
+            messages: channel.messages,
+          });
+        }
+      } else if (item.chatType === 'dm') {
+         const dm = directMessages.find(d => d.id === item.chatId);
+         const recipient = users.find((u) => u.id === item.chatId);
+         if (dm && recipient) {
+            openChat({
+              id: dm.id,
+              type: "dm",
+              title: dm.name,
+              icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
+              messages: dm.messages,
+            });
+         }
+      }
+    } else if (item.link) {
+      router.push(item.link);
+    }
+    onNotificationClick();
   };
 
   return (
@@ -57,15 +96,14 @@ export function NotificationList({ notifications, onNotificationClick }: Notific
               </h3>
               <div className="space-y-3">
                 {items.map((item) => (
-                   <Link
+                   <button
                     key={item.id}
-                    href={item.link || '#'}
-                    onClick={onNotificationClick}
-                    className="flex items-start gap-3 hover:bg-accent rounded-md p-2 -m-2"
+                    onClick={() => handleNotificationClick(item)}
+                    className="flex w-full text-left items-start gap-3 hover:bg-accent rounded-md p-2 -m-2"
                   >
                     <div className="mt-1">{iconMap[item.type as keyof typeof iconMap]}</div>
                     <p className="text-sm text-foreground/90">{item.text}</p>
-                   </Link>
+                   </button>
                 ))}
               </div>
             </div>

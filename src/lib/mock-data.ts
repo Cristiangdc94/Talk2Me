@@ -1,4 +1,3 @@
-
 import { User, Channel, DirectMessage, NewsArticle, FriendStatus, Notification } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
@@ -95,9 +94,9 @@ export const newsArticles: NewsArticle[] = [
 ];
 
 export const notifications: Notification[] = [
-  { id: 'notif1', type: 'message', text: 'Alice te ha enviado un mensaje.', timestamp: 'hace 5 minutos', link: '/dm/2' },
-  { id: 'notif2', type: 'message', text: 'Nuevo mensaje en el canal #general.', timestamp: 'hace 10 minutos', link: '/channel/1' },
-  { id: 'notif3', type: 'call', text: 'Llamada perdida de Bob.', timestamp: 'hace 1 hora', link: '/dm/3' },
+  { id: 'notif1', type: 'message', text: 'Alice te ha enviado un mensaje.', timestamp: 'hace 5 minutos', chatId: '2', chatType: 'dm' },
+  { id: 'notif2', type: 'message', text: 'Nuevo mensaje en el canal #general.', timestamp: 'hace 10 minutos', chatId: '1', chatType: 'channel' },
+  { id: 'notif3', type: 'call', text: 'Llamada perdida de Bob.', timestamp: 'hace 1 hora', chatId: '3', chatType: 'dm' },
   { id: 'notif4', type: 'news', text: 'Se ha publicado un nuevo artículo de tecnología que podría interesarte.', timestamp: 'hace 3 horas', link: '/' },
-  { id: 'notif5', type: 'message', text: 'Diana ha respondido a tu mensaje.', timestamp: 'hace 4 horas', link: '/dm/5' },
+  { id: 'notif5', type: 'message', text: 'Diana ha respondido a tu mensaje.', timestamp: 'hace 4 horas', chatId: '5', chatType: 'dm' },
 ];
