@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   SidebarProvider,
@@ -35,12 +34,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <UserNav />
           </SidebarFooter>
         </Sidebar>
-        <div className="flex flex-1 flex-col overflow-hidden bg-background rounded-tl-lg md:rounded-none">
+        <div className="flex flex-1 flex-col overflow-hidden">
           <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
              <SidebarTrigger />
           </header>
-          <main className="flex-1 flex flex-col overflow-y-auto">
-            {children}
+          <main className="flex-1 overflow-y-auto">
+            <div className="mx-auto w-full max-w-[1080px] h-full">{children}</div>
           </main>
         </div>
       </div>
