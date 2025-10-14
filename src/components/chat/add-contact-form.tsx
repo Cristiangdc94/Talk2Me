@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -21,12 +22,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, UserPlus, Briefcase } from "lucide-react";
+import { Search, MessageSquare } from "lucide-react";
 import { users } from "@/lib/mock-data";
 import { User } from "@/lib/types";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
-import { useToast } from "@/hooks/use-toast";
 import { Separator } from "../ui/separator";
+import { useChat } from "@/hooks/use-chat";
 
 const searchSchema = z.object({
   query: z.string().min(2, "La búsqueda debe tener al menos 2 caracteres."),
@@ -35,7 +36,7 @@ const searchSchema = z.object({
 export function AddContactForm() {
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [searched, setSearched] = useState(false);
-  const { toast } = useToast();
+  const { openChat } = useChat();
 
   const form = useForm<z.infer<typeof searchSchema>>({
     resolver: zodResolver(searchSchema),
@@ -56,11 +57,9 @@ export function AddContactForm() {
     setSearched(true);
   }
 
-  const handleAdd = (userName: string, type: 'amigo' | 'compañero') => {
-    toast({
-      title: "Solicitud Enviada",
-      description: `Se ha enviado una solicitud de ${type} a ${userName}.`,
-    });
+  const handleStartChat = (userId: string) => {
+    const dmId = `dm-${userId}`;
+    openChat(dmId);
   };
 
   return (
@@ -68,7 +67,7 @@ export function AddContactForm() {
       <CardHeader>
         <CardTitle>Añadir Contacto</CardTitle>
         <CardDescription>
-          Busca usuarios por nombre o correo electrónico para añadirlos como amigos o compañeros de trabajo.
+          Busca usuarios por nombre o correo electrónico para iniciar una conversación.
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-6">
@@ -110,16 +109,10 @@ export function AddContactForm() {
                                 <p className="text-sm text-muted-foreground">{user.email || 'Sin correo electrónico'}</p>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            <Button variant="outline" size="sm" onClick={() => handleAdd(user.name, 'amigo')}>
-                                <UserPlus className="mr-2 h-4 w-4" />
-                                Amigo
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleAdd(user.name, 'compañero')}>
-                                <Briefcase className="mr-2 h-4 w-4" />
-                                Compañero
-                            </Button>
-                        </div>
+                        <Button variant="outline" size="sm" onClick={() => handleStartChat(user.id)}>
+                            <MessageSquare className="mr-2 h-4 w-4" />
+                            Mensaje
+                        </Button>
                     </CardContent>
                 </Card>
             ))}

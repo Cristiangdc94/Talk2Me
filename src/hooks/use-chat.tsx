@@ -3,6 +3,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import type { Message, DirectMessage, Notification, User } from "@/lib/types";
 import { channels, directMessages as initialDirectMessages, users, notifications as initialNotifications } from "@/lib/mock-data";
 import { Hash, Lock } from "lucide-react";
@@ -45,6 +46,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [activeChats, setActiveChats] = useState<ChatState[]>([]);
   const [directMessages, setDirectMessages] = useState<DirectMessage[]>(initialDirectMessages);
   const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const router = useRouter();
 
   const activeChatIds = useMemo(() => activeChats.map(c => c.id), [activeChats]);
 
@@ -142,54 +144,74 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     let existingChat = activeChats.find(c => c.id === id);
 
     if (existingChat) {
-      // If chat exists and is minimized, restore it
       if (existingChat.isMinimized) {
         setActiveChats(prev => prev.map(c => c.id === id ? { ...c, isMinimized: false, hasUnread: false } : c));
+      }
+       if (window.location.pathname !== '/') {
+        router.push('/');
       }
       return;
     }
 
-    // Find chat details from mock data
-    let newChat: ChatState | null = null;
-    if (id.startsWith('channel-')) {
-        const channel = channels.find(c => c.id === id);
-        if (channel) {
-            newChat = {
-              id: channel.id,
-              type: "channel" as const,
-              title: channel.name,
-              icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
-              messages: channel.messages,
-              isMinimized: false,
-              hasUnread: false,
+    let newChatState: ChatState | null = null;
+    
+    // Find in channels
+    const channel = channels.find(c => c.id === id);
+    if (channel) {
+        newChatState = {
+          id: channel.id,
+          type: "channel" as const,
+          title: channel.name,
+          icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
+          messages: channel.messages,
+        };
+    } else {
+      // Find in existing DMs or create a new one
+      const userId = id.startsWith('dm-') ? id.substring(3) : id;
+      let dm = directMessages.find(d => d.userId === userId);
+      
+      if (!dm) {
+        const recipient = users.find(u => u.id === userId);
+        if (recipient) {
+          const newDm: DirectMessage = {
+            id: `dm-${userId}`,
+            userId: userId,
+            name: recipient.name,
+            type: 'private',
+            messages: [],
+          };
+          // Add to our mock data list
+          setDirectMessages(prev => [...prev, newDm]);
+          dm = newDm;
+        }
+      }
+
+      if (dm) {
+        const recipient = users.find(u => u.id === dm!.userId);
+        if (recipient) {
+            newChatState = {
+                id: dm.id,
+                type: "dm" as const,
+                title: dm.name,
+                icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
+                messages: dm.messages,
             };
         }
-    } else if (id.startsWith('dm-')) {
-        const dm = directMessages.find(d => d.id === id);
-        if (dm) {
-            const recipient = users.find((u) => u.id === dm.userId);
-            if(recipient) {
-                newChat = {
-                  id: dm.id,
-                  type: "dm" as const,
-                  title: dm.name,
-                  icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
-                  messages: dm.messages,
-                  isMinimized: false,
-                  hasUnread: false,
-                };
-            }
-        }
+      }
     }
 
-    if (newChat) {
-      setActiveChats(prev => [...prev, newChat!]);
+
+    if (newChatState) {
+      setActiveChats(prev => [...prev, { ...newChatState, isMinimized: false, hasUnread: false }]);
+      if (window.location.pathname !== '/') {
+        router.push('/');
+      }
     }
     
     // Clear notifications and unread count for this chat
     setDirectMessages(prevDms => prevDms.map(dm => dm.id === id ? { ...dm, unreadCount: 0 } : dm));
     setNotifications(prevNotifs => prevNotifs.filter(notif => notif.chatId !== id));
-  }, [activeChats]);
+  }, [activeChats, router, directMessages]);
 
   const closeChat = useCallback((id: string) => {
     setActiveChats(prevIds => prevIds.filter(chat => chat.id !== id));
