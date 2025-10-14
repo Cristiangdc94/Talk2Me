@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
 import type { Message } from "@/lib/types";
 import { channels, directMessages, users } from "@/lib/mock-data";
 import { Hash, Lock } from "lucide-react";
@@ -26,21 +26,17 @@ interface ChatContextType {
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
-  const [activeChatId, setActiveChatIdState] = useState<string | null>(null);
-
-  const setActiveChatId = useCallback((id: string | null) => {
-    setActiveChatIdState(id);
-  }, []);
+  const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
   const openChat = useCallback((id: string) => {
-    setActiveChatIdState(id);
+    setActiveChatId(id);
   }, []);
 
   const closeChat = useCallback(() => {
-    setActiveChatIdState(null);
+    setActiveChatId(null);
   }, []);
 
-  const activeChat = React.useMemo(() => {
+  const activeChat = useMemo(() => {
     if (!activeChatId) return null;
 
     if (activeChatId.startsWith('channel-')) {

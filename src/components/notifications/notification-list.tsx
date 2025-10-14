@@ -12,9 +12,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Notification, User } from "@/lib/types";
 import { useChat } from "@/hooks/use-chat";
 import { useRouter } from "next/navigation";
-import { channels, directMessages, users } from "@/lib/mock-data";
-import { Hash, Lock } from "lucide-react";
-import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 
 interface NotificationListProps {
   notifications: Notification[];
@@ -50,33 +47,8 @@ export function NotificationList({ notifications, onNotificationClick }: Notific
   };
 
   const handleNotificationClick = (item: Notification) => {
-    if (item.chatId && item.chatType) {
-      if (item.chatType === 'channel') {
-        const channel = channels.find(c => c.id === item.chatId);
-        if (channel) {
-          openChat({
-            id: channel.id,
-            type: "channel",
-            title: channel.name,
-            icon: channel.type === "private" ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Hash className="w-5 h-5 text-muted-foreground" />,
-            messages: channel.messages,
-          });
-        }
-      } else if (item.chatType === 'dm') {
-         const dm = directMessages.find(d => d.id === item.chatId);
-         if (dm) {
-            const recipient = users.find((u) => u.id === dm.userId);
-            if(recipient) {
-                 openChat({
-                    id: dm.id,
-                    type: "dm",
-                    title: dm.name,
-                    icon: <UserAvatarWithStatus user={recipient} className="w-8 h-8"/>,
-                    messages: dm.messages,
-                });
-            }
-         }
-      }
+    if (item.chatId) {
+      openChat(item.chatId);
     } else if (item.link) {
       router.push(item.link);
     }

@@ -15,10 +15,6 @@ export function ChatLayout() {
         return null;
     }
 
-    const handleChatSelect = (id: string) => {
-        setActiveChatId(id);
-    };
-
     return (
         <div className="flex h-full w-full bg-background">
             <div className="w-64 border-r bg-muted p-2 flex flex-col gap-2">
@@ -31,7 +27,7 @@ export function ChatLayout() {
                                 key={channel.id}
                                 variant={activeChatId === channel.id ? "secondary" : "ghost"}
                                 className="w-full justify-start"
-                                onClick={() => handleChatSelect(channel.id)}
+                                onClick={() => setActiveChatId(channel.id)}
                             >
                                 {channel.type === "private" ? <Lock className="mr-2 h-4 w-4" /> : <Hash className="mr-2 h-4 w-4" />}
                                 {channel.name}
@@ -43,7 +39,7 @@ export function ChatLayout() {
                                 key={dm.id}
                                 variant={activeChatId === dm.id ? "secondary" : "ghost"}
                                 className="w-full justify-start"
-                                onClick={() => handleChatSelect(dm.id)}
+                                onClick={() => setActiveChatId(dm.id)}
                             >
                                <User className="mr-2 h-4 w-4" />
                                {dm.name}
