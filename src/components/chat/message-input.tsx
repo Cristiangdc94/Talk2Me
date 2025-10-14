@@ -1,7 +1,8 @@
+
 "use client";
 
 import React, { useState } from "react";
-import { Paperclip, Send } from "lucide-react";
+import { Paperclip, Send, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";

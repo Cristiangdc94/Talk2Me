@@ -1,13 +1,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useTransition, useRef } from "react";
+import React, { useState, useTransition, useRef, useEffect } from "react";
 import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getSmartReplySuggestions } from "@/ai/flows/smart-reply-suggestions";
-import type { Message, User } from "@/lib/types";
+import type { Message } from "@/lib/types";
 import { Skeleton } from "../ui/skeleton";
-import { users } from "@/lib/mock-data";
+import { useToast } from "@/hooks/use-toast";
 
 interface SmartReplySuggestionsProps {
   messages: Message[];
@@ -22,7 +22,7 @@ export function SmartReplySuggestions({
   const [isPending, startTransition] = useTransition();
   const [isRateLimited, setRateLimited] = useState(false);
   const rateLimitTimer = useRef<NodeJS.Timeout | null>(null);
-  const currentUser = users[0]; // In a real app, this would come from an auth context
+  const { toast } = useToast();
 
   useEffect(() => {
     // Cleanup timer on unmount
@@ -32,51 +32,42 @@ export function SmartReplySuggestions({
       }
     };
   }, []);
-  
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    const shouldFetchSuggestions = 
-      messages.length > 0 && 
-      !isRateLimited &&
-      lastMessage?.user.id !== currentUser.id;
 
-    if (shouldFetchSuggestions) {
-      startTransition(async () => {
-        try {
-          // Format the last 3 messages for context
-          const messageHistory = messages
-            .slice(-3)
-            .map((m) => `${m.user.name}: ${m.text || "(envió una imagen)"}`)
-            .join("\n");
-            
-          const result = await getSmartReplySuggestions({ messageHistory });
-          setSuggestions(result.suggestions);
-        } catch (error: any) {
-          console.error("Error al obtener respuestas inteligentes:", error);
-          if (error.message && error.message.includes('429')) {
-            console.warn("Límite de tasa alcanzado. Desactivando sugerencias temporalmente.");
-            setRateLimited(true);
-            setSuggestions([]);
-
-            // Set a timer to re-enable suggestions after 60 seconds
-            rateLimitTimer.current = setTimeout(() => {
-              setRateLimited(false);
-              console.log("Temporizador de límite de tasa finalizado. Reactivando sugerencias.");
-            }, 60000); 
-          } else {
-            setSuggestions([]);
-          }
-        }
-      });
-    } else if (!shouldFetchSuggestions) {
-      setSuggestions([]);
+  const handleFetchSuggestions = () => {
+    if (isRateLimited || isPending || messages.length === 0) {
+      return;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages, isRateLimited, currentUser.id]);
-  
-  if (isRateLimited && suggestions.length === 0) {
-      return null; // Don't show anything if we are rate limited and have no suggestions
-  }
+    startTransition(async () => {
+      try {
+        const messageHistory = messages
+          .slice(-3)
+          .map((m) => `${m.user.name}: ${m.text || "(envió una imagen)"}`)
+          .join("\n");
+
+        const result = await getSmartReplySuggestions({ messageHistory });
+        setSuggestions(result.suggestions);
+      } catch (error: any) {
+        console.error("Error al obtener respuestas inteligentes:", error);
+        if (error.message && error.message.includes('429')) {
+          toast({
+            variant: "destructive",
+            title: "Límite de Peticiones Alcanzado",
+            description: "Has superado la cuota de la API. Por favor, espera un minuto.",
+          });
+          setRateLimited(true);
+          rateLimitTimer.current = setTimeout(() => {
+            setRateLimited(false);
+          }, 60000);
+        }
+        setSuggestions([]);
+      }
+    });
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    onSuggestionClick(suggestion);
+    setSuggestions([]); // Clear suggestions after one is clicked
+  };
 
   if (isPending) {
     return (
@@ -89,26 +80,35 @@ export function SmartReplySuggestions({
     );
   }
 
-  if (suggestions.length === 0) {
-    return null;
+  if (suggestions.length > 0) {
+    return (
+        <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => setSuggestions([])}>
+                <Sparkles className="h-5 w-5 text-purple-500" />
+            </Button>
+            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                {suggestions.map((suggestion, index) => (
+                <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="shrink-0"
+                >
+                    {suggestion}
+                </Button>
+                ))}
+            </div>
+        </div>
+    );
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <Sparkles className="h-5 w-5 text-accent shrink-0" />
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
-        {suggestions.map((suggestion, index) => (
-          <Button
-            key={index}
-            variant="outline"
-            size="sm"
-            onClick={() => onSuggestionClick(suggestion)}
-            className="shrink-0"
-          >
-            {suggestion}
-          </Button>
-        ))}
-      </div>
+    <div className="flex items-center">
+        <Button variant="ghost" size="icon" onClick={handleFetchSuggestions} disabled={isPending || isRateLimited || messages.length === 0}>
+            <Sparkles className="h-5 w-5 text-muted-foreground hover:text-purple-500" />
+            <span className="sr-only">Generar respuestas inteligentes</span>
+        </Button>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -11,6 +12,7 @@ import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions
 import type { Message, User } from "@/lib/types";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { users } from "@/lib/mock-data";
 
 interface ChatAreaProps {
   chatId: string;
@@ -70,6 +72,8 @@ export function ChatArea({
     });
   };
 
+  const lastMessageIsFromOtherUser = messages.length > 0 && messages[messages.length - 1].user.id !== currentUser.id;
+
   return (
     <div className="flex flex-col h-full">
       <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
@@ -117,9 +121,10 @@ export function ChatArea({
         </ScrollArea>
       </div>
 
-      <footer className="p-4 border-t shrink-0 space-y-4 bg-background">
-        <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
-        <Separator />
+      <footer className="p-4 border-t shrink-0 space-y-2 bg-background">
+        {chatType === 'dm' && lastMessageIsFromOtherUser && (
+            <SmartReplySuggestions messages={messages} onSuggestionClick={handleSuggestionClick} />
+        )}
         <MessageInput onSendMessage={handleSendMessage} />
       </footer>
     </div>
