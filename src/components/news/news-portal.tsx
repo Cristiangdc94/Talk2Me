@@ -119,9 +119,9 @@ export function NewsPortal() {
       />
       <Tabs defaultValue="general" className="h-full flex flex-col">
         <div className="flex items-center justify-between mb-4">
-          <TabsList>
-            <TabsTrigger value="general">Noticias Generales</TabsTrigger>
-            <TabsTrigger value="foryou">Para Ti</TabsTrigger>
+          <TabsList className="p-1.5 bg-card">
+            <TabsTrigger value="general" className="text-base px-4 py-2">Noticias Generales</TabsTrigger>
+            <TabsTrigger value="foryou" className="text-base px-4 py-2">Para Ti</TabsTrigger>
           </TabsList>
           <Button variant="outline" size="sm" onClick={() => setDialogOpen(true)}>
             <Settings className="mr-2 h-4 w-4" />
