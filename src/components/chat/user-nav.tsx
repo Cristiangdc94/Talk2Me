@@ -135,14 +135,15 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <div className="group-data-[collapsible=icon]:hidden">
-        <Button variant="ghost" size="icon" asChild>
-            <Link href="/settings">
-                <Settings className="h-5 w-5" />
-                <span className="sr-only">Ajustes</span>
-            </Link>
-        </Button>
-      </div>
+       <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => router.push('/settings')}
+          className="group-data-[collapsible=icon]:hidden flex-shrink-0"
+        >
+          <Settings className="h-5 w-5" />
+          <span className="sr-only">Ajustes</span>
+      </Button>
     </div>
   );
 }
