@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Bell, MessageSquare, PhoneMissed, Newspaper } from "lucide-react";
 import {
   Card,
@@ -12,6 +13,7 @@ import type { Notification } from "@/lib/types";
 
 interface NotificationListProps {
   notifications: Notification[];
+  onNotificationClick: () => void;
 }
 
 const iconMap = {
@@ -31,7 +33,7 @@ const groupNotifications = (notifications: Notification[]) => {
   }, {} as Record<string, Notification[]>);
 };
 
-export function NotificationList({ notifications }: NotificationListProps) {
+export function NotificationList({ notifications, onNotificationClick }: NotificationListProps) {
   const groupedNotifications = groupNotifications(notifications);
 
   const groupTitles = {
@@ -55,10 +57,15 @@ export function NotificationList({ notifications }: NotificationListProps) {
               </h3>
               <div className="space-y-3">
                 {items.map((item) => (
-                  <div key={item.id} className="flex items-start gap-3">
+                   <Link
+                    key={item.id}
+                    href={item.link || '#'}
+                    onClick={onNotificationClick}
+                    className="flex items-start gap-3 hover:bg-accent rounded-md p-2 -m-2"
+                  >
                     <div className="mt-1">{iconMap[item.type as keyof typeof iconMap]}</div>
                     <p className="text-sm text-foreground/90">{item.text}</p>
-                  </div>
+                   </Link>
                 ))}
               </div>
             </div>

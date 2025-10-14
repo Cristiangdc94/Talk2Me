@@ -49,4 +49,5 @@ export interface Notification {
   type: 'message' | 'call' | 'news';
   text: string;
   timestamp: string;
+  link?: string;
 }

@@ -74,6 +74,14 @@ export const directMessages: DirectMessage[] = [
       { id: 'dm3', text: '¡La actualización del proyecto ya está disponible!', timestamp: 'Ayer', user: users[3] },
     ],
   },
+  {
+    id: '5', // Corresponds to user with id '5' (Diana)
+    name: 'Diana',
+    type: 'private',
+    messages: [
+      { id: 'dm4', text: '¡Hola! ¿Estás libre para una llamada rápida?', timestamp: 'hace 4 horas', user: users[4] },
+    ]
+  }
 ];
 
 
@@ -87,9 +95,9 @@ export const newsArticles: NewsArticle[] = [
 ];
 
 export const notifications: Notification[] = [
-  { id: 'notif1', type: 'message', text: 'Alice te ha enviado un mensaje.', timestamp: 'hace 5 minutos' },
-  { id: 'notif2', type: 'message', text: 'Nuevo mensaje en el canal #general.', timestamp: 'hace 10 minutos' },
-  { id: 'notif3', type: 'call', text: 'Llamada perdida de Bob.', timestamp: 'hace 1 hora' },
-  { id: 'notif4', type: 'news', text: 'Se ha publicado un nuevo artículo de tecnología que podría interesarte.', timestamp: 'hace 3 horas' },
-  { id: 'notif5', type: 'message', text: 'Diana ha respondido a tu mensaje.', timestamp: 'hace 4 horas' },
+  { id: 'notif1', type: 'message', text: 'Alice te ha enviado un mensaje.', timestamp: 'hace 5 minutos', link: '/dm/2' },
+  { id: 'notif2', type: 'message', text: 'Nuevo mensaje en el canal #general.', timestamp: 'hace 10 minutos', link: '/channel/1' },
+  { id: 'notif3', type: 'call', text: 'Llamada perdida de Bob.', timestamp: 'hace 1 hora', link: '/dm/3' },
+  { id: 'notif4', type: 'news', text: 'Se ha publicado un nuevo artículo de tecnología que podría interesarte.', timestamp: 'hace 3 horas', link: '/' },
+  { id: 'notif5', type: 'message', text: 'Diana ha respondido a tu mensaje.', timestamp: 'hace 4 horas', link: '/dm/5' },
 ];

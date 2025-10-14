@@ -12,7 +12,6 @@ import { ThemeToggle } from "../theme-toggle";
 
 export function NotificationWidget() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const widgetRef = useRef<HTMLDivElement>(null);
@@ -21,31 +20,29 @@ export function NotificationWidget() {
   const notificationCount = mockNotifications.length;
   
   useEffect(() => {
-    isDraggingRef.current = isDragging;
-  }, [isDragging]);
-
-  useEffect(() => {
-    // Set initial position only on the client-side
+    // Set initial position on the client-side after mount
     setPosition({ x: window.innerWidth - 100, y: window.innerHeight - 100 });
-    
+  
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDraggingRef.current) return;
-      e.preventDefault();
-      setPosition({
-        x: e.clientX - dragStartPos.current.x,
-        y: e.clientY - dragStartPos.current.y,
-      });
+      if (isDraggingRef.current) {
+        e.preventDefault();
+        setPosition(prev => ({
+          x: e.clientX - dragStartPos.current.x,
+          y: e.clientY - dragStartPos.current.y,
+        }));
+      }
     };
-
+  
     const handleMouseUp = () => {
-      if (!isDraggingRef.current) return;
-      setIsDragging(false);
-      document.body.style.cursor = 'default';
+      if (isDraggingRef.current) {
+        isDraggingRef.current = false;
+        document.body.style.cursor = 'default';
+      }
     };
-
+  
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-
+  
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
@@ -53,15 +50,20 @@ export function NotificationWidget() {
   }, []);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (widgetRef.current) {
+      isDraggingRef.current = true;
       const rect = widgetRef.current.getBoundingClientRect();
       dragStartPos.current = {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top,
       };
-      setIsDragging(true);
       document.body.style.cursor = 'grabbing';
     }
+  };
+  
+  const handleNotificationClick = () => {
+    setIsOpen(false);
   };
   
   if (notificationCount === 0) return null;
@@ -69,7 +71,7 @@ export function NotificationWidget() {
   return (
     <div
       ref={widgetRef}
-      className={cn("fixed z-50 flex items-center gap-2", isDragging && "select-none")}
+      className={cn("fixed z-50 flex items-center gap-2", isDraggingRef.current && "select-none")}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -83,10 +85,7 @@ export function NotificationWidget() {
             <div className="relative cursor-grab active:cursor-grabbing" onMouseDown={(e) => e.stopPropagation()}>
                 <button 
                     className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                    onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.preventDefault();
-                        handleMouseDown(e);
-                    }}
+                    onMouseDown={handleMouseDown}
                 >
                 {isOpen ? <X className="h-7 w-7" /> : <Bell className="h-7 w-7" />}
                 </button>
@@ -101,7 +100,7 @@ export function NotificationWidget() {
             </div>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="end" sideOffset={15}>
-            <NotificationList notifications={mockNotifications} />
+            <NotificationList notifications={mockNotifications} onNotificationClick={handleNotificationClick} />
             </PopoverContent>
         </Popover>
     </div>
