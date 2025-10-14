@@ -235,33 +235,35 @@ export function NewsPortal({ view }: NewsPortalProps) {
       <div className='flex flex-col gap-8'>
         <div className="bg-muted/50 rounded-lg p-4">
             <h2 className="text-2xl font-semibold tracking-tight mb-3">Lo nuevo entre tus amigos</h2>
-            <Carousel
-                opts={{
-                    align: "start",
-                    loop: true,
-                }}
-                plugins={[autoplayPlugin.current]}
-                className="w-full"
-                onMouseEnter={() => autoplayPlugin.current.stop()}
-                onMouseLeave={() => autoplayPlugin.current.play()}
-            >
-                <CarouselContent>
-                    <CarouselItem className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                      <div className="p-1 h-full">
-                          <AddStatusCard currentUser={currentUser} onAddStatus={handleAddStatus} />
-                      </div>
-                    </CarouselItem>
-                    {friendStatuses.map((status) => (
-                        <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                            <div className="p-1 h-full">
-                                <FriendStatusCard status={status} />
-                            </div>
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-                <CarouselPrevious className="-left-4" />
-                <CarouselNext className="-right-4" />
-            </Carousel>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="md:col-span-1">
+                <AddStatusCard currentUser={currentUser} onAddStatus={handleAddStatus} />
+              </div>
+              <div className="md:col-span-3">
+                 <Carousel
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                    plugins={[autoplayPlugin.current]}
+                    className="w-full"
+                    onMouseEnter={() => autoplayPlugin.current.stop()}
+                    onMouseLeave={() => autoplayPlugin.current.play()}
+                >
+                    <CarouselContent>
+                        {friendStatuses.map((status) => (
+                            <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3">
+                                <div className="p-1 h-full">
+                                    <FriendStatusCard status={status} />
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="-left-4" />
+                    <CarouselNext className="-right-4" />
+                </Carousel>
+              </div>
+            </div>
         </div>
 
         {renderContent()}
