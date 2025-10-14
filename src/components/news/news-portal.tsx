@@ -165,32 +165,30 @@ export function NewsPortal({ view }: NewsPortalProps) {
       />
 
       <div className='space-y-8'>
-        {view === 'foryou' && (
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight mb-4">Opiniones de tus amigos</h2>
-             <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="w-full"
-            >
-              <CarouselContent>
-                {friendStatuses.map((status) => (
-                  <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                    <div className="p-1 h-full">
-                       <FriendStatusCard status={status} />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="ml-12" />
-              <CarouselNext className="mr-12" />
-            </Carousel>
-          </div>
-        )}
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight mb-4">Opiniones de tus amigos</h2>
+            <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {friendStatuses.map((status) => (
+                <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <div className="p-1 h-full">
+                      <FriendStatusCard status={status} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="ml-12" />
+            <CarouselNext className="mr-12" />
+          </Carousel>
+        </div>
         
-        {view === 'foryou' && <Separator />}
+        <Separator />
 
         {view === 'foryou' && preferences.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-muted/50 min-h-[400px]">
