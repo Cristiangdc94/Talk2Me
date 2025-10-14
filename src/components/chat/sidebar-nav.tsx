@@ -52,7 +52,7 @@ const mainNavLinks = [
 export function SidebarNav() {
   const pathname = usePathname();
   const { toast } = useToast();
-  const { openChat, activeChatId } = useChat();
+  const { openChat, activeChatId, setActiveChatId } = useChat();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
   const [isNewMessagePopoverOpen, setNewMessagePopoverOpen] = useState(false);
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
@@ -62,7 +62,7 @@ export function SidebarNav() {
     setIsMounted(true);
   }, []);
 
-  const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news") || pathname.startsWith("/friends-news"), [pathname]);
+  const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news"), [pathname]);
 
   const handleCall = (event: React.MouseEvent, userName: string) => {
     event.preventDefault();
