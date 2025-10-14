@@ -38,9 +38,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
              <SidebarTrigger />
           </header>
-          <main className="flex-1 overflow-y-auto">
-            <div className="mx-auto w-full max-w-[1080px] h-full">{children}</div>
-          </main>
+          <main className="flex-1 overflow-auto">{children}</main>
         </div>
       </div>
     </SidebarProvider>
