@@ -54,8 +54,7 @@ const formSchema = z.object({
   news: z.string().optional(),
 });
 
-interface ManageCompanyGroupDialogProps extends Omit<React.ComponentProps<typeof Dialog>, 'onOpenChange'> {
-  onOpenChange: (open: boolean) => void;
+interface ManageCompanyGroupDialogProps extends React.ComponentProps<typeof Dialog> {
   groupName: string;
   groupDescription: string;
   members: User[];
@@ -99,14 +98,18 @@ export function ManageCompanyGroupDialog({
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     onSave(groupName, values.name, values.description || '', values.members || []);
-    props.onOpenChange(false);
+    if (props.onOpenChange) {
+      props.onOpenChange(false);
+    }
   };
   
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       form.reset();
     }
-    props.onOpenChange(open);
+    if (props.onOpenChange) {
+        props.onOpenChange(open);
+    }
   };
 
   const availableContacts = users.filter(user => user.id !== '1');
@@ -278,7 +281,7 @@ export function ManageCompanyGroupDialog({
                 </div>
             </Tabs>
             <DialogFooter className="pt-4 shrink-0">
-                <Button type="button" variant="ghost" onClick={() => props.onOpenChange(false)}>Cancelar</Button>
+                <Button type="button" variant="ghost" onClick={() => props.onOpenChange && props.onOpenChange(false)}>Cancelar</Button>
                 <Button type="submit">Guardar Cambios</Button>
             </DialogFooter>
           </form>
@@ -287,5 +290,3 @@ export function ManageCompanyGroupDialog({
     </Dialog>
   );
 }
-
-    
