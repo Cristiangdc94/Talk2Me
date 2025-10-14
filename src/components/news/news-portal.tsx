@@ -204,7 +204,13 @@ export function NewsPortal({ view }: NewsPortalProps) {
         }
         return (
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight mb-4">Para Tí</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold tracking-tight">Para Tí</h2>
+              <Button variant="outline" onClick={() => setDialogOpen(true)}>
+                <Settings className="mr-2 h-4 w-4" />
+                Editar Preferencias
+              </Button>
+            </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {newsToShow.map((article) => (
                 <NewsArticleCard key={article.id} article={article} />
@@ -280,5 +286,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
     </>
   );
 }
+
+    
 
     
