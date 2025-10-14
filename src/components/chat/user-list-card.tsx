@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MessageSquare, Phone, MoreVertical, ShieldAlert, Trash2, Ban } from "lucide-react";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { useToast } from "@/hooks/use-toast";
-import type { User, CompanyRole } from "@/lib/types";
+import type { User, CompanyRole, CompanyRoleDetails } from "@/lib/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,10 +19,10 @@ import { Badge } from "../ui/badge";
 interface UserListCardProps {
   user: User;
   currentUserRole?: CompanyRole;
-  userRole?: CompanyRole;
+  userRoleDetails?: CompanyRoleDetails;
 }
 
-export function UserListCard({ user, currentUserRole, userRole }: UserListCardProps) {
+export function UserListCard({ user, currentUserRole, userRoleDetails }: UserListCardProps) {
   const { toast } = useToast();
   
   const privilegedRoles: CompanyRole[] = ['Administrador', 'CEO', 'Jefe de proyecto'];
@@ -61,9 +61,9 @@ export function UserListCard({ user, currentUserRole, userRole }: UserListCardPr
 
   return (
     <Card className="h-full flex flex-col text-center transition-all hover:shadow-lg hover:-translate-y-1 relative group">
-      {userRole && (
+      {userRoleDetails && (
         <Badge variant="secondary" className="absolute top-2 right-2">
-          {userRole}
+          {userRoleDetails.role}
         </Badge>
       )}
       {!isCurrentUser && (
@@ -97,6 +97,7 @@ export function UserListCard({ user, currentUserRole, userRole }: UserListCardPr
         <UserAvatarWithStatus user={user} className="w-20 h-20 mb-4" />
         <p className="font-bold text-lg">{user.name}</p>
         <p className="text-sm text-muted-foreground">{user.email}</p>
+        {userRoleDetails?.tag && <Badge variant="outline" className="mt-2">{userRoleDetails.tag}</Badge>}
       </CardHeader>
       
       {!isCurrentUser && (

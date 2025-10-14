@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { UserListCard } from "@/components/chat/user-list-card";
-import { User, CompanyRole, Channel } from "@/lib/types";
+import { User, CompanyRoleDetails, Channel } from "@/lib/types";
 import { Plus, MoreVertical, Settings, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
@@ -33,9 +33,10 @@ function CreateGroupCard({ onClick }: { onClick: () => void }) {
     );
 }
 
-const roleOrder: CompanyRole[] = ['CEO', 'Administrador', 'Jefe de proyecto', 'Empleado', 'Partner', 'Miembro'];
-const getRoleSortValue = (role: CompanyRole) => {
-    const index = roleOrder.indexOf(role);
+const roleOrder = ['CEO', 'Administrador', 'Jefe de proyecto', 'Empleado', 'Partner', 'Miembro'];
+const getRoleSortValue = (roleDetails?: CompanyRoleDetails) => {
+    if (!roleDetails) return roleOrder.length;
+    const index = roleOrder.indexOf(roleDetails.role);
     return index === -1 ? roleOrder.length : index;
 };
 
@@ -51,7 +52,7 @@ export function CoworkersList({
 
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
 
-  const privilegedRoles: CompanyRole[] = ['Administrador', 'CEO', 'Jefe de proyecto'];
+  const privilegedRoles = ['Administrador', 'CEO', 'Jefe de proyecto'];
 
   useEffect(() => {
     setIsMounted(true);
@@ -63,9 +64,12 @@ export function CoworkersList({
 
   const handleCreateGroup = (companyName: string) => {
     if (companyName && !groupedUsers[companyName]) {
-        const newUserWithRole = {
+        const newUserWithRole: User = {
             ...currentUser!,
-            companyRoles: { ...currentUser?.companyRoles, [companyName]: 'Administrador' as const }
+            companyRoles: { 
+                ...currentUser?.companyRoles, 
+                [companyName]: { role: 'Administrador' } 
+            }
         };
         
         setCurrentUser(newUserWithRole);
@@ -120,12 +124,12 @@ export function CoworkersList({
         <div className="flex-1 overflow-x-auto px-4 sm:px-6 pb-6">
             <div className="flex gap-6 h-full">
             {Object.entries(groupedUsers).map(([company, userList]) => {
-                const currentUserRole = currentUser?.companyRoles?.[company];
-                const isPrivileged = currentUserRole && privilegedRoles.includes(currentUserRole);
+                const currentUserRoleDetails = currentUser?.companyRoles?.[company];
+                const isPrivileged = currentUserRoleDetails && privilegedRoles.includes(currentUserRoleDetails.role);
 
                 const sortedUsers = [...userList].sort((a, b) => {
-                    const roleA = a.companyRoles?.[company] || 'Miembro';
-                    const roleB = b.companyRoles?.[company] || 'Miembro';
+                    const roleA = a.companyRoles?.[company];
+                    const roleB = b.companyRoles?.[company];
                     return getRoleSortValue(roleA) - getRoleSortValue(roleB);
                 });
 
@@ -144,32 +148,12 @@ export function CoworkersList({
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
-                                        {isPrivileged ? (
-                                            <>
-                                                <DropdownMenuItem asChild>
-                                                    <Link href={`/coworkers/${encodeURIComponent(company)}`}>
-                                                        <Settings className="mr-2 h-4 w-4" />
-                                                        <span>Gestionar Grupo</span>
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem className="text-destructive" onClick={() => toast({variant: 'destructive', title: "Grupo eliminado"})}>
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    <span>Eliminar Grupo</span>
-                                                </DropdownMenuItem>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
-                                                    <Info className="mr-2 h-4 w-4" />
-                                                    <span>Ver detalles</span>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => toast({title: "Has abandonado el grupo"})}>
-                                                    <LogOut className="mr-2 h-4 w-4" />
-                                                    <span>Abandonar el grupo</span>
-                                                </DropdownMenuItem>
-                                            </>
-                                        )}
+                                        <DropdownMenuItem asChild>
+                                            <Link href={`/settings`}>
+                                                <Settings className="mr-2 h-4 w-4" />
+                                                <span>Gestionar Grupo</span>
+                                            </Link>
+                                        </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
@@ -192,8 +176,8 @@ export function CoworkersList({
                                                 <UserListCard 
                                                     key={user.id} 
                                                     user={user}
-                                                    currentUserRole={currentUserRole}
-                                                    userRole={user.companyRoles?.[company]} 
+                                                    currentUserRole={currentUserRoleDetails?.role}
+                                                    userRoleDetails={user.companyRoles?.[company]} 
                                                 />
                                             ))
                                         ) : (

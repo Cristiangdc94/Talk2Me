@@ -3,7 +3,13 @@
 
 
 
+
 export type CompanyRole = 'Empleado' | 'Partner' | 'Administrador' | 'Jefe de proyecto' | 'CEO' | 'Miembro';
+
+export interface CompanyRoleDetails {
+    role: CompanyRole;
+    tag?: string;
+}
 
 export interface User {
   id: string;
@@ -15,7 +21,7 @@ export interface User {
   relationship?: 'friend' | 'coworker';
   email?: string;
   company?: string;
-  companyRoles?: { [companyName: string]: CompanyRole };
+  companyRoles?: { [companyName: string]: CompanyRoleDetails };
 }
 
 export interface Message {
