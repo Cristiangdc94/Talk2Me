@@ -89,7 +89,6 @@ export function SidebarNav() {
                   </Link>
                 </SidebarMenuButton>
               <SidebarMenuAction
-                showOnHover
                 onClick={(e) => handleCall(e, dm.name)}
                 aria-label={`Llamar a ${dm.name}`}
               >
