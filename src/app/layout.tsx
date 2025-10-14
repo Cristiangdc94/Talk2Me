@@ -31,7 +31,7 @@ export default function RootLayout({
           rel="stylesheet" 
         />
       </head>
-      <body className="font-body antialiased text-sm h-full bg-muted">
+      <body className="font-body antialiased text-sm h-full bg-sidebar">
         <LayoutProvider>{children}</LayoutProvider>
         <Toaster />
       </body>

@@ -16,7 +16,7 @@ import { ChatDialog } from './chat/chat-dialog';
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex h-full bg-muted">
+      <div className="mx-auto max-w-[1920px] h-full flex bg-muted">
         <Sidebar>
           <SidebarHeader className="p-4">
             <div className="flex items-center gap-2">
@@ -35,7 +35,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <UserNav />
           </SidebarFooter>
         </Sidebar>
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden">
            <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0 rounded-tr-lg md:hidden">
              <SidebarTrigger />
           </header>
