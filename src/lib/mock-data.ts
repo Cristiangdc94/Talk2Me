@@ -105,17 +105,28 @@ export const channels: Channel[] = [
 
 export const directMessages: DirectMessage[] = [
   {
-    id: 'dm-2', // Corresponds to user with id '2' (Alice)
+    id: 'dm-2',
     userId: '2',
     name: 'Alice',
     type: 'private',
+    unreadCount: 2,
     messages: [
       { id: 'dm1', text: 'Oye, ¿tienes un minuto para hablar?', timestamp: '2:15 PM', user: users[1] },
       { id: 'dm2', text: 'Claro, ¿qué pasa?', timestamp: '2:16 PM', user: users[0] },
     ],
   },
   {
-    id: 'dm-4', // Corresponds to user with id '4' (Charlie)
+    id: 'dm-3',
+    userId: '3',
+    name: 'Bob',
+    type: 'private',
+    unreadCount: 15, // > 9
+    messages: [
+      { id: 'dm_b1', text: 'Reunión en 5', timestamp: '3:00 PM', user: users[2] },
+    ],
+  },
+  {
+    id: 'dm-4',
     userId: '4',
     name: 'Carlos',
     type: 'private',
@@ -124,12 +135,22 @@ export const directMessages: DirectMessage[] = [
     ],
   },
   {
-    id: 'dm-5', // Corresponds to user with id '5' (Diana)
+    id: 'dm-5',
     userId: '5',
     name: 'Diana',
     type: 'private',
+    unreadCount: 1,
     messages: [
       { id: 'dm4', text: '¡Hola! ¿Estás libre para una llamada rápida?', timestamp: 'hace 4 horas', user: users[4] },
+    ]
+  },
+  {
+    id: 'dm-6',
+    userId: '6',
+    name: 'Eva',
+    type: 'private',
+    messages: [
+      { id: 'dm_e1', text: 'Revisa por favor los informes de DataSolutions.', timestamp: 'hace 2 horas', user: users[5] }
     ]
   }
 ];

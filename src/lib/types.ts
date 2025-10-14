@@ -2,6 +2,7 @@
 
 
 
+
 export type CompanyRole = 'Empleado' | 'Partner' | 'Administrador' | 'Jefe de proyecto' | 'CEO' | 'Miembro';
 
 export interface User {
@@ -34,6 +35,7 @@ export interface Channel {
 
 export interface DirectMessage extends Channel {
   userId: string;
+  unreadCount?: number;
 }
 
 export interface NewsArticle {

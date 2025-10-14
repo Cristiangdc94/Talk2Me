@@ -40,6 +40,7 @@ import { useChat } from "@/hooks/use-chat";
 import { NewMessagePopover } from "./new-message-popover";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import type { Channel } from "@/lib/types";
+import { Badge } from "../ui/badge";
 
 const mainNavLinks = [
     { href: "/friends", label: "Amigos", icon: Users },
@@ -177,16 +178,13 @@ export function SidebarNav() {
         <SidebarGroupLabel className="font-headline text-xl">
           Mensajes Directos
         </SidebarGroupLabel>
-        <NewMessagePopover
-          isOpen={isNewMessagePopoverOpen}
-          setIsOpen={setNewMessagePopoverOpen}
-        >
-          <PopoverTrigger asChild>
-            <SidebarGroupAction>
-              <Plus className="h-4 w-4" />
-              <span className="sr-only">Nuevo Mensaje</span>
+        <NewMessagePopover isOpen={isNewMessagePopoverOpen} setIsOpen={setNewMessagePopoverOpen}>
+            <SidebarGroupAction asChild>
+                <PopoverTrigger>
+                    <Plus className="h-4 w-4" />
+                    <span className="sr-only">Nuevo Mensaje</span>
+                </PopoverTrigger>
             </SidebarGroupAction>
-          </PopoverTrigger>
         </NewMessagePopover>
         <SidebarMenu>
           {directMessages.map((dm) => {
@@ -203,9 +201,17 @@ export function SidebarNav() {
                   onClick={() => handleDMClick(dm.id)}
                   isActive={activeChatId === dm.id}
                   tooltip={dm.name}
+                  className="justify-between"
                 >
-                  <UserAvatarWithStatus user={user} className="w-6 h-6" />
-                  <span className={cn(statusColor[user.status])}>{dm.name}</span>
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    <UserAvatarWithStatus user={user} className="w-6 h-6" />
+                    <span className={cn("truncate", statusColor[user.status])}>{dm.name}</span>
+                  </div>
+                   {dm.unreadCount && dm.unreadCount > 0 && (
+                    <Badge variant="destructive" className={cn("h-5 min-w-[1.25rem] justify-center text-xs", dm.unreadCount > 9 && "p-0 h-3 w-3")}>
+                      {dm.unreadCount > 9 ? '' : dm.unreadCount}
+                    </Badge>
+                  )}
                 </SidebarMenuButton>
                 <SidebarMenuAction
                   onClick={(e) => handleCall(e, dm.name)}
