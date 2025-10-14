@@ -52,25 +52,33 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
 
 function ChatWidget() {
   const { activeChat, closeChat } = useChat();
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef({ x: 0, y: 0 });
   const widgetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Reset position when a new chat is opened
-    setPosition({ x: 0, y: 0 });
+    // Set initial position only on the client
+    const defaultX = window.innerWidth - 450;
+    const defaultY = window.innerHeight - 560;
+    setPosition({ x: defaultX, y: defaultY });
+  }, []);
+
+  useEffect(() => {
+    // Reset position to default when a new chat is opened, but keep it within bounds
+    if (activeChat?.id) {
+        const defaultX = window.innerWidth - 450;
+        const defaultY = window.innerHeight - 560;
+        setPosition({ x: defaultX, y: defaultY });
+    }
   }, [activeChat?.id]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (widgetRef.current) {
       const widgetRect = widgetRef.current.getBoundingClientRect();
-      const initialLeft = widgetRect.left + window.scrollX;
-      const initialTop = widgetRect.top + window.scrollY;
-
       dragOffset.current = {
-        x: e.clientX - initialLeft,
-        y: e.clientY - initialTop,
+        x: e.clientX - widgetRect.left,
+        y: e.clientY - widgetRect.top,
       };
       
       setIsDragging(true);
@@ -83,44 +91,39 @@ function ChatWidget() {
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging && widgetRef.current) {
-      const parentRect = widgetRef.current.parentElement?.getBoundingClientRect();
-      if(parentRect) {
-        const newX = e.clientX - dragOffset.current.x - parentRect.left;
-        const newY = e.clientY - dragOffset.current.y - parentRect.top;
-        setPosition({ x: newX, y: newY });
-      }
+    if (isDragging && position.x !== null && position.y !== null) {
+      const newX = e.clientX - dragOffset.current.x;
+      const newY = e.clientY - dragOffset.current.y;
+      setPosition({ x: newX, y: newY });
     }
   };
-  
 
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
     } else {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging]);
 
-  if (!activeChat) {
+  if (!activeChat || position.x === null || position.y === null) {
     return null;
   }
 
   return (
     <div 
       ref={widgetRef}
-      className="fixed bottom-8 right-[calc(8rem+2rem)] z-50"
+      className="fixed z-50"
       style={{ 
-        transform: `translate(${position.x}px, ${position.y}px)`, 
-        left: 'auto', 
-        top: 'auto'
+        left: `${position.x}px`, 
+        top: `${position.y}px`,
       }}
     >
        <Card className="w-96 h-[32rem] flex flex-col shadow-2xl">
@@ -145,7 +148,7 @@ function ChatWidget() {
             key={activeChat.id}
             chatId={activeChat.id}
             title={activeChat.title}
-            icon={activeChat.icon}
+            icon={active-chat.icon}
             initialMessages={activeChat.messages}
             currentUser={users[0]}
             chatType={activeChat.type}
