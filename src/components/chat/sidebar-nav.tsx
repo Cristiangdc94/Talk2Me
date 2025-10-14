@@ -10,6 +10,7 @@ import {
   Briefcase,
   ChevronDown,
   User,
+  Search,
 } from "lucide-react";
 
 import {
@@ -32,6 +33,7 @@ import { cn } from "@/lib/utils";
 const mainNavLinks = [
     { href: "/friends", label: "Amigos", icon: Users },
     { href: "/coworkers", label: "Compañeros", icon: Briefcase },
+    { href: "/add-contact", label: "Buscar", icon: Search },
   ];
 
 export function SidebarNav() {
