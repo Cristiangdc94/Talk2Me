@@ -43,3 +43,10 @@ export interface FriendStatus {
   statusText: string;
   timestamp: string;
 }
+
+export interface Notification {
+  id: string;
+  type: 'message' | 'call' | 'news';
+  text: string;
+  timestamp: string;
+}

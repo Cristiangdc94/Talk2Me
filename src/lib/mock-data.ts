@@ -1,5 +1,5 @@
 
-import { User, Channel, DirectMessage, NewsArticle, FriendStatus } from './types';
+import { User, Channel, DirectMessage, NewsArticle, FriendStatus, Notification } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 const findImage = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || '';
@@ -84,4 +84,12 @@ export const newsArticles: NewsArticle[] = [
   { id: 'n4', category: 'technology', location: 'global', title: 'Nuevo Lenguaje de Programación Promete Revolucionar el Desarrollo', summary: 'Descubre "Mojo", el nuevo lenguaje que combina la simplicidad de Python con el rendimiento de C.', imageUrl: findImage('news-4'), link: '#' },
   { id: 'n5', category: 'health', location: 'local', title: 'Nueva Campaña de Salud Pública se Lanza en la Ciudad', summary: 'Iniciativas para promover el bienestar y la prevención de enfermedades en la comunidad local.', imageUrl: findImage('news-5'), link: '#' },
   { id: 'n6', category: 'sports', location: 'global', title: 'Resumen de los Partidos de Anoche y Próximos Encuentros', summary: 'No te pierdas los momentos más destacados de la jornada deportiva y lo que viene.', imageUrl: findImage('news-6'), link: '#' },
+];
+
+export const notifications: Notification[] = [
+  { id: 'notif1', type: 'message', text: 'Alice te ha enviado un mensaje.', timestamp: 'hace 5 minutos' },
+  { id: 'notif2', type: 'message', text: 'Nuevo mensaje en el canal #general.', timestamp: 'hace 10 minutos' },
+  { id: 'notif3', type: 'call', text: 'Llamada perdida de Bob.', timestamp: 'hace 1 hora' },
+  { id: 'notif4', type: 'news', text: 'Se ha publicado un nuevo artículo de tecnología que podría interesarte.', timestamp: 'hace 3 horas' },
+  { id: 'notif5', type: 'message', text: 'Diana ha respondido a tu mensaje.', timestamp: 'hace 4 horas' },
 ];
