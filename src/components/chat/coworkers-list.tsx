@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User, CompanyRole } from "@/lib/types";
-import { Plus, Tag, MoreVertical, Settings, UserPlus, MessageSquare, Trash2, LogOut, Info } from 'lucide-react';
+import { Plus, Tag, MoreVertical, Settings, UserPlus, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
@@ -32,6 +32,13 @@ function CreateGroupCard({ onClick }: { onClick: () => void }) {
     );
 }
 
+const roleOrder: CompanyRole[] = ['CEO', 'Administrador', 'Jefe de proyecto', 'Empleado', 'Partner', 'Miembro'];
+const getRoleSortValue = (role: CompanyRole) => {
+    const index = roleOrder.indexOf(role);
+    return index === -1 ? roleOrder.length : index;
+};
+
+
 export function CoworkersList({
   initialGroupedUsers,
 }: CoworkersListProps) {
@@ -53,10 +60,16 @@ export function CoworkersList({
 
   const handleCreateGroup = (companyName: string) => {
     if (companyName && !groupedUsers[companyName]) {
-        setGroupedUsers(prev => ({
-            ...prev,
-            [companyName]: []
-        }));
+        setGroupedUsers(prev => {
+          const newUser = {
+              ...(users.find(u => u.id === '1')),
+              companyRoles: { ...currentUser?.companyRoles, [companyName]: 'Administrador' as const }
+          } as User;
+            return {
+                ...prev,
+                [companyName]: [newUser]
+            };
+        });
         setCurrentUser(prevUser => {
             if (!prevUser) return prevUser;
             const newRoles = { ...prevUser.companyRoles, [companyName]: 'Administrador' as const };
@@ -80,9 +93,15 @@ export function CoworkersList({
         />
         <div className="flex-1 overflow-x-auto px-4 sm:px-6 pb-6">
             <div className="flex gap-6 h-full">
-            {Object.entries(groupedUsers).map(([company, users]) => {
+            {Object.entries(groupedUsers).map(([company, userList]) => {
                 const currentUserRole = currentUser?.companyRoles?.[company];
                 const isPrivileged = currentUserRole && privilegedRoles.includes(currentUserRole);
+
+                const sortedUsers = [...userList].sort((a, b) => {
+                    const roleA = a.companyRoles?.[company] || 'Miembro';
+                    const roleB = b.companyRoles?.[company] || 'Miembro';
+                    return getRoleSortValue(roleA) - getRoleSortValue(roleB);
+                });
 
                 return (
                     <div key={company} className="w-[320px] shrink-0 h-full">
@@ -132,6 +151,12 @@ export function CoworkersList({
                             <CardHeader>
                                 <CardTitle className='font-bold text-lg'>{company}</CardTitle>
                                 <CardDescription className='text-sm text-muted-foreground'>Descripción del grupo de la empresa.</CardDescription>
+                                <div className="mt-2 h-16 w-full bg-background/50 rounded-md flex items-center justify-center">
+                                    <div className='text-center text-muted-foreground'>
+                                        <Building2 className="h-5 w-5 mx-auto" />
+                                        <p className='text-xs font-semibold mt-1'>Logo de la Empresa</p>
+                                    </div>
+                                </div>
                                 {currentUserRole && (
                                     <>
                                         <Separator className="my-2 bg-border/50"/>
@@ -145,9 +170,14 @@ export function CoworkersList({
                             <CardContent className="flex-1 overflow-hidden p-0">
                                 <ScrollArea className="h-full">
                                     <div className="space-y-4 transition-colors p-4 min-h-[100px]">
-                                        {users.length > 0 ? (
-                                            users.map((user) => (
-                                                <UserListCard key={user.id} user={user} currentUserRole={currentUserRole} />
+                                        {sortedUsers.length > 0 ? (
+                                            sortedUsers.map((user) => (
+                                                <UserListCard 
+                                                    key={user.id} 
+                                                    user={user}
+                                                    currentUserRole={currentUserRole}
+                                                    userRole={user.companyRoles?.[company]} 
+                                                />
                                             ))
                                         ) : (
                                             <div className="text-center py-4 text-sm text-muted-foreground h-24 flex items-center justify-center">
