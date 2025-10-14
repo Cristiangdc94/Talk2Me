@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Phone, MoreVertical, Trash2, Ban, Info, PhoneMissed, Paperclip, Send, Sparkles } from "lucide-react";
+import { Phone, MoreVertical, Trash2, Ban, Info, PhoneMissed, Paperclip, Send, Sparkles, Camera } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 import { MessageInput } from "@/components/chat/message-input";
@@ -20,6 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useChat } from "@/hooks/use-chat";
 import { users } from "@/lib/mock-data";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 interface ChatAreaProps {
   chatId: string;
@@ -44,6 +45,9 @@ export function ChatArea({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
+  const [showVideo, setShowVideo] = useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const currentChat = activeChats.find(chat => chat.id === chatId);
 
@@ -59,6 +63,36 @@ export function ChatArea({
       scrollViewportRef.current.scrollTop = scrollViewportRef.current.scrollHeight;
     }
   }, [messages, chatId]);
+
+  useEffect(() => {
+    if (showVideo) {
+      const getCameraPermission = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          setHasCameraPermission(true);
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        } catch (error) {
+          console.error("Error accessing camera:", error);
+          setHasCameraPermission(false);
+          toast({
+            variant: "destructive",
+            title: "Acceso a la Cámara Denegado",
+            description: "Por favor, habilita los permisos de la cámara en la configuración de tu navegador.",
+          });
+        }
+      };
+      getCameraPermission();
+    } else {
+        if (videoRef.current && videoRef.current.srcObject) {
+            const stream = videoRef.current.srcObject as MediaStream;
+            stream.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
+        }
+    }
+  }, [showVideo, toast]);
+
 
   const handleReceiveMessage = (text: string, sender: User, isAutoReply: boolean = false) => {
     const newMessage: Message = {
@@ -215,11 +249,28 @@ export function ChatArea({
           {icon}
           <h2 className="text-xl font-headline font-semibold">{title}</h2>
           <div className="flex-1" />
+          <Button variant="ghost" size="icon" onClick={() => setShowVideo(!showVideo)}>
+            <Camera className={cn("h-5 w-5", showVideo && "text-destructive")} />
+            <span className="sr-only">{showVideo ? 'Desactivar' : 'Activar'} webcam</span>
+          </Button>
         </header>
       )}
 
       <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
         <div className="p-4">
+          {showVideo && (
+            <div className="mb-4">
+              <video ref={videoRef} className="w-full aspect-video rounded-md bg-muted" autoPlay muted />
+              {hasCameraPermission === false && (
+                <Alert variant="destructive" className="mt-2">
+                  <AlertTitle>Se Requiere Acceso a la Cámara</AlertTitle>
+                  <AlertDescription>
+                    Por favor, permite el acceso a la cámara para usar esta función.
+                  </AlertDescription>
+                </Alert>
+              )}
+            </div>
+          )}
           <div className="space-y-4">
             {messages.map((message) => {
               const isSentByCurrentUser = message.user.id === currentUser.id;
