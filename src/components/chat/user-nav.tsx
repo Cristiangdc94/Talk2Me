@@ -67,7 +67,7 @@ export function UserNav() {
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 p-2 group-data-[collapsible=icon]:justify-center">
+    <div className="flex items-center justify-between gap-2 w-full group-data-[collapsible=icon]:justify-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -81,7 +81,7 @@ export function UserNav() {
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 mb-2" align="start" side="top" forceMount>
+        <DropdownMenuContent className="w-56 mb-2" align="start" side="right" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">

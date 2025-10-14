@@ -10,7 +10,6 @@ import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
-  SidebarFooter,
   SidebarTrigger,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
@@ -216,21 +215,19 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <div className="h-full flex bg-background rounded-xl">
                   <div className="border-transparent">
                     <Sidebar>
-                      <SidebarHeader className="p-4">
-                        <div className="flex items-center gap-2">
+                      <SidebarHeader className="p-4 flex flex-col gap-4">
+                        <div className="flex items-center justify-between">
                           <h1 className="font-headline text-3xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">
                             Talk2Me
                           </h1>
+                           <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
                         </div>
+                        <UserNav />
                       </SidebarHeader>
                       <SidebarSeparator />
                       <SidebarContent>
                         <SidebarNav />
                       </SidebarContent>
-                      <SidebarSeparator />
-                      <SidebarFooter>
-                        <UserNav />
-                      </SidebarFooter>
                     </Sidebar>
                   </div>
                   <div className="relative flex-1">
