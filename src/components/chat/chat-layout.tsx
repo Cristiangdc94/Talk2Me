@@ -20,8 +20,8 @@ export function ChatLayout() {
     };
 
     return (
-        <div className="flex h-full w-full">
-            <div className="w-64 border-r bg-muted/40 p-2 flex flex-col gap-2">
+        <div className="flex h-full w-full bg-background">
+            <div className="w-64 border-r bg-muted p-2 flex flex-col gap-2">
                 <h2 className="text-lg font-semibold tracking-tight p-2">Chats</h2>
                 <ScrollArea>
                     <div className="flex flex-col gap-1">
