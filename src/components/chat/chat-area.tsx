@@ -221,38 +221,39 @@ export function ChatArea({
   return (
     <div className="flex flex-col h-full bg-background">
       {showHead && (
-        <header className="flex items-center gap-3 p-4 shrink-0 border-b bg-background">
-          {chatType === "dm" && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <MoreVertical className="h-5 w-5" />
-                  <span className="sr-only">Más opciones</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={() => handleMenuAction('Detalles')}>
-                  <Info className="mr-2 h-4 w-4" />
-                  <span>Detalles</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleMenuAction('Bloquear')} className="text-destructive">
-                  <Ban className="mr-2 h-4 w-4" />
-                  <span>Bloquear</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleMenuAction('Eliminar')} className="text-destructive">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  <span>Eliminar</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-          {icon}
-          <h2 className="text-xl font-headline font-semibold">{title}</h2>
-          <div className="flex-1" />
-          <Button variant="ghost" size="icon" onClick={() => setShowVideo(!showVideo)}>
-            <Camera className={cn("h-5 w-5", showVideo && "text-destructive")} />
-            <span className="sr-only">{showVideo ? 'Desactivar' : 'Activar'} webcam</span>
-          </Button>
+        <header className="flex items-center justify-between gap-3 p-4 shrink-0 border-b bg-background">
+          <div className="flex items-center gap-3">
+            {chatType === "dm" && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <MoreVertical className="h-5 w-5" />
+                    <span className="sr-only">Más opciones</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem onClick={() => handleMenuAction('Detalles')}>
+                    <Info className="mr-2 h-4 w-4" />
+                    <span>Detalles</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleMenuAction('Bloquear')} className="text-destructive">
+                    <Ban className="mr-2 h-4 w-4" />
+                    <span>Bloquear</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleMenuAction('Eliminar')} className="text-destructive">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    <span>Eliminar</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+            {icon}
+            <h2 className="text-xl font-headline font-semibold">{title}</h2>
+            <Button variant="ghost" size="icon" onClick={() => setShowVideo(!showVideo)}>
+              <Camera className={cn("h-5 w-5", showVideo && "text-destructive")} />
+              <span className="sr-only">{showVideo ? 'Desactivar' : 'Activar'} webcam</span>
+            </Button>
+          </div>
         </header>
       )}
 
