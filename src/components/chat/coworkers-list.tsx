@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User, CompanyRole } from "@/lib/types";
-import { Plus, Tag, MoreVertical, Settings, UserPlus, MessageSquare, Trash2, LogOut, Info, Building2 } from 'lucide-react';
+import { Plus, Tag, MoreVertical, Settings, UserPlus, MessageSquare, Trash2, LogOut, Info, Building2, GripVertical } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { CreateCompanyGroupDialog } from './create-company-group-dialog';
@@ -13,6 +13,7 @@ import { Separator } from '../ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { ManageCompanyGroupDialog } from './manage-company-group-dialog';
 
 interface CoworkersListProps {
   initialGroupedUsers: Record<string, User[]>;
@@ -38,7 +39,6 @@ const getRoleSortValue = (role: CompanyRole) => {
     return index === -1 ? roleOrder.length : index;
 };
 
-
 export function CoworkersList({
   initialGroupedUsers,
 }: CoworkersListProps) {
@@ -47,6 +47,10 @@ export function CoworkersList({
   const [currentUser, setCurrentUser] = useState(users.find(u => u.id === '1'));
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
+  
+  const [isManageGroupOpen, setManageGroupOpen] = useState(false);
+  const [managedGroup, setManagedGroup] = useState<{name: string, users: User[]} | null>(null);
+
 
   const privilegedRoles: CompanyRole[] = ['Administrador', 'CEO', 'Jefe de proyecto'];
 
@@ -55,29 +59,53 @@ export function CoworkersList({
   }, []);
 
   useEffect(() => {
-    setGroupedUsers(initialGroupedUsers);
-  }, [initialGroupedUsers]);
+    // Ensure the current user is part of the groups
+    const updatedGroups: Record<string, User[]> = {};
+    for (const companyName in initialGroupedUsers) {
+        const userList = initialGroupedUsers[companyName];
+        if (currentUser && !userList.some(u => u.id === currentUser.id)) {
+            const currentUserInGroup = users.find(u => u.id === currentUser.id && u.companyRoles?.[companyName]);
+            if (currentUserInGroup) {
+                updatedGroups[companyName] = [...userList, currentUserInGroup];
+            } else {
+                 updatedGroups[companyName] = userList;
+            }
+        } else {
+             updatedGroups[companyName] = userList;
+        }
+    }
+     setGroupedUsers(updatedGroups);
+  }, [initialGroupedUsers, currentUser]);
 
   const handleCreateGroup = (companyName: string) => {
     if (companyName && !groupedUsers[companyName]) {
-        setGroupedUsers(prev => {
-          const newUser = {
-              ...(users.find(u => u.id === '1')),
-              companyRoles: { ...currentUser?.companyRoles, [companyName]: 'Administrador' as const }
-          } as User;
-            return {
-                ...prev,
-                [companyName]: [newUser]
-            };
-        });
-        setCurrentUser(prevUser => {
-            if (!prevUser) return prevUser;
-            const newRoles = { ...prevUser.companyRoles, [companyName]: 'Administrador' as const };
-            console.log(`User ${prevUser.name} is now Administrator of ${companyName}`);
-            return { ...prevUser, companyRoles: newRoles };
-        });
+        const newUserWithRole = {
+            ...currentUser!,
+            companyRoles: { ...currentUser?.companyRoles, [companyName]: 'Administrador' as const }
+        };
+        
+        setCurrentUser(newUserWithRole);
+        setGroupedUsers(prev => ({
+            ...prev,
+            [companyName]: [newUserWithRole]
+        }));
     }
     setCreateGroupOpen(false);
+  };
+  
+  const handleOpenManageDialog = (companyName: string, users: User[]) => {
+    setManagedGroup({ name: companyName, users });
+    setManageGroupOpen(true);
+  };
+
+  const handleSaveManagedGroup = (originalName: string, newName: string, newDescription: string, newUsers: string[]) => {
+    toast({
+        title: "Grupo actualizado",
+        description: `El grupo ${originalName} ha sido actualizado.`
+    });
+    // Here you would typically update the backend
+    console.log("Saving changes for", originalName, {newName, newDescription, newUsers});
+    setManageGroupOpen(false);
   };
   
   if (!isMounted) {
@@ -91,6 +119,16 @@ export function CoworkersList({
             onOpenChange={setCreateGroupOpen}
             onCreate={handleCreateGroup}
         />
+        {managedGroup && (
+            <ManageCompanyGroupDialog
+                isOpen={isManageGroupOpen}
+                onOpenChange={setManageGroupOpen}
+                groupName={managedGroup.name}
+                groupDescription="Descripción del grupo de la empresa." // This should be dynamic in a real app
+                members={managedGroup.users}
+                onSave={handleSaveManagedGroup}
+            />
+        )}
         <div className="flex-1 overflow-x-auto px-4 sm:px-6 pb-6">
             <div className="flex gap-6 h-full">
             {Object.entries(groupedUsers).map(([company, userList]) => {
@@ -115,13 +153,9 @@ export function CoworkersList({
                                 <DropdownMenuContent align="end">
                                     {isPrivileged ? (
                                         <>
-                                            <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
+                                            <DropdownMenuItem onClick={() => handleOpenManageDialog(company, sortedUsers)}>
                                                 <Settings className="mr-2 h-4 w-4" />
                                                 <span>Gestionar Grupo</span>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
-                                                <UserPlus className="mr-2 h-4 w-4" />
-                                                <span>Invitar gente</span>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => toast({title: "Función no implementada"})}>
                                                 <MessageSquare className="mr-2 h-4 w-4" />
