@@ -45,7 +45,7 @@ function LoadMoreNewsCard({ onClick, isGenerating, isDisabled }: { onClick: () =
 }
 
 interface NewsPortalProps {
-  view: 'general' | 'foryou';
+  view: 'general' | 'foryou' | 'company' | 'friends';
 }
 
 export function NewsPortal({ view }: NewsPortalProps) {
@@ -156,6 +156,74 @@ export function NewsPortal({ view }: NewsPortalProps) {
     );
   }
 
+  const renderContent = () => {
+    switch (view) {
+      case 'friends':
+        return (
+          <div className="bg-muted/50 rounded-lg p-4">
+            <h2 className="text-2xl font-semibold tracking-tight mb-3">Lo nuevo entre tus amigos</h2>
+              <Carousel
+              opts={{
+                align: "start",
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {friendStatuses.map((status) => (
+                  <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                    <div className="p-1 h-full">
+                        <FriendStatusCard status={status} />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-4" />
+              <CarouselNext className="-right-4" />
+            </Carousel>
+          </div>
+        );
+      case 'company':
+        return <CompanyNewsPortal />;
+      case 'foryou':
+        if (preferences.length === 0) {
+           return (
+            <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-background min-h-[400px]">
+                <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
+                <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
+                <Button onClick={() => setDialogOpen(true)}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    Abrir Preferencias
+                </Button>
+            </div>
+          );
+        }
+        return (
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight mb-4">Para Tí</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {newsToShow.map((article) => (
+                <NewsArticleCard key={article.id} article={article} />
+              ))}
+              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} isDisabled={isRateLimited} />
+            </div>
+          </div>
+        );
+      case 'general':
+        return (
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight mb-4">Noticias Generales</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {newsToShow.map((article) => (
+                <NewsArticleCard key={article.id} article={article} />
+              ))}
+              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} isDisabled={isRateLimited} />
+            </div>
+          </div>
+        );
+    }
+  }
+
+
   return (
     <>
       <NewsPreferencesDialog
@@ -164,63 +232,9 @@ export function NewsPortal({ view }: NewsPortalProps) {
         onSave={handleSavePreferences}
         currentPreferences={preferences}
       />
-
       <div className='flex flex-col gap-8'>
-        <div className="bg-muted/50 rounded-lg p-4">
-          <h2 className="text-2xl font-semibold tracking-tight mb-3">Lo nuevo entre tus amigos</h2>
-            <Carousel
-            opts={{
-              align: "start",
-            }}
-            className="w-full"
-          >
-            <CarouselContent>
-              {friendStatuses.map((status) => (
-                <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                  <div className="p-1 h-full">
-                      <FriendStatusCard status={status} />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="-left-4" />
-            <CarouselNext className="-right-4" />
-          </Carousel>
-        </div>
-
-        <Separator />
-
-        <CompanyNewsPortal />
-
-        <Separator />
-
-        {view === 'foryou' && preferences.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-background min-h-[400px]">
-              <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
-              <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
-              <Button onClick={() => setDialogOpen(true)}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Abrir Preferencias
-              </Button>
-          </div>
-        ) : (
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight mb-4">
-              {view === 'foryou' ? 'Para Tí' : 'Noticias Generales'}
-            </h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {newsToShow.map((article) => (
-                <NewsArticleCard key={article.id} article={article} />
-              ))}
-              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} isDisabled={isRateLimited} />
-            </div>
-          </div>
-        )}
+        {renderContent()}
       </div>
     </>
   );
 }
-
-    
-
-    

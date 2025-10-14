@@ -13,6 +13,7 @@ import {
   Briefcase,
   Search,
   ChevronDown,
+  User,
 } from "lucide-react";
 
 import {
@@ -61,7 +62,7 @@ export function SidebarNav() {
     setIsMounted(true);
   }, []);
 
-  const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou"), [pathname]);
+  const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news") || pathname.startsWith("/friends-news"), [pathname]);
 
   const handleCall = (event: React.MouseEvent, userName: string) => {
     event.preventDefault();
@@ -121,12 +122,34 @@ export function SidebarNav() {
               <SidebarMenu className="pl-6 pb-1">
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild isActive={pathname === '/'} tooltip="General">
-                        <Link href="/"><span>General</span></Link>
+                        <Link href="/">
+                          <Newspaper className="w-4 h-4 mr-2" />
+                          <span>General</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                 <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname === '/friends-news'} tooltip="Amigos">
+                        <Link href="/friends-news">
+                          <Users className="w-4 h-4 mr-2" />
+                          <span>Amigos</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname === '/company-news'} tooltip="Empresa">
+                        <Link href="/company-news">
+                          <Briefcase className="w-4 h-4 mr-2" />
+                          <span>Empresa</span>
+                        </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
                     <SidebarMenuButton asChild isActive={pathname === '/foryou'} tooltip="Para tí">
-                        <Link href="/foryou"><span>Para tí</span></Link>
+                        <Link href="/foryou">
+                          <User className="w-4 h-4 mr-2" />
+                          <span>Para tí</span>
+                        </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
