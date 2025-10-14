@@ -3,7 +3,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Hash, Lock, Plus, User, Phone, Briefcase, Smile } from "lucide-react";
+import { Hash, Lock, Plus, User, Phone } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -95,37 +95,6 @@ export function SidebarNav() {
           ))}
         </SidebarMenu>
       </SidebarGroup>
-
-      <SidebarGroup>
-        <SidebarGroupLabel className="font-headline text-xl">Contactos</SidebarGroupLabel>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname === `/friends`}
-              tooltip="Amigos"
-            >
-              <Link href={`/friends`}>
-                <Smile />
-                <span>Amigos</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname === `/coworkers`}
-              tooltip="Compañeros"
-            >
-              <Link href={`/coworkers`}>
-                <Briefcase />
-                <span>Compañeros</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarGroup>
-
     </div>
   );
 }
