@@ -1,5 +1,4 @@
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { UserListCard } from "@/components/chat/user-list-card";
 import { User } from "@/lib/types";
 import { AddContactCard } from "./add-contact-card";
@@ -11,11 +10,9 @@ interface UserListProps {
 
 export function UserList({ title, users }: UserListProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {users.map((user) => (
           <UserListCard key={user.id} user={user} />
         ))}
@@ -25,7 +22,7 @@ export function UserList({ title, users }: UserListProps) {
                 No hay nadie en esta lista todavía.
             </p>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
