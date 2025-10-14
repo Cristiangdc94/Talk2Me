@@ -23,7 +23,7 @@ import { ChatProvider, useChat } from '@/hooks/use-chat';
 import { cn } from '@/lib/utils';
 import { MainNav } from './main-nav';
 import { HeaderActions } from './header-actions';
-import { Card, CardHeader } from './ui/card';
+import { Card, CardHeader, CardContent } from './ui/card';
 import { ChatArea } from './chat/chat-area';
 import { users } from '@/lib/mock-data';
 import { Button } from './ui/button';
@@ -145,16 +145,18 @@ function ChatWidget() {
             <span className="sr-only">Cerrar chat</span>
           </Button>
         </CardHeader>
-        <ChatArea
-          key={activeChat.id}
-          chatId={activeChat.id}
-          title={activeChat.title}
-          icon={activeChat.icon}
-          initialMessages={activeChat.messages}
-          currentUser={users[0]}
-          chatType={activeChat.type}
-          showHead={false}
-        />
+        <CardContent className='flex-1 overflow-hidden p-0'>
+          <ChatArea
+            key={activeChat.id}
+            chatId={activeChat.id}
+            title={activeChat.title}
+            icon={activeChat.icon}
+            initialMessages={activeChat.messages}
+            currentUser={users[0]}
+            chatType={activeChat.type}
+            showHead={false}
+          />
+        </CardContent>
       </Card>
     </div>
   )

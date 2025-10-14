@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Phone, MoreVertical, Trash2, Ban, Info, PhoneMissed } from "lucide-react";
+import { Phone, MoreVertical, Trash2, Ban, Info, PhoneMissed, Paperclip, Send, Sparkles } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 import { MessageInput } from "@/components/chat/message-input";
@@ -215,7 +215,7 @@ export function ChatArea({
         </header>
       )}
 
-      <ScrollArea className="flex-1 overflow-auto" viewportRef={scrollViewportRef}>
+      <ScrollArea className="flex-1" viewportRef={scrollViewportRef}>
         <div className="p-4">
           <div className="space-y-4">
             {messages.map((message) => {
