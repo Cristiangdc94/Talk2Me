@@ -27,7 +27,7 @@ import { Card, CardHeader, CardContent } from './ui/card';
 import { ChatArea } from './chat/chat-area';
 import { users } from '@/lib/mock-data';
 import { Button } from './ui/button';
-import { X, GripVertical } from 'lucide-react';
+import { X, GripVertical, Minus, ArrowUp } from 'lucide-react';
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -51,7 +51,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
 }
 
 function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }) {
-  const { closeChat } = useChat();
+  const { closeChat, toggleMinimizeChat } = useChat();
   const [position, setPosition] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef({ x: 0, y: 0 });
@@ -59,7 +59,6 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Calculate a staggered position starting from the left
       const staggerOffset = index * 40;
       const defaultX = 50 + staggerOffset; 
       const defaultY = 100 + staggerOffset;
@@ -121,13 +120,19 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
             {chat.icon}
             <h2 className="font-semibold truncate">{chat.title}</h2>
           </div>
-          <div className="cursor-grab active:cursor-grabbing px-2" onMouseDown={handleMouseDown}>
-            <GripVertical className="h-5 w-5 text-muted-foreground" />
+          <div className="flex items-center">
+            <Button variant="ghost" size="icon" onClick={() => toggleMinimizeChat(chat.id)} className="cursor-pointer h-8 w-8">
+              <Minus className="h-4 w-4" />
+              <span className="sr-only">Minimizar chat</span>
+            </Button>
+            <div className="cursor-grab active:cursor-grabbing px-2" onMouseDown={handleMouseDown}>
+              <GripVertical className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => closeChat(chat.id)} className="cursor-pointer h-8 w-8">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Cerrar chat</span>
+            </Button>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => closeChat(chat.id)} className="cursor-pointer">
-            <X className="h-4 w-4" />
-            <span className="sr-only">Cerrar chat</span>
-          </Button>
         </CardHeader>
         <CardContent className='flex-1 overflow-hidden p-0'>
           <ChatArea
@@ -149,18 +154,48 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
 function ChatManager() {
   const { activeChats } = useChat();
 
-  if (!activeChats || activeChats.length === 0) {
+  const openChats = activeChats.filter(chat => !chat.isMinimized);
+
+  if (openChats.length === 0) {
     return null;
   }
 
   return (
     <>
-      {activeChats.map((chat, index) => (
+      {openChats.map((chat, index) => (
         <DraggableChatWidget key={chat.id} chat={chat} index={index} />
       ))}
     </>
   );
 }
+
+
+function MinimizedChatBar() {
+  const { activeChats, toggleMinimizeChat } = useChat();
+  const minimizedChats = activeChats.filter(chat => chat.isMinimized);
+
+  if (minimizedChats.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-40 p-2 flex justify-start items-end gap-2">
+      {minimizedChats.map(chat => (
+        <Button
+          key={chat.id}
+          variant={chat.hasUnread ? "secondary" : "outline"}
+          className={cn("h-10 shadow-lg flex items-center gap-2", chat.hasUnread && "animate-pulse border-primary")}
+          onClick={() => toggleMinimizeChat(chat.id)}
+        >
+          {chat.icon}
+          <span className="truncate max-w-28">{chat.title}</span>
+          <ArrowUp className="h-4 w-4" />
+        </Button>
+      ))}
+    </div>
+  );
+}
+
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -205,6 +240,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       </div>
                     </main>
                     <ChatManager />
+                    <MinimizedChatBar />
                     <NotificationWidget />
                   </div>
                 </div>
