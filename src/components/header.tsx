@@ -60,7 +60,7 @@ function NavLink({
 export function Header() {
   const { setDialogOpen } = useNewsPreferences();
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-background px-4 shrink-0">
+    <header className="flex h-16 items-center justify-between border-b bg-background px-4 shrink-0 rounded-tr-lg">
        <div className="flex items-center gap-2">
          <SidebarTrigger className="md:hidden" />
          <nav className="hidden items-center gap-2 md:flex">
