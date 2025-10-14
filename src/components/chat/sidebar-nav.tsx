@@ -177,11 +177,10 @@ export function SidebarNav() {
           Mensajes Directos
         </SidebarGroupLabel>
         <SidebarGroupAction asChild>
-          {/* For now, this will also open the create channel dialog as a placeholder */}
-          <button onClick={() => setCreateChannelOpen(true)}>
+          <Link href="/add-contact">
             <Plus />
             <span className="sr-only">Nuevo Mensaje</span>
-          </button>
+          </Link>
         </SidebarGroupAction>
         <SidebarMenu>
           {directMessages.map((dm) => {
