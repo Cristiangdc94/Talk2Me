@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useTransition } from 'react';
@@ -11,7 +12,6 @@ import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
 import { generateNewsArticles } from '@/ai/flows/generate-news-articles';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 
 function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGenerating: boolean }) {
@@ -37,8 +37,11 @@ function LoadMoreNewsCard({ onClick, isGenerating }: { onClick: () => void; isGe
   );
 }
 
+interface NewsPortalProps {
+  view: 'general' | 'foryou';
+}
 
-export function NewsPortal() {
+export function NewsPortal({ view }: NewsPortalProps) {
   const [location, setLocation] = useState<string | null>(null);
   const { preferences, setPreferences, isDialogOpen, setDialogOpen } = useNewsPreferences();
   const [isLoading, setLoading] = useState(true);
@@ -95,11 +98,12 @@ export function NewsPortal() {
   const preferredNews = generalNews.filter(
     (article) => preferences.length === 0 || preferences.includes(article.category)
   );
+  
+  const newsToShow = view === 'foryou' ? preferredNews : generalNews;
 
   if (isLoading) {
     return (
       <div className="space-y-4">
-        <Skeleton className="h-10 w-full" />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <Skeleton className="h-80 w-full" />
           <Skeleton className="h-80 w-full" />
@@ -118,41 +122,23 @@ export function NewsPortal() {
         onSave={handleSavePreferences}
         currentPreferences={preferences}
       />
-      <Tabs defaultValue="general">
-        <div className="flex items-center justify-center mb-4">
-          <TabsList className="p-1.5 bg-card">
-            <TabsTrigger value="general" className="text-base px-4 py-2">Noticias Generales</TabsTrigger>
-            <TabsTrigger value="foryou" className="text-base px-4 py-2">Para Ti</TabsTrigger>
-          </TabsList>
+      {view === 'foryou' && preferences.length === 0 ? (
+         <div className="flex flex-1 flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-muted/50 min-h-[400px]">
+             <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
+             <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
+             <Button onClick={() => setDialogOpen(true)}>
+                 <Settings className="mr-2 h-4 w-4" />
+                 Abrir Preferencias
+             </Button>
+         </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {newsToShow.map((article) => (
+            <NewsArticleCard key={article.id} article={article} />
+          ))}
+          <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
         </div>
-        <TabsContent value="general">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {generalNews.map((article) => (
-              <NewsArticleCard key={article.id} article={article} />
-            ))}
-            <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
-          </div>
-        </TabsContent>
-        <TabsContent value="foryou">
-           {preferences.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {preferredNews.map((article) => (
-                <NewsArticleCard key={article.id} article={article} />
-              ))}
-              <LoadMoreNewsCard onClick={handleGenerateMoreNews} isGenerating={isGenerating} />
-            </div>
-           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center p-8 border rounded-lg bg-muted/50 min-h-[400px]">
-                <p className="text-lg font-semibold mb-2">Personaliza tu feed de noticias</p>
-                <p className="text-muted-foreground mb-4">Selecciona tus categorías favoritas para ver noticias solo para ti.</p>
-                <Button onClick={() => setDialogOpen(true)}>
-                    <Settings className="mr-2 h-4 w-4" />
-                    Abrir Preferencias
-                </Button>
-            </div>
-           )}
-        </TabsContent>
-      </Tabs>
+      )}
     </>
   );
 }

@@ -13,6 +13,7 @@ import {
   Users,
   Briefcase,
   Search,
+  ChevronDown,
 } from "lucide-react";
 
 import {
@@ -26,21 +27,28 @@ import {
 } from "@/components/ui/sidebar";
 import { channels, directMessages } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SidebarSeparator } from "../ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/collapsible";
+import { cn } from "@/lib/utils";
 
 const mainNavLinks = [
-    { href: "/", label: "Noticias", icon: Newspaper },
-    { href: "/friends", label: "Amigos", icon: Users },
-    { href: "/coworkers", label: "Compañeros", icon: Briefcase },
-    { href: "/add-contact", label: "Buscar", icon: Search },
+  { href: "/friends", label: "Amigos", icon: Users },
+  { href: "/coworkers", label: "Compañeros", icon: Briefcase },
+  { href: "/add-contact", label: "Buscar", icon: Search },
 ];
 
 export function SidebarNav() {
   const pathname = usePathname();
   const { toast } = useToast();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
+
+  const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou"), [pathname]);
 
   const handleCall = (event: React.MouseEvent, userName: string) => {
     event.preventDefault();
@@ -63,6 +71,38 @@ export function SidebarNav() {
           Menú
         </SidebarGroupLabel>
         <SidebarMenu>
+           <Collapsible defaultOpen={isNewsSectionActive}>
+            <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                    <SidebarMenuButton
+                        isActive={isNewsSectionActive}
+                        className="justify-between"
+                        tooltip="Noticias"
+                    >
+                        <div className="flex items-center gap-2">
+                            <Newspaper />
+                            <span>Noticias</span>
+                        </div>
+                        <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:-rotate-180" />
+                    </SidebarMenuButton>
+                </CollapsibleTrigger>
+            </SidebarMenuItem>
+            <CollapsibleContent>
+              <SidebarMenu className="pl-6 pb-1">
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname === '/'} tooltip="General">
+                        <Link href="/"><span>General</span></Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname === '/foryou'} tooltip="Para Ti">
+                        <Link href="/foryou"><span>Para Ti</span></Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </CollapsibleContent>
+           </Collapsible>
+
           {mainNavLinks.map((link) => (
             <SidebarMenuItem key={link.href}>
               <SidebarMenuButton
