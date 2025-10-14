@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -70,6 +71,7 @@ export function LoginForm() {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="h-[72px] md:h-[68px]"></div>
           <FormField
             control={form.control}
             name="email"
