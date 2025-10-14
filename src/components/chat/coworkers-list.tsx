@@ -152,7 +152,7 @@ export function CoworkersList({
                 return (
                     <div key={company} className="w-[320px] shrink-0 h-full">
                         <Card className="h-full flex flex-col bg-muted/50 relative group/card">
-                            <div className="absolute top-3 right-3 flex items-center gap-1 z-20">
+                             <div className="absolute top-3 right-3 flex items-center gap-1 z-20">
                                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleCorporateChat(company)}>
                                     <MessageSquare className="h-4 w-4" />
                                 </Button>
