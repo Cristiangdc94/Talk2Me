@@ -1,3 +1,4 @@
+
 export interface User {
   id: string;
   name: string;
@@ -6,6 +7,7 @@ export interface User {
   lastSeen?: string;
   role?: 'admin';
   relationship?: 'friend' | 'coworker';
+  email?: string;
 }
 
 export interface Message {

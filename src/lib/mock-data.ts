@@ -1,16 +1,17 @@
+
 import { User, Channel, DirectMessage, NewsArticle } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 const findImage = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || '';
 
 export const users: User[] = [
-  { id: '1', name: 'Tú', avatarUrl: findImage('avatar-1'), status: 'online' },
-  { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend' },
-  { id: '3', name: 'Bob', avatarUrl: findImage('avatar-3'), status: 'offline', lastSeen: 'hace 2 horas', relationship: 'coworker' },
-  { id: '4', name: 'Carlos', avatarUrl: findImage('avatar-4'), status: 'online', relationship: 'coworker' },
-  { id: '5', name: 'Diana', avatarUrl: findImage('avatar-5'), status: 'offline', lastSeen: 'ayer', relationship: 'friend' },
-  { id: '6', name: 'Eva', avatarUrl: findImage('avatar-6'), status: 'online' },
-  { id: '7', name: 'admin', avatarUrl: findImage('avatar-1'), status: 'online', role: 'admin' },
+  { id: '1', name: 'Tú', avatarUrl: findImage('avatar-1'), status: 'online', email: 'you@example.com' },
+  { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend', email: 'alice@example.com' },
+  { id: '3', name: 'Bob', avatarUrl: findImage('avatar-3'), status: 'offline', lastSeen: 'hace 2 horas', relationship: 'coworker', email: 'bob@example.com' },
+  { id: '4', name: 'Carlos', avatarUrl: findImage('avatar-4'), status: 'online', relationship: 'coworker', email: 'carlos@example.com' },
+  { id: '5', name: 'Diana', avatarUrl: findImage('avatar-5'), status: 'offline', lastSeen: 'ayer', relationship: 'friend', email: 'diana@example.com' },
+  { id: '6', name: 'Eva', avatarUrl: findImage('avatar-6'), status: 'online', email: 'eva@example.com' },
+  { id: '7', name: 'admin', avatarUrl: findImage('avatar-1'), status: 'online', role: 'admin', email: 'admin@example.com' },
 ];
 
 export const channels: Channel[] = [

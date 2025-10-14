@@ -13,6 +13,7 @@ export function MainNav() {
     { href: '/', label: 'Noticias' },
     { href: '/friends', label: 'Amigos' },
     { href: '/coworkers', label: 'Compañeros' },
+    { href: '/add', label: 'Añadir' },
   ];
 
   return (
