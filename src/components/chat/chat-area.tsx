@@ -51,7 +51,7 @@ export function ChatArea({
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       user: currentUser,
-      status: 'read'
+      status: 'sent'
     };
     
     setMessages(prevMessages => [...prevMessages, newMessage]);
@@ -75,7 +75,7 @@ export function ChatArea({
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
         <div className="flex-1" />
         {chatType === "dm" && (
-            <Button variant="ghost" size="icon" onClick={handleCall}>
+            <Button variant="ghost" size="icon" onClick={handleCall} className="mr-[-15px]">
                 <Phone className="w-5 h-5" />
                 <span className="sr-only">Llamar a {title}</span>
             </Button>
