@@ -42,7 +42,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <SidebarTrigger className="md:hidden" />
             <div className="flex items-center w-full">
               <MainNav />
-              <div className="flex-1" />
               <HeaderActions />
             </div>
           </header>
