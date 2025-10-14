@@ -240,28 +240,30 @@ export function NewsPortal({ view }: NewsPortalProps) {
                 <AddStatusCard currentUser={currentUser} onAddStatus={handleAddStatus} />
               </div>
               <div className="md:col-span-3">
-                 <Carousel
-                    opts={{
-                        align: "start",
-                        loop: true,
-                    }}
-                    plugins={[autoplayPlugin.current]}
-                    className="w-full"
-                    onMouseEnter={() => autoplayPlugin.current.stop()}
-                    onMouseLeave={() => autoplayPlugin.current.play()}
-                >
-                    <CarouselContent>
-                        {friendStatuses.map((status) => (
-                            <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3">
-                                <div className="p-1 h-full">
-                                    <FriendStatusCard status={status} />
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="-left-4" />
-                    <CarouselNext className="-right-4" />
-                </Carousel>
+                 {friendStatuses.length > 0 && (
+                    <Carousel
+                        opts={{
+                            align: "start",
+                            loop: true,
+                        }}
+                        plugins={[autoplayPlugin.current]}
+                        className="w-full"
+                        onMouseEnter={() => autoplayPlugin.current.stop()}
+                        onMouseLeave={() => autoplayPlugin.current.play()}
+                    >
+                        <CarouselContent>
+                            {friendStatuses.map((status) => (
+                                <CarouselItem key={status.id} className="md:basis-1/2 lg:basis-1/3">
+                                    <div className="p-1 h-full">
+                                        <FriendStatusCard status={status} />
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="-left-4" />
+                        <CarouselNext className="-right-4" />
+                    </Carousel>
+                 )}
               </div>
             </div>
         </div>

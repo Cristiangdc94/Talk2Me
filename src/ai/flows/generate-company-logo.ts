@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI agent that generates a company logo.
@@ -32,7 +33,7 @@ export async function generateCompanyLogo(
   return generateCompanyLogoFlow(input);
 }
 
-const prompt = `Generate a simple, modern, flat, vector-style logo for a company named '{{companyName}}'. The logo should be on a clean, solid background. Do not include any text in the logo.`;
+const promptTemplate = `Generate a simple, modern, flat, vector-style logo for a company named '{{companyName}}'. The logo should be on a clean, solid background. Do not include any text in the logo.`;
 
 const generateCompanyLogoFlow = ai.defineFlow(
   {
@@ -43,7 +44,7 @@ const generateCompanyLogoFlow = ai.defineFlow(
   async ({ companyName }) => {
     const { media } = await ai.generate({
       model: 'googleai/imagen-4.0-fast-generate-001',
-      prompt: prompt.replace('{{companyName}}', companyName),
+      prompt: promptTemplate.replace('{{companyName}}', companyName),
     });
 
     return { logoDataUri: media.url };
