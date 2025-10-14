@@ -39,7 +39,7 @@ export default function CoworkersPage() {
   return (
     <div className="h-full flex flex-col">
         <div className="p-4 sm:p-6 shrink-0 text-center">
-            <h2 className="text-3xl font-bold tracking-tight font-logo">Compañeros</h2>
+            <h2 className="text-4xl font-bold tracking-tight font-headline">Compañeros</h2>
             <p className="text-sm text-muted-foreground mt-2">
                 Estos son tus compañeros de trabajo en Talk2Me, organizados por empresa.
             </p>
