@@ -203,7 +203,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
           );
         }
         return (
-          <div>
+          <div className="bg-muted/50 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-semibold tracking-tight">Para Tí</h2>
               <Button variant="outline" onClick={() => setDialogOpen(true)}>
@@ -221,7 +221,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
         );
       case 'general':
         return (
-          <div>
+          <div className="bg-muted/50 rounded-lg p-4">
             <h2 className="text-2xl font-semibold tracking-tight mb-4">Noticias Generales</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {newsToShow.map((article) => (
