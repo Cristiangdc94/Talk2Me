@@ -62,7 +62,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
   const currentUser = users.find(u => u.id === '1');
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true, loop: true })
+    Autoplay({ delay: 4000, stopOnInteraction: true, loop: true })
   );
 
   useEffect(() => {
