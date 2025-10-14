@@ -13,6 +13,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +33,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Building2, Upload, User as UserIcon, X, Tag, Plus, Newspaper, Trash2 } from "lucide-react";
 import { UserAvatarWithStatus } from "../chat/user-avatar-with-status";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 const groupFormSchema = z.object({
     name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
@@ -58,64 +62,12 @@ interface GroupEditFormProps {
     allUsers: User[];
 }
 
-function AddNewsArticleDialog({ companyName, onAddArticle }: { companyName: string, onAddArticle: (article: Omit<CompanyNewsArticle, 'id' | 'companyName' | 'timestamp'>) => void }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const form = useForm<z.infer<typeof newArticleSchema>>({
-        resolver: zodResolver(newArticleSchema),
-        defaultValues: { title: "", summary: "", imageUrl: "https://picsum.photos/seed/news_placeholder/600/400", link: "#" },
-    });
-
-    const onSubmit = (values: z.infer<typeof newArticleSchema>) => {
-        onAddArticle(values);
-        form.reset();
-        setIsOpen(false);
-    };
-    
-    return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-                <Button>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Añadir Noticia
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Añadir Noticia para {companyName}</DialogTitle>
-                    <DialogDescription>
-                        Publica una nueva actualización para los miembros de tu grupo.
-                    </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField control={form.control} name="title" render={({ field }) => (
-                            <FormItem><FormLabel>Título</FormLabel><FormControl><Input {...field} placeholder="Título del artículo" /></FormControl><FormMessage /></FormItem>
-                        )} />
-                        <FormField control={form.control} name="summary" render={({ field }) => (
-                            <FormItem><FormLabel>Resumen</FormLabel><FormControl><Textarea {...field} placeholder="Un breve resumen de la noticia..." /></FormControl><FormMessage /></FormItem>
-                        )} />
-                        <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                            <FormItem><FormLabel>URL de la Imagen</FormLabel><FormControl><Input {...field} placeholder="https://picsum.photos/seed/..." /></FormControl><FormMessage /></FormMessage>
-                        )} />
-                        <FormField control={form.control} name="link" render={({ field }) => (
-                            <FormItem><FormLabel>Enlace (Opcional)</FormLabel><FormControl><Input {...field} placeholder="#" /></FormControl><FormMessage /></FormMessage>
-                        )} />
-                        <DialogFooter>
-                            <Button type="submit">Publicar Noticia</Button>
-                        </DialogFooter>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
-    );
-}
-
-
 function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
     const { toast } = useToast();
     const [companyNews, setCompanyNews] = useState(initialCompanyNews.filter(n => n.companyName === group.name));
+    const [isAddNewsOpen, setIsAddNewsOpen] = useState(false);
     
-    const form = useForm<z.infer<typeof groupFormSchema>>({
+    const groupManagementForm = useForm<z.infer<typeof groupFormSchema>>({
         resolver: zodResolver(groupFormSchema),
         defaultValues: {
             name: group.name,
@@ -128,12 +80,17 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
         },
     });
 
+    const newArticleForm = useForm<z.infer<typeof newArticleSchema>>({
+        resolver: zodResolver(newArticleSchema),
+        defaultValues: { title: "", summary: "", imageUrl: "https://picsum.photos/seed/news_placeholder/600/400", link: "#" },
+    });
+
     const { fields } = useFieldArray({
-        control: form.control,
+        control: groupManagementForm.control,
         name: "members",
     });
 
-    const onSubmit = (values: z.infer<typeof groupFormSchema>) => {
+    const onGroupSubmit = (values: z.infer<typeof groupFormSchema>) => {
         toast({
             title: "Grupo Actualizado",
             description: `La configuración de ${values.name} ha sido guardada. (Simulación)`,
@@ -141,9 +98,9 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
         console.log("Saving group data:", values);
     };
 
-    const handleAddArticle = (article: Omit<CompanyNewsArticle, 'id' | 'companyName' | 'timestamp'>) => {
+    const handleAddArticleSubmit = (values: z.infer<typeof newArticleSchema>) => {
         const newArticle: CompanyNewsArticle = {
-            ...article,
+            ...values,
             id: `cn-${Date.now()}`,
             companyName: group.name,
             timestamp: "justo ahora"
@@ -151,13 +108,15 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
         setCompanyNews(prev => [newArticle, ...prev]);
         toast({
             title: "Noticia Publicada",
-            description: `Se ha añadido "${article.title}" a las noticias de ${group.name}.`,
+            description: `Se ha añadido "${values.title}" a las noticias de ${group.name}.`,
         });
+        newArticleForm.reset();
+        setIsAddNewsOpen(false);
     };
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Form {...groupManagementForm}>
+            <form onSubmit={groupManagementForm.handleSubmit(onGroupSubmit)} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Columna de Logo y Nombre */}
                     <div className="md:col-span-1 space-y-6">
@@ -176,7 +135,7 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
                              </CardContent>
                         </Card>
                         <FormField
-                            control={form.control}
+                            control={groupManagementForm.control}
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
@@ -189,7 +148,7 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
                             )}
                         />
                          <FormField
-                            control={form.control}
+                            control={groupManagementForm.control}
                             name="description"
                             render={({ field }) => (
                                 <FormItem>
@@ -202,7 +161,7 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
                             )}
                         />
                     </div>
-                    {/* Columna de Miembros */}
+                    {/* Columna de Miembros y Noticias */}
                     <div className="md:col-span-2 space-y-6">
                          <Card>
                             <CardHeader>
@@ -220,7 +179,7 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
                                                 <p className="text-sm text-muted-foreground">{user?.companyRoles?.[group.name]?.role || 'Miembro'}</p>
                                             </div>
                                             <FormField
-                                                control={form.control}
+                                                control={groupManagementForm.control}
                                                 name={`members.${index}.tag`}
                                                 render={({ field }) => (
                                                     <FormItem className="flex-1">
@@ -249,30 +208,62 @@ function GroupEditForm({ group, allUsers }: GroupEditFormProps) {
                                         <CardTitle className="text-base">Noticias de la Empresa</CardTitle>
                                         <CardDescription>Gestiona las noticias de tu grupo.</CardDescription>
                                     </div>
-                                    <AddNewsArticleDialog companyName={group.name} onAddArticle={handleAddArticle} />
                                 </div>
                             </CardHeader>
-                             <CardContent className="space-y-4 max-h-96 overflow-y-auto">
-                                {companyNews.map(article => (
-                                    <div key={article.id} className="flex items-center gap-4 p-2 rounded-md bg-muted/50">
-                                        <Newspaper className="h-5 w-5 text-muted-foreground" />
-                                        <div className="flex-1">
-                                            <p className="font-semibold truncate">{article.title}</p>
-                                            <p className="text-sm text-muted-foreground truncate">{article.summary}</p>
-                                        </div>
-                                        <Button type="button" variant="ghost" size="icon" className="text-destructive hover:text-destructive">
-                                            <Trash2 className="h-4 w-4" />
+                            <CardContent className="space-y-4">
+                               <Collapsible open={isAddNewsOpen} onOpenChange={setIsAddNewsOpen}>
+                                    <CollapsibleTrigger asChild>
+                                        <Button variant="outline" className="w-full">
+                                            <Plus className="mr-2 h-4 w-4" />
+                                            Añadir Nueva Noticia
                                         </Button>
-                                    </div>
-                                ))}
-                                {companyNews.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No hay noticias para este grupo.</p>}
+                                    </CollapsibleTrigger>
+                                    <CollapsibleContent>
+                                        <Form {...newArticleForm}>
+                                            <form onSubmit={newArticleForm.handleSubmit(handleAddArticleSubmit)} className="mt-4 p-4 border rounded-md space-y-4">
+                                                <FormField control={newArticleForm.control} name="title" render={({ field }) => (
+                                                    <FormItem><FormLabel>Título</FormLabel><FormControl><Input {...field} placeholder="Título del artículo" /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={newArticleForm.control} name="summary" render={({ field }) => (
+                                                    <FormItem><FormLabel>Resumen</FormLabel><FormControl><Textarea {...field} placeholder="Un breve resumen de la noticia..." /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={newArticleForm.control} name="imageUrl" render={({ field }) => (
+                                                    <FormItem><FormLabel>URL de la Imagen</FormLabel><FormControl><Input {...field} placeholder="https://picsum.photos/seed/..." /></FormControl><FormMessage /></FormMessage>
+                                                )} />
+                                                <FormField control={newArticleForm.control} name="link" render={({ field }) => (
+                                                    <FormItem><FormLabel>Enlace</FormLabel><FormControl><Input {...field} placeholder="#" /></FormControl><FormMessage /></FormMessage>
+                                                )} />
+                                                <div className="flex justify-end gap-2">
+                                                    <Button type="button" variant="ghost" onClick={() => setIsAddNewsOpen(false)}>Cancelar</Button>
+                                                    <Button type="submit">Publicar Noticia</Button>
+                                                </div>
+                                            </form>
+                                        </Form>
+                                    </CollapsibleContent>
+                                </Collapsible>
+
+                                <div className="space-y-4 max-h-96 overflow-y-auto pt-4">
+                                  {companyNews.map(article => (
+                                      <div key={article.id} className="flex items-center gap-4 p-2 rounded-md bg-muted/50">
+                                          <Newspaper className="h-5 w-5 text-muted-foreground" />
+                                          <div className="flex-1">
+                                              <p className="font-semibold truncate">{article.title}</p>
+                                              <p className="text-sm text-muted-foreground truncate">{article.summary}</p>
+                                          </div>
+                                          <Button type="button" variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                                              <Trash2 className="h-4 w-4" />
+                                          </Button>
+                                      </div>
+                                  ))}
+                                  {companyNews.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No hay noticias para este grupo.</p>}
+                                </div>
                              </CardContent>
                          </Card>
                     </div>
                 </div>
 
                 <div className="flex justify-end pt-4 border-t">
-                    <Button type="submit">Guardar Cambios</Button>
+                    <Button type="submit">Guardar Cambios del Grupo</Button>
                 </div>
             </form>
         </Form>
