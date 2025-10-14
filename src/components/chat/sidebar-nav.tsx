@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Hash, Lock, Plus, User } from "lucide-react";
+import { Hash, Lock, Plus, User, Phone } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -11,15 +11,27 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuAction,
 } from "@/components/ui/sidebar";
 import { channels, directMessages } from "@/lib/mock-data";
 import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export function SidebarNav() {
   const pathname = usePathname();
+  const { toast } = useToast();
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
   const [isNewMessageOpen, setNewMessageOpen] = useState(false);
+
+  const handleCall = (event: React.MouseEvent, userName: string) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toast({
+      title: `Llamando a ${userName}...`,
+      description: "Esta función es una demostración.",
+    });
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -79,6 +91,13 @@ export function SidebarNav() {
                   </a>
                 </SidebarMenuButton>
               </Link>
+              <SidebarMenuAction
+                showOnHover
+                onClick={(e) => handleCall(e, dm.name)}
+                aria-label={`Llamar a ${dm.name}`}
+              >
+                <Phone />
+              </SidebarMenuAction>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>

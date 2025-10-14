@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { Phone } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
@@ -9,6 +10,8 @@ import { MessageInput } from "@/components/chat/message-input";
 import { SmartReplySuggestions } from "@/components/chat/smart-reply-suggestions";
 import type { Message, User } from "@/lib/types";
 import { HeaderActions } from "../header-actions";
+import { Button } from "../ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 interface ChatAreaProps {
   chatId: string;
@@ -25,8 +28,10 @@ export function ChatArea({
   icon,
   initialMessages,
   currentUser,
+  chatType,
 }: ChatAreaProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -58,6 +63,13 @@ export function ChatArea({
   const handleSuggestionClick = (suggestion: string) => {
     handleSendMessage(suggestion);
   };
+  
+  const handleCall = () => {
+    toast({
+      title: `Llamando a ${title}...`,
+      description: "Esta función es una demostración.",
+    });
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -65,6 +77,12 @@ export function ChatArea({
         {icon}
         <h2 className="text-xl font-headline font-semibold">{title}</h2>
         <div className="flex-1" />
+        {chatType === "dm" && (
+            <Button variant="ghost" size="icon" onClick={handleCall}>
+                <Phone className="w-5 h-5" />
+                <span className="sr-only">Llamar a {title}</span>
+            </Button>
+        )}
         <HeaderActions />
       </header>
 
