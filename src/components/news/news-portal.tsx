@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import Cookies from 'js-cookie';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,16 +8,19 @@ import { NewsArticleCard } from './news-article-card';
 import { newsArticles } from '@/lib/mock-data';
 import type { NewsArticle } from '@/lib/types';
 import { Button } from '../ui/button';
-import { Settings } from 'lucide-react';
+import { Loader2, Settings, Sparkles } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
 import { HeaderActions } from '../header-actions';
+import { generateNewsArticles } from '@/ai/flows/generate-news-articles';
 
 export function NewsPortal() {
   const [location, setLocation] = useState<string | null>(null);
   const { preferences, setPreferences, isDialogOpen, setDialogOpen } = useNewsPreferences();
   const [isLoading, setLoading] = useState(true);
+  const [isGenerating, startGenerating] = useTransition();
+  const [allNews, setAllNews] = useState<NewsArticle[]>(newsArticles);
 
   useEffect(() => {
     // Fetch location
@@ -46,12 +49,27 @@ export function NewsPortal() {
     Cookies.set('news-preferences', JSON.stringify(newPrefs), { expires: 365 });
     setDialogOpen(false);
   };
+  
+  const handleGenerateMoreNews = () => {
+    startGenerating(async () => {
+      const { articles } = await generateNewsArticles({
+        existingTopics: allNews.map(a => a.title),
+        categories: ['technology', 'business', 'sports', 'health', 'entertainment'],
+      });
+      // Generate unique IDs for the new articles
+      const newArticlesWithIds = articles.map((article, index) => ({
+        ...article,
+        id: `gen-${Date.now()}-${index}`,
+      }));
+      setAllNews(prev => [...prev, ...newArticlesWithIds]);
+    });
+  };
 
-  const generalNews = newsArticles.filter(
+  const generalNews = allNews.filter(
     (article) => article.location === location || article.location === 'global'
   );
 
-  const personalizedNews = newsArticles.filter((article) =>
+  const personalizedNews = allNews.filter((article) =>
     preferences.includes(article.category)
   );
 
@@ -76,11 +94,24 @@ export function NewsPortal() {
         onSave={handleSavePreferences}
         currentPreferences={preferences}
       />
-      <Tabs defaultValue="general">
+      <Tabs defaultValue="general" className="pb-8">
         <div className="flex items-center justify-between mb-4">
           <TabsList>
             <TabsTrigger value="general">Noticias Generales</TabsTrigger>
             <TabsTrigger value="personalizadas">Para Ti</TabsTrigger>
+            <TabsTrigger value="more" onClick={handleGenerateMoreNews} disabled={isGenerating}>
+              {isGenerating ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Generando...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Más
+                </>
+              )}
+            </TabsTrigger>
           </TabsList>
           <HeaderActions />
         </div>
