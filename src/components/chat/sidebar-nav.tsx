@@ -54,6 +54,11 @@ export function SidebarNav() {
   const [isCreateChannelOpen, setCreateChannelOpen] = useState(false);
   const [isNewMessagePopoverOpen, setNewMessagePopoverOpen] = useState(false);
   const [channels, setChannels] = useState<Channel[]>(initialChannels);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const isNewsSectionActive = useMemo(() => pathname === "/" || pathname.startsWith("/foryou"), [pathname]);
 
@@ -180,16 +185,16 @@ export function SidebarNav() {
         </SidebarGroupLabel>
         <NewMessagePopover isOpen={isNewMessagePopoverOpen} setIsOpen={setNewMessagePopoverOpen}>
           <SidebarGroupAction asChild>
-            <PopoverTrigger asChild>
-              <button>
-                <Plus className="h-4 w-4" />
-                <span className="sr-only">Nuevo Mensaje</span>
-              </button>
-            </PopoverTrigger>
+              <PopoverTrigger asChild>
+                <button>
+                  <Plus className="h-4 w-4" />
+                  <span className="sr-only">Nuevo Mensaje</span>
+                </button>
+              </PopoverTrigger>
           </SidebarGroupAction>
         </NewMessagePopover>
         <SidebarMenu>
-          {directMessages.map((dm) => {
+          {isMounted && directMessages.map((dm) => {
             const user = users.find(u => u.id === dm.userId);
             if (!user) return null;
             const statusColor = {
