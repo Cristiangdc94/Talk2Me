@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Phone, MoreVertical, Trash2, Ban, Info } from "lucide-react";
+import { Phone, MoreVertical, Trash2, Ban, Info, PhoneMissed } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
 import { MessageInput } from "@/components/chat/message-input";
@@ -62,6 +62,7 @@ export function ChatArea({
   const handleReceiveMessage = (text: string, sender: User, isAutoReply: boolean = false) => {
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
+      type: 'message',
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       user: sender,
@@ -88,6 +89,7 @@ export function ChatArea({
   const handleSendMessage = (text: string) => {
     const newMessage: Message = {
       id: `msg-${Date.now()}`,
+      type: 'message',
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       user: currentUser,
@@ -126,6 +128,60 @@ export function ChatArea({
       description: `${description} (Simulación)`,
     });
   }
+
+  const renderMessageContent = (message: Message, isSentByCurrentUser: boolean) => {
+    if (message.type === 'call' && message.callStatus === 'missed') {
+      return (
+        <div className={cn(
+          "flex items-center gap-2 text-sm text-muted-foreground",
+          isSentByCurrentUser && "flex-row-reverse"
+        )}>
+          <PhoneMissed className="h-4 w-4 text-red-500" />
+          <span>Llamada perdida a las {message.timestamp}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div 
+        className={cn(
+          "p-3 rounded-lg max-w-sm md:max-w-md",
+          isSentByCurrentUser 
+            ? "bg-primary text-primary-foreground" 
+            : "bg-muted"
+        )}
+      >
+         {!isSentByCurrentUser && <p className="font-bold text-xs mb-1">{message.user.name}</p>}
+        {message.text && <p className="text-sm">{message.text}</p>}
+        {message.imageUrl && (
+          <div className="mt-2">
+             <Image
+              src={message.imageUrl}
+              alt="Chat image"
+              width={400}
+              height={300}
+              className="rounded-lg object-cover"
+              data-ai-hint="landscape nature"
+            />
+          </div>
+        )}
+        <div className="flex justify-end items-center gap-2 mt-1">
+          <time className={cn(
+            "text-xs", 
+            isSentByCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground"
+          )}>
+            {message.timestamp}
+          </time>
+          {isSentByCurrentUser && (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary-foreground/70">
+                <path d="M2.5 8L5.5 11L13.5 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          )}
+        </div>
+      </div>
+    );
+  };
+
 
   return (
     <div className="flex flex-col h-full">
@@ -166,6 +222,15 @@ export function ChatArea({
             <div className="space-y-4">
                 {messages.map((message) => {
                   const isSentByCurrentUser = message.user.id === currentUser.id;
+                  
+                  if (message.type === 'call') {
+                    return (
+                      <div key={message.id} className="flex justify-center">
+                        {renderMessageContent(message, isSentByCurrentUser)}
+                      </div>
+                    );
+                  }
+
                   return (
                     <div 
                       key={message.id} 
@@ -177,42 +242,9 @@ export function ChatArea({
                       {!isSentByCurrentUser && (
                         <UserAvatarWithStatus user={message.user} className="shrink-0" />
                       )}
-                      <div 
-                        className={cn(
-                          "p-3 rounded-lg max-w-sm md:max-w-md",
-                          isSentByCurrentUser 
-                            ? "bg-primary text-primary-foreground" 
-                            : "bg-muted"
-                        )}
-                      >
-                         {!isSentByCurrentUser && <p className="font-bold text-xs mb-1">{message.user.name}</p>}
-                        {message.text && <p className="text-sm">{message.text}</p>}
-                        {message.imageUrl && (
-                          <div className="mt-2">
-                             <Image
-                              src={message.imageUrl}
-                              alt="Chat image"
-                              width={400}
-                              height={300}
-                              className="rounded-lg object-cover"
-                              data-ai-hint="landscape nature"
-                            />
-                          </div>
-                        )}
-                        <div className="flex justify-end items-center gap-2 mt-1">
-                          <time className={cn(
-                            "text-xs", 
-                            isSentByCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground"
-                          )}>
-                            {message.timestamp}
-                          </time>
-                          {isSentByCurrentUser && (
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary-foreground/70">
-                                <path d="M2.5 8L5.5 11L13.5 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                          )}
-                        </div>
-                      </div>
+                      
+                      {renderMessageContent(message, isSentByCurrentUser)}
+
                       {isSentByCurrentUser && (
                         <UserAvatarWithStatus user={message.user} className="shrink-0" />
                       )}

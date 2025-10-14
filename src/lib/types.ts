@@ -22,11 +22,13 @@ export interface User {
 
 export interface Message {
   id: string;
+  type: 'message' | 'call';
   text?: string;
   imageUrl?: string;
   timestamp: string;
   user: User;
   status?: 'sent' | 'read';
+  callStatus?: 'missed' | 'answered' | 'outgoing';
 }
 
 export interface Channel {

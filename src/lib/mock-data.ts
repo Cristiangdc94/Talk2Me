@@ -67,9 +67,9 @@ export const channels: Channel[] = [
     name: 'general',
     type: 'public',
     messages: [
-      { id: 'msg1', text: '¡Hola a todos, bienvenidos al canal general!', timestamp: '10:00 AM', user: users[1], status: 'read' },
-      { id: 'msg2', text: '¡Encantado de estar aquí!', timestamp: '10:01 AM', user: users[2], status: 'read' },
-      { id: 'msg3', text: '¿Cuál es el tema de hoy?', timestamp: '10:02 AM', user: users[3], status: 'read' },
+      { id: 'msg1', type: 'message', text: '¡Hola a todos, bienvenidos al canal general!', timestamp: '10:00 AM', user: users[1], status: 'read' },
+      { id: 'msg2', type: 'message', text: '¡Encantado de estar aquí!', timestamp: '10:01 AM', user: users[2], status: 'read' },
+      { id: 'msg3', type: 'message', text: '¿Cuál es el tema de hoy?', timestamp: '10:02 AM', user: users[3], status: 'read' },
     ],
   },
   {
@@ -77,11 +77,11 @@ export const channels: Channel[] = [
     name: 'equipo-diseño',
     type: 'private',
     messages: [
-      { id: 'msg4', text: 'Hola equipo, he subido los nuevos bocetos a Figma.', timestamp: '11:30 AM', user: users[4], status: 'read' },
-      { id: 'msg5', text: 'Genial, les echo un vistazo ahora.', timestamp: '11:31 AM', user: users[0], status: 'sent' },
-      { id: 'msg6', imageUrl: findImage('chat-image-1'), timestamp: '11:35 AM', user: users[4], status: 'read' },
-      { id: 'msg7', text: '¡Se ven geniales! Una pequeña sugerencia, ¿podemos probar un tono diferente para el botón principal?', timestamp: '11:45 AM', user: users[0], status: 'sent' },
-      { id: 'msg8', text: 'Buena idea. ¿Qué tal si lo discutimos en la llamada de mañana?', timestamp: '11:46 AM', user: users[4], status: 'read' },
+      { id: 'msg4', type: 'message', text: 'Hola equipo, he subido los nuevos bocetos a Figma.', timestamp: '11:30 AM', user: users[4], status: 'read' },
+      { id: 'msg5', type: 'message', text: 'Genial, les echo un vistazo ahora.', timestamp: '11:31 AM', user: users[0], status: 'sent' },
+      { id: 'msg6', type: 'message', imageUrl: findImage('chat-image-1'), timestamp: '11:35 AM', user: users[4], status: 'read' },
+      { id: 'msg7', type: 'message', text: '¡Se ven geniales! Una pequeña sugerencia, ¿podemos probar un tono diferente para el botón principal?', timestamp: '11:45 AM', user: users[0], status: 'sent' },
+      { id: 'msg8', type: 'message', text: 'Buena idea. ¿Qué tal si lo discutimos en la llamada de mañana?', timestamp: '11:46 AM', user: users[4], status: 'read' },
     ],
   },
   {
@@ -89,26 +89,26 @@ export const channels: Channel[] = [
     name: 'varios',
     type: 'public',
     messages: [
-      { id: 'msg9', text: '¿Alguien ha visto una buena película últimamente?', timestamp: '1:00 PM', user: users[5], status: 'read' },
+      { id: 'msg9', type: 'message', text: '¿Alguien ha visto una buena película últimamente?', timestamp: '1:00 PM', user: users[5], status: 'read' },
     ],
   },
   {
     id: 'channel-innovatecorp-chat',
     name: 'InnovateCorp Chat',
     type: 'private',
-    messages: [{ id: 'msg-corp1', text: 'Bienvenido al chat corporativo de InnovateCorp.', timestamp: '9:00 AM', user: users[6], status: 'read' }]
+    messages: [{ id: 'msg-corp1', type: 'message', text: 'Bienvenido al chat corporativo de InnovateCorp.', timestamp: '9:00 AM', user: users[6], status: 'read' }]
   },
   {
     id: 'channel-datasolutions-chat',
     name: 'DataSolutions Chat',
     type: 'private',
-    messages: [{ id: 'msg-corp2', text: 'Bienvenido al chat corporativo de DataSolutions.', timestamp: '9:05 AM', user: users[6], status: 'read' }]
+    messages: [{ id: 'msg-corp2', type: 'message', text: 'Bienvenido al chat corporativo de DataSolutions.', timestamp: '9:05 AM', user: users[6], status: 'read' }]
   },
   {
     id: 'channel-quantumleap-chat',
     name: 'QuantumLeap Chat',
     type: 'private',
-    messages: [{ id: 'msg-corp3', text: 'Bienvenido al chat corporativo de QuantumLeap.', timestamp: '9:10 AM', user: users[6], status: 'read' }]
+    messages: [{ id: 'msg-corp3', type: 'message', text: 'Bienvenido al chat corporativo de QuantumLeap.', timestamp: '9:10 AM', user: users[6], status: 'read' }]
   }
 ];
 
@@ -120,8 +120,8 @@ export const directMessages: DirectMessage[] = [
     type: 'private',
     unreadCount: 3,
     messages: [
-      { id: 'dm1', text: 'Oye, ¿tienes un minuto para hablar?', timestamp: '2:15 PM', user: users[1], status: 'read' },
-      { id: 'dm2', text: 'Claro, ¿qué pasa?', timestamp: '2:16 PM', user: users[0], status: 'sent' },
+      { id: 'dm1', type: 'message', text: 'Oye, ¿tienes un minuto para hablar?', timestamp: '2:15 PM', user: users[1], status: 'read' },
+      { id: 'dm2', type: 'message', text: 'Claro, ¿qué pasa?', timestamp: '2:16 PM', user: users[0], status: 'sent' },
     ],
   },
   {
@@ -131,7 +131,7 @@ export const directMessages: DirectMessage[] = [
     type: 'private',
     unreadCount: 1,
     messages: [
-      { id: 'dm_b1', text: 'Reunión en 5', timestamp: '3:00 PM', user: users[2], status: 'read' },
+      { id: 'dm_b1', type: 'message', text: 'Reunión en 5', timestamp: '3:00 PM', user: users[2], status: 'read' },
     ],
   },
   {
@@ -141,7 +141,7 @@ export const directMessages: DirectMessage[] = [
     type: 'private',
     unreadCount: 0,
     messages: [
-      { id: 'dm3', text: '¡La actualización del proyecto ya está disponible!', timestamp: 'Ayer', user: users[3], status: 'read' },
+      { id: 'dm3', type: 'message', text: '¡La actualización del proyecto ya está disponible!', timestamp: 'Ayer', user: users[3], status: 'read' },
     ],
   },
   {
@@ -151,7 +151,7 @@ export const directMessages: DirectMessage[] = [
     type: 'private',
     unreadCount: 1,
     messages: [
-      { id: 'dm4', text: '¡Hola! ¿Estás libre para una llamada rápida?', timestamp: 'hace 4 horas', user: users[4], status: 'read' },
+      { id: 'dm4', type: 'message', text: '¡Hola! ¿Estás libre para una llamada rápida?', timestamp: 'hace 4 horas', user: users[4], status: 'read' },
     ]
   },
   {
@@ -161,7 +161,7 @@ export const directMessages: DirectMessage[] = [
     type: 'private',
     unreadCount: 10,
     messages: [
-      { id: 'dm_e1', text: 'Revisa por favor los informes de DataSolutions.', timestamp: 'hace 2 horas', user: users[5], status: 'read' }
+      { id: 'dm_e1', type: 'message', text: 'Revisa por favor los informes de DataSolutions.', timestamp: 'hace 2 horas', user: users[5], status: 'read' }
     ]
   }
 ];

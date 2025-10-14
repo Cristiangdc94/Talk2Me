@@ -3,7 +3,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
-import type { Message, DirectMessage, Notification } from "@/lib/types";
+import type { Message, DirectMessage, Notification, User } from "@/lib/types";
 import { channels, directMessages as initialDirectMessages, users, notifications as initialNotifications } from "@/lib/mock-data";
 import { Hash, Lock } from "lucide-react";
 import { UserAvatarWithStatus } from "@/components/chat/user-avatar-with-status";
@@ -66,27 +66,51 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         
         if (!sender) return;
 
-        const newMessage: Message = {
-            id: `msg-${Date.now()}`,
-            text: randomMessages[Math.floor(Math.random() * randomMessages.length)],
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            user: sender,
-        };
+        const isMissedCall = Math.random() < 0.2; // 20% chance of being a missed call
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        const newNotification: Notification = {
-            id: `notif-${Date.now()}`,
-            type: 'message',
-            text: `Tienes un nuevo mensaje de ${sender.name}.`,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            chatId: randomDm.id,
-            chatType: 'dm',
-        };
+        if (isMissedCall) {
+             const newCallMessage: Message = {
+                id: `call-${Date.now()}`,
+                type: 'call',
+                callStatus: 'missed',
+                timestamp,
+                user: sender,
+             };
+             const newNotification: Notification = {
+                id: `notif-${Date.now()}`,
+                type: 'call',
+                text: `Llamada perdida de ${sender.name}.`,
+                timestamp,
+                chatId: randomDm.id,
+                chatType: 'dm',
+             };
+             addMessage(randomDm.id, newCallMessage, true);
+             setNotifications(prev => [newNotification, ...prev]);
 
-        // Add message and notification
-        addMessage(randomDm.id, newMessage, true);
-        setNotifications(prev => [newNotification, ...prev]);
+        } else {
+            const newMessage: Message = {
+                id: `msg-${Date.now()}`,
+                type: 'message',
+                text: randomMessages[Math.floor(Math.random() * randomMessages.length)],
+                timestamp,
+                user: sender,
+            };
 
-    }, 15000); // Every 15 seconds
+            const newNotification: Notification = {
+                id: `notif-${Date.now()}`,
+                type: 'message',
+                text: `Tienes un nuevo mensaje de ${sender.name}.`,
+                timestamp,
+                chatId: randomDm.id,
+                chatType: 'dm',
+            };
+
+            addMessage(randomDm.id, newMessage, true);
+            setNotifications(prev => [newNotification, ...prev]);
+        }
+
+    }, 30000); // Every 30 seconds
 
     return () => clearInterval(interval);
   }, [activeChatId, addMessage, directMessages]);
