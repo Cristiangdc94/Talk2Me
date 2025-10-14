@@ -54,8 +54,8 @@ export function SignupForm() {
     // Simulate setting an auth token
     Cookies.set("auth_token", "mock_new_user_token_for_demo", { expires: 1 });
     
-    // Force a full page reload to ensure the new auth state is recognized.
-    window.location.href = '/';
+    router.push("/");
+    router.refresh();
   }
 
   return (
