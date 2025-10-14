@@ -4,7 +4,7 @@ import { LayoutProvider } from "@/components/layout-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Háblame",
+  title: "Talk2Me",
   description: "Una aplicación de chat moderna en tiempo real.",
 };
 

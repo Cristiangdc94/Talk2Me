@@ -52,7 +52,7 @@ export function SignupForm() {
     console.log("Simulating signup with:", values);
     toast({
       title: "Cuenta Creada",
-      description: "¡Bienvenido a Háblame! Redirigiendo...",
+      description: "¡Bienvenido a Talk2Me! Redirigiendo...",
     });
 
     // Simulate setting an auth token
@@ -70,7 +70,7 @@ export function SignupForm() {
       <CardHeader className="text-center">
         <div className="flex justify-center items-center gap-2 mb-4">
           <AppLogo className="h-8 w-8 text-primary" />
-          <CardTitle className="font-headline text-3xl">Háblame</CardTitle>
+          <CardTitle className="font-headline text-3xl">Talk2Me</CardTitle>
         </div>
         <CardDescription>Crea tu cuenta para empezar a chatear</CardDescription>
       </CardHeader>
