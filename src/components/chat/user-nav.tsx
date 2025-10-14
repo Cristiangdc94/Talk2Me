@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
@@ -10,25 +12,31 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { users } from "@/lib/mock-data";
-import { LogOut, Settings, User, Newspaper } from "lucide-react";
+import { LogOut, Settings, User as UserIcon, Newspaper, Circle, Sunrise, Coffee, Sunset } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNewsPreferences } from "@/hooks/use-news-preferences";
 import Link from "next/link";
+import type { User } from "@/lib/types";
 
 export function UserNav() {
   const router = useRouter();
   const { toast } = useToast();
   const { setDialogOpen } = useNewsPreferences();
-  // In a real app, you'd get the current user from an auth context
-  const currentUser = users[0];
+  
+  // Manage user state locally to allow for status changes
+  const [currentUser, setCurrentUser] = useState<User>(users[0]);
 
   const handleLogout = () => {
-    // Simulate logout
     Cookies.remove("auth_token");
     toast({
       title: "Sesión Cerrada",
@@ -36,6 +44,26 @@ export function UserNav() {
     });
     router.push("/login");
     router.refresh();
+  };
+
+  const handleStatusChange = (status: 'online' | 'busy' | 'offline') => {
+    setCurrentUser(prevUser => ({ ...prevUser, status }));
+    let statusText = '';
+    switch(status) {
+        case 'online': statusText = 'Conectado'; break;
+        case 'busy': statusText = 'Ausente'; break;
+        case 'offline': statusText = 'Invisible'; break;
+    }
+    toast({
+        title: "Estado Actualizado",
+        description: `Tu estado ahora es ${statusText}.`,
+    });
+  };
+
+  const statusTextMap: Record<User['status'], string> = {
+    online: 'Conectado',
+    busy: 'Ausente',
+    offline: 'Invisible',
   };
 
   return (
@@ -49,7 +77,7 @@ export function UserNav() {
             <UserAvatarWithStatus user={currentUser} />
             <div className="text-left group-data-[collapsible=icon]:hidden flex-1">
               <p className="font-medium text-sm text-sidebar-foreground">{currentUser.name}</p>
-              <p className="text-xs text-sidebar-foreground/70">En línea</p>
+              <p className="text-xs text-sidebar-foreground/70">{statusTextMap[currentUser.status]}</p>
             </div>
           </Button>
         </DropdownMenuTrigger>
@@ -66,9 +94,32 @@ export function UserNav() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
+             <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <Circle className="mr-2 h-4 w-4" />
+                <span>Establecer Estado</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuRadioGroup value={currentUser.status} onValueChange={(value) => handleStatusChange(value as User['status'])}>
+                  <DropdownMenuRadioItem value="online">
+                    <Sunrise className="mr-2 h-4 w-4" />
+                    <span>Conectado</span>
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="busy">
+                    <Coffee className="mr-2 h-4 w-4" />
+                    <span>Ausente</span>
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="offline">
+                    <Sunset className="mr-2 h-4 w-4" />
+                    <span>Invisible</span>
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link href="/settings">
-                <User className="mr-2 h-4 w-4" />
+                <UserIcon className="mr-2 h-4 w-4" />
                 <span>Perfil</span>
               </Link>
             </DropdownMenuItem>
