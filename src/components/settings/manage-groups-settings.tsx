@@ -29,7 +29,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Building2, Upload, User as UserIcon, X, Tag, Plus, Newspaper, Trash2 } from "lucide-react";
 import { UserAvatarWithStatus } from "../chat/user-avatar-with-status";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { Separator } from "../ui/separator";
 
 const groupFormSchema = z.object({
     name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
@@ -395,3 +394,5 @@ export function ManageGroupsSettings() {
         </div>
     );
 }
+
+    
