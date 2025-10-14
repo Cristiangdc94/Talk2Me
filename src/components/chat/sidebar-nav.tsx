@@ -9,6 +9,10 @@ import {
   Plus,
   User,
   Phone,
+  Newspaper,
+  Users,
+  Briefcase,
+  Search,
 } from "lucide-react";
 
 import {
@@ -25,6 +29,13 @@ import { CreateChannelDialog } from "./create-channel-dialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SidebarSeparator } from "../ui/sidebar";
+
+const mainNavLinks = [
+    { href: "/", label: "Noticias", icon: Newspaper },
+    { href: "/friends", label: "Amigos", icon: Users },
+    { href: "/coworkers", label: "Compañeros", icon: Briefcase },
+    { href: "/add-contact", label: "Buscar", icon: Search },
+];
 
 export function SidebarNav() {
   const pathname = usePathname();
@@ -46,6 +57,31 @@ export function SidebarNav() {
         open={isCreateChannelOpen}
         onOpenChange={setCreateChannelOpen}
       />
+
+      <SidebarGroup>
+        <SidebarGroupLabel className="font-headline text-xl">
+          Menú
+        </SidebarGroupLabel>
+        <SidebarMenu>
+          {mainNavLinks.map((link) => (
+            <SidebarMenuItem key={link.href}>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === link.href}
+                tooltip={link.label}
+              >
+                <Link href={link.href}>
+                  <link.icon />
+                  <span>{link.label}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroup>
+
+      <SidebarSeparator />
+
       <SidebarGroup>
         <SidebarGroupLabel className="font-headline text-xl">
           Canales

@@ -16,12 +16,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserAvatarWithStatus } from "./user-avatar-with-status";
 import { users } from "@/lib/mock-data";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, User, Newspaper } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ThemeToggle } from "../theme-toggle";
+import { useNewsPreferences } from "@/hooks/use-news-preferences";
 
 export function UserNav() {
   const router = useRouter();
   const { toast } = useToast();
+  const { setDialogOpen } = useNewsPreferences();
   // In a real app, you'd get the current user from an auth context
   const currentUser = users[0];
 
@@ -37,7 +40,7 @@ export function UserNav() {
   };
 
   return (
-    <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:justify-center">
+    <div className="flex items-center justify-between gap-2 p-2 group-data-[collapsible=icon]:justify-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -68,6 +71,10 @@ export function UserNav() {
               <User className="mr-2 h-4 w-4" />
               <span>Perfil</span>
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setDialogOpen(true)}>
+              <Newspaper className="mr-2 h-4 w-4" />
+              <span>Preferencias de Noticias</span>
+            </DropdownMenuItem>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
               <span>Ajustes</span>
@@ -80,6 +87,9 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <div className="group-data-[collapsible=icon]:hidden">
+        <ThemeToggle />
+      </div>
     </div>
   );
 }
