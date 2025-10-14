@@ -179,14 +179,14 @@ export function SidebarNav() {
           Mensajes Directos
         </SidebarGroupLabel>
         <NewMessagePopover isOpen={isNewMessagePopoverOpen} setIsOpen={setNewMessagePopoverOpen}>
-            <SidebarGroupAction asChild>
-                <PopoverTrigger asChild>
-                  <button>
-                    <Plus className="h-4 w-4" />
-                    <span className="sr-only">Nuevo Mensaje</span>
-                  </button>
-                </PopoverTrigger>
-            </SidebarGroupAction>
+          <SidebarGroupAction asChild>
+            <PopoverTrigger asChild>
+              <button>
+                <Plus className="h-4 w-4" />
+                <span className="sr-only">Nuevo Mensaje</span>
+              </button>
+            </PopoverTrigger>
+          </SidebarGroupAction>
         </NewMessagePopover>
         <SidebarMenu>
           {directMessages.map((dm) => {
@@ -208,12 +208,12 @@ export function SidebarNav() {
                   <div className="flex items-center gap-2 overflow-hidden">
                     <UserAvatarWithStatus user={user} className="w-6 h-6" />
                     <span className={cn("truncate", statusColor[user.status])}>{dm.name}</span>
+                    {dm.unreadCount && dm.unreadCount > 0 && (
+                      <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
+                        {dm.unreadCount > 9 ? '+9' : dm.unreadCount}
+                      </Badge>
+                    )}
                   </div>
-                   {dm.unreadCount && dm.unreadCount > 0 && (
-                    <Badge variant="destructive" className="h-5 min-w-[1.25rem] justify-center text-xs">
-                      {dm.unreadCount > 9 ? '+9' : dm.unreadCount}
-                    </Badge>
-                  )}
                 </SidebarMenuButton>
                 <SidebarMenuAction
                   onClick={(e) => handleCall(e, dm.name)}
