@@ -139,7 +139,6 @@ export const directMessages: DirectMessage[] = [
     userId: '4',
     name: 'Carlos',
     type: 'private',
-    unreadCount: 0,
     messages: [
       { id: 'dm3', text: '¡La actualización del proyecto ya está disponible!', timestamp: 'Ayer', user: users[3], status: 'read' },
     ],
