@@ -42,8 +42,7 @@ export function UserNav() {
       title: "Sesión Cerrada",
       description: "Has cerrado sesión correctamente.",
     });
-    router.push("/login");
-    router.refresh();
+    window.location.href = '/login';
   };
 
   const handleStatusChange = (status: 'online' | 'busy' | 'offline') => {
