@@ -33,7 +33,6 @@ export function UserNav() {
   const { toast } = useToast();
   const { setDialogOpen } = useNewsPreferences();
   
-  // Manage user state locally to allow for status changes
   const [currentUser, setCurrentUser] = useState<User>(users[0]);
 
   const handleLogout = () => {
@@ -117,7 +116,7 @@ export function UserNav() {
             </DropdownMenuSub>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/settings">
+              <Link href={`/profile/${currentUser.id}`}>
                 <UserIcon className="mr-2 h-4 w-4" />
                 <span>Perfil</span>
               </Link>

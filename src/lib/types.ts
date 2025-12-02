@@ -18,6 +18,8 @@ export interface User {
   email?: string;
   company?: string;
   companyRoles?: { [companyName: string]: CompanyRoleDetails };
+  description?: string;
+  interests?: string[];
 }
 
 export interface Message {

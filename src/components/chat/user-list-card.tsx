@@ -95,7 +95,7 @@ export function UserListCard({ user, currentUserRole, userRoleDetails }: UserLis
 
       <CardHeader className="flex-1 flex flex-col items-center justify-center p-4">
         <UserAvatarWithStatus user={user} className="w-20 h-20 mb-4" />
-        <p className="font-bold text-lg">{user.name}</p>
+        <Link href={`/profile/${user.id}`} className="font-bold text-lg hover:underline">{user.name}</Link>
         <p className="text-sm text-muted-foreground">{user.email}</p>
         {userRoleDetails?.tag && <Badge variant="outline" className="mt-2">{userRoleDetails.tag}</Badge>}
       </CardHeader>

@@ -16,14 +16,22 @@ import {
 import { AccountSettings } from "@/components/settings/account-settings";
 import { VoiceVideoSettings } from "@/components/settings/voice-video-settings";
 import { ManageGroupsSettings } from "@/components/settings/manage-groups-settings";
+import { UserProfilePage } from "@/components/profile/user-profile-page";
+import { users } from "@/lib/mock-data";
 
 export default function SettingsPage() {
+  const currentUser = users.find((u) => u.id === '1');
+  
+  if (!currentUser) {
+    return <div>Usuario no encontrado</div>;
+  }
+
   return (
     <div className="p-4 sm:p-6 h-full flex flex-col">
        <CardHeader className="px-0">
           <CardTitle className="text-3xl font-bold tracking-tight">Ajustes</CardTitle>
           <CardDescription>
-            Gestiona la configuración de tu cuenta y de la aplicación.
+            Gestiona la configuración de tu cuenta, perfil y aplicación.
           </CardDescription>
         </CardHeader>
       <Tabs defaultValue="account" className="flex-1 flex flex-col">

@@ -15,13 +15,15 @@ export const users: User[] = [
       'InnovateCorp': { role: 'CEO', tag: 'Fundador' },
       'DataSolutions': { role: 'Partner' },
       'QuantumLeap': { role: 'Partner' },
-    } 
+    },
+    description: 'CEO de InnovateCorp, apasionado por la tecnología y la creación de productos que cambian el mundo. En mi tiempo libre, me encanta el senderismo y la fotografía.',
+    interests: ['Tecnología', 'Emprendimiento', 'Senderismo', 'Fotografía', 'IA']
   },
-  { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend', email: 'alice@example.com' },
-  { id: '3', name: 'Bob', avatarUrl: findImage('avatar-3'), status: 'busy', lastSeen: 'En una reunión', relationship: 'coworker', email: 'bob@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': { role: 'Jefe de proyecto', tag: 'Líder Técnico' } } },
-  { id: '4', name: 'Carlos', avatarUrl: findImage('avatar-4'), status: 'online', relationship: 'coworker', email: 'carlos@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': { role: 'Empleado', tag: 'Frontend Dev' } } },
-  { id: '5', name: 'Diana', avatarUrl: findImage('avatar-5'), status: 'offline', lastSeen: 'ayer', relationship: 'friend', email: 'diana@example.com' },
-  { id: '6', name: 'Eva', avatarUrl: findImage('avatar-6'), status: 'online', email: 'eva@example.com', relationship: 'coworker', company: 'DataSolutions', companyRoles: { 'DataSolutions': { role: 'Jefe de proyecto' } } },
+  { id: '2', name: 'Alice', avatarUrl: findImage('avatar-2'), status: 'online', relationship: 'friend', email: 'alice@example.com', description: 'Diseñadora gráfica y amante del arte. Siempre buscando inspiración en los lugares más inesperados.', interests: ['Diseño', 'Arte', 'Viajes', 'Cine'] },
+  { id: '3', name: 'Bob', avatarUrl: findImage('avatar-3'), status: 'busy', lastSeen: 'En una reunión', relationship: 'coworker', email: 'bob@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': { role: 'Jefe de proyecto', tag: 'Líder Técnico' } }, description: 'Líder técnico en InnovateCorp. Me encanta resolver problemas complejos y guiar a mi equipo hacia el éxito.', interests: ['Liderazgo', 'Programación', 'Scalability', 'Fútbol'] },
+  { id: '4', name: 'Carlos', avatarUrl: findImage('avatar-4'), status: 'online', relationship: 'coworker', email: 'carlos@example.com', company: 'InnovateCorp', companyRoles: { 'InnovateCorp': { role: 'Empleado', tag: 'Frontend Dev' } }, description: 'Desarrollador Frontend con pasión por crear interfaces de usuario intuitivas y atractivas.', interests: ['React', 'TypeScript', 'UX/UI', 'Videojuegos'] },
+  { id: '5', name: 'Diana', avatarUrl: findImage('avatar-5'), status: 'offline', lastSeen: 'ayer', relationship: 'friend', email: 'diana@example.com', description: 'Escritora y lectora empedernida. Siempre con un libro en la mano y una historia en la mente.', interests: ['Literatura', 'Escritura', 'Café', 'Gatos'] },
+  { id: '6', name: 'Eva', avatarUrl: findImage('avatar-6'), status: 'online', email: 'eva@example.com', relationship: 'coworker', company: 'DataSolutions', companyRoles: { 'DataSolutions': { role: 'Jefe de proyecto' } }, description: 'Jefa de proyectos en DataSolutions, ayudando a las empresas a tomar decisiones basadas en datos.', interests: ['Big Data', 'Gestión de Proyectos', 'Business Intelligence'] },
   { id: '7', name: 'admin', avatarUrl: findImage('avatar-1'), status: 'online', role: 'admin', email: 'admin@example.com' },
   // New Friends
   { id: '8', name: 'Frank', avatarUrl: findImage('avatar-7'), status: 'online', relationship: 'friend', email: 'frank@example.com' },
