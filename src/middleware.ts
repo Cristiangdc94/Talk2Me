@@ -21,6 +21,11 @@ export function middleware(request: NextRequest) {
   const isProtectedRoute =
     PROTECTED_ROUTES_EXACT.includes(pathname) ||
     PROTECTED_ROUTES_PREFIX.some(route => pathname.startsWith(route));
+  
+  // Exclude the root path from protected routes logic unless explicitly listed
+  if (pathname === '/') {
+    return NextResponse.next();
+  }
 
   // If user is on a protected route without an auth token, redirect to login
   if (isProtectedRoute && !authToken) {
