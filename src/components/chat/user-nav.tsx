@@ -122,6 +122,12 @@ export function UserNav() {
                 <span>Perfil</span>
               </Link>
             </DropdownMenuItem>
+             <DropdownMenuItem asChild>
+              <Link href="/settings">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Ajustes</span>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setDialogOpen(true)}>
               <Newspaper className="mr-2 h-4 w-4" />
               <span>Preferencias de Noticias</span>
@@ -134,15 +140,6 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-       <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={() => router.push('/settings')}
-          className="group-data-[collapsible=icon]:hidden flex-shrink-0"
-        >
-          <Settings className="h-5 w-5" />
-          <span className="sr-only">Ajustes</span>
-      </Button>
     </div>
   );
 }
