@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+// 1. IMPORTAMOS EL COMPONENTE SCRIPT
+import Script from "next/script";
 import { Toaster } from "@/components/ui/toaster";
 import { AppLayout } from "@/components/app-layout";
 import "./globals.css";
@@ -26,12 +28,34 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
           rel="stylesheet"
         />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" 
-          rel="stylesheet" 
+        <link
+          href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+          rel="stylesheet"
         />
       </head>
       <body className="font-body antialiased text-sm min-h-screen bg-sidebar p-4">
+
+        {/* 2. PARTE 1: SCRIPT DE GTM (Con tu código GTM-PW7FNDDH) */}
+        <Script id="google-tag-manager" strategy="afterInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PW7FNDDH');
+          `}
+        </Script>
+
+        {/* 3. PARTE 2: NOSCRIPT (Para navegadores sin JS) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-PW7FNDDH"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
+
         <AppLayout>{children}</AppLayout>
         <Toaster />
       </body>
