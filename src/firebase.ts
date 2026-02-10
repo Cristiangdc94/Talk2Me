@@ -12,7 +12,15 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_APP_ID
 };
 
-// Singleton para evitar que se inicialice varias veces al recargar
+// --- AÑADIDO: Comprobación de seguridad ---
+// Si falta la API Key, avisamos en la consola en lugar de explotar silenciosamente
+if (!firebaseConfig.apiKey) {
+  console.error("❌ ERROR CRÍTICO: Falta la NEXT_PUBLIC_API_KEY en las variables de entorno.");
+  console.error("Asegúrate de haberlas añadido en Vercel > Settings > Environment Variables.");
+}
+// ------------------------------------------
+
+// Singleton para evitar errores de doble inicialización
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
