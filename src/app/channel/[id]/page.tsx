@@ -3,8 +3,9 @@ import { channels, users } from "@/lib/mock-data";
 import { notFound } from "next/navigation";
 import { Hash, Lock } from "lucide-react";
 
-export default function ChannelPage({ params }: { params: { id: string } }) {
-  const channel = channels.find((c) => c.id === params.id);
+export default async function ChannelPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const channel = channels.find((c) => c.id === id);
   const currentUser = users[0];
 
   if (!channel) {
