@@ -8,6 +8,7 @@ import { auth } from "@/firebase"; // Asegúrate de que esta ruta apunte a tu ar
 
 import { AppLayout } from "@/components/app-layout"; // O tu componente principal del chat
 
+export const dynamic = "force-dynamic";
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
