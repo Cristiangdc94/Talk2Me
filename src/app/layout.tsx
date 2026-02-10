@@ -31,18 +31,18 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
           rel="stylesheet"
         />
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5D2K3B1PV9"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
 
-          gtag('config', 'G-5D2K3B1PV9');
-        </script>
       </head>
       <body className="font-body antialiased text-sm min-h-screen bg-sidebar p-4">
+        <!-- Google tag (gtag.js) -->
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-5D2K3B1PV9"></script>
+                <script>
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
 
+                  gtag('config', 'G-5D2K3B1PV9');
+                </script>
         {/* Google Tag Manager - Script Principal */}
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`
