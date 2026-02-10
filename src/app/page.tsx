@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase"; // Asegúrate de que esta ruta apunte a tu archivo firebase.js
+import { auth } from "../firebase.ts"; // Asegúrate de que esta ruta apunte a tu archivo firebase.js
 // Si tu firebase.js está en src, la ruta sería "@/firebase" o "../firebase"
 
 import { AppLayout } from "@/components/app-layout"; // O tu componente principal del chat
