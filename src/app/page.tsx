@@ -1,54 +1,35 @@
 "use client";
 
-// 1. Evitamos errores de construcción en Vercel
+// 1. Configuración para evitar errores de compilación con Firebase
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
-// Importamos TU componente de diseño original
+// Importamos tu componente que ya tiene el diseño de las tarjetas
 import { NewsPortal } from "@/components/news/news-portal";
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
 
-  // --- LÓGICA DE SEGURIDAD (Protección de ruta) ---
+  // 2. Comprobación de seguridad en segundo plano
+  // Si no hay usuario, redirige al login, pero mientras tanto muestra la interfaz
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) {
-        // Si no está logueado, lo mandamos al login
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
         router.push("/login");
-      } else {
-        // Si está logueado, quitamos el cargando y mostramos la web
-        setLoading(false);
       }
     });
     return () => unsubscribe();
   }, [router]);
 
-  // --- PANTALLA DE CARGA ---
-  if (loading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center bg-zinc-950 text-white">
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-700 border-t-blue-500"></div>
-          <p className="animate-pulse text-sm font-medium text-zinc-400">Cargando Talk2Me...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // --- VISTA GENERAL (Usando tu diseño original) ---
-  // Usamos el mismo padding que en CompanyNewsPage
+  // 3. Renderizado directo (sin pantallas de carga que bloqueen)
+  // Usamos view="general" para que NewsPortal sepa qué noticias mostrar
   return (
     <div className="p-4 sm:p-6 h-full">
-      {/* Aquí está la magia:
-         view="general" cargará automáticamente "Lo nuevo entre tus amigos"
-         y las "Noticias Generales" que ya tienes programadas.
-      */}
       <NewsPortal view="general" />
     </div>
   );
+}
 }
