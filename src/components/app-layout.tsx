@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -232,13 +231,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const isAuthPage = pathname === "/login" || pathname === "/signup";
   const isLandingPage = pathname === "/";
 
-  // If landing page, render without the app shell
+  // If landing page, render without the app shell and without padding
   if (isLandingPage) {
     return (
       <ThemeProvider>
         <NewsPreferencesProvider>
           <ChatProvider>
-            {children}
+            <main className="min-h-screen bg-zinc-950">
+              {children}
+            </main>
           </ChatProvider>
         </NewsPreferencesProvider>
       </ThemeProvider>
@@ -252,11 +253,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           {isAuthPage ? (
             <AuthLayout>{children}</AuthLayout>
           ) : (
-            <div className="mx-auto max-w-[1920px] h-full rounded-xl">
-              <SidebarProvider>
-                <div className="h-full flex bg-background rounded-xl">
-                  <div className="border-transparent">
-                    <Sidebar>
+            <div className="bg-sidebar min-h-screen p-4">
+              <div className="mx-auto max-w-[1920px] h-full rounded-xl">
+                <SidebarProvider>
+                  <div className="h-full flex bg-background rounded-xl overflow-hidden shadow-2xl border">
+                    <Sidebar className="border-r">
                       <SidebarHeader className="p-4 flex flex-col gap-4">
                         <div className="flex items-center justify-start gap-4">
                           <h1 className="font-headline text-3xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">
@@ -270,21 +271,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         <SidebarNav />
                       </SidebarContent>
                     </Sidebar>
+                    <div className="flex-1 flex flex-col">
+                      <main className="flex-1 flex flex-col bg-background main-content-fade h-full overflow-hidden">
+                        <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0">
+                          {/* Top header can be expanded here */}
+                        </header>
+                        <div className="flex-1 overflow-auto">
+                          {children}
+                        </div>
+                      </main>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <main className="flex-1 flex flex-col bg-background rounded-r-xl main-content-fade h-full">
-                       <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0">
-                      </header>
-                      <div className="w-full overflow-auto">
-                        {children}
-                      </div>
-                    </main>
-                  </div>
-                </div>
-                <ChatManager />
-                <MinimizedChatBar />
-                <NotificationWidget />
-              </SidebarProvider>
+                  <ChatManager />
+                  <MinimizedChatBar />
+                  <NotificationWidget />
+                </SidebarProvider>
+              </div>
             </div>
           )}
         </ChatProvider>

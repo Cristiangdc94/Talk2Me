@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
@@ -41,6 +40,7 @@ export function middleware(request: NextRequest) {
   }
 
   // 3. Si el usuario TIENE token y visita la landing page -> App (/friends)
+  // IMPORTANTE: Esto evita que los logueados vean la landing.
   if (isLandingPage && authToken) {
     const url = request.nextUrl.clone();
     url.pathname = '/friends';

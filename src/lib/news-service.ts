@@ -11,43 +11,52 @@ export async function fetchRealNews(): Promise<NewsArticle[]> {
     const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
 
     const response = await fetch(API_URL);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    
     const data = await response.json();
 
     if (data.status !== 'ok') {
       throw new Error('Error al obtener las noticias del feed');
     }
 
-    return data.items.map((item: any, index: number): NewsArticle => {
-      // Intentamos extraer una imagen del contenido si no viene en el enclosure
-      const imageMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
-      
-      // Verificamos que el enclosure sea una imagen y no un video
-      const enclosureUrl = item.enclosure?.link;
-      const isVideo = enclosureUrl?.toLowerCase().endsWith('.mp4') || enclosureUrl?.toLowerCase().endsWith('.m4v');
-      
-      const imageUrl = (!isVideo && enclosureUrl) 
-        ? enclosureUrl 
-        : (imageMatch ? imageMatch[1] : `https://picsum.photos/seed/news-${index}-${Date.now()}/600/400`);
-      
-      // Limpiamos el resumen de etiquetas HTML
-      const summary = item.description.replace(/<[^>]*>?/gm, '').substring(0, 160) + '...';
+    return data.items
+      .filter((item: any) => {
+        // Filtramos items que no tengan una imagen válida (videos o nulos)
+        const enclosureUrl = item.enclosure?.link;
+        const isVideo = enclosureUrl?.toLowerCase().endsWith('.mp4') || enclosureUrl?.toLowerCase().endsWith('.m4v');
+        return !isVideo;
+      })
+      .map((item: any, index: number): NewsArticle => {
+        // Intentamos extraer una imagen del contenido si no viene en el enclosure
+        const imageMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
+        
+        const enclosureUrl = item.enclosure?.link;
+        
+        const imageUrl = enclosureUrl 
+          ? enclosureUrl 
+          : (imageMatch ? imageMatch[1] : `https://picsum.photos/seed/news-${index}-${Date.now()}/600/400`);
+        
+        // Limpiamos el resumen de etiquetas HTML
+        const summary = item.description.replace(/<[^>]*>?/gm, '').substring(0, 160) + '...';
 
-      return {
-        id: `news-${index}-${Date.now()}`,
-        category: 'technology', // Categoría por defecto ya que el RSS es general/internacional
-        location: 'global',
-        title: item.title,
-        summary: summary,
-        imageUrl: imageUrl,
-        link: item.link,
-        timestamp: new Date(item.pubDate).toLocaleDateString('es-ES', {
-          day: 'numeric',
-          month: 'short',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-      };
-    });
+        return {
+          id: `news-${index}-${Date.now()}`,
+          category: 'technology', // Categoría por defecto ya que el RSS es general/internacional
+          location: 'global',
+          title: item.title,
+          summary: summary,
+          imageUrl: imageUrl,
+          link: item.link,
+          timestamp: new Date(item.pubDate).toLocaleDateString('es-ES', {
+            day: 'numeric',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        };
+      });
   } catch (error) {
     console.error('Error fetching real news:', error);
     return [];
