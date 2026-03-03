@@ -1,4 +1,3 @@
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -27,7 +26,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-import { cn } from "@/lib/utils";
 
 const mainNavLinks = [
     { href: "/friends", label: "Amigos", icon: Users },
@@ -46,21 +44,7 @@ export function SidebarNav() {
     setIsNewsSectionOpen(isNewsActive);
   }, [pathname]);
 
-
-  if (!isMounted) {
-    return (
-        <div className="flex flex-col gap-2">
-            <SidebarGroup>
-                <SidebarGroupLabel className="font-headline text-xl">Menú</SidebarGroupLabel>
-            </SidebarGroup>
-            <SidebarSeparator />
-            <SidebarGroup>
-                <SidebarGroupLabel className="font-headline text-xl">Chats</SidebarGroupLabel>
-            </SidebarGroup>
-        </div>
-    );
-  }
-
+  if (!isMounted) return null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -141,7 +125,6 @@ export function SidebarNav() {
         </SidebarGroupLabel>
       </SidebarGroup>
       <ChatSidebar />
-
     </div>
   );
 }

@@ -1,32 +1,12 @@
-
 import type { Metadata } from "next";
-import Script from "next/script"; // Importante para GTM y GA4
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { AppLayout } from "@/components/app-layout";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: {
-    template: '%s | Talk2Me',
-    default: 'Talk2Me - La plataforma de comunicación definitiva',
-  },
-  description: 'Conecta con tus amigos y compañeros de trabajo en tiempo real. Descubre noticias, chatea y colabora en un entorno moderno y seguro.',
-  keywords: ['chat', 'mensajería', 'red social corporativa', 'comunicación', 'Talk2Me'],
-  openGraph: {
-    title: 'Talk2Me - Conecta en tiempo real',
-    description: 'La plataforma moderna para hablar con amigos y empresas.',
-    url: 'https://talk2-me-six.vercel.app',
-    siteName: 'Talk2Me',
-    images: [
-      {
-        url: 'https://talk2-me-six.vercel.app/og-image.jpg', // Tendrás que subir una imagen a tu carpeta public/
-        width: 1200,
-        height: 630,
-      },
-    ],
-    locale: 'es_ES',
-    type: 'website',
-  },
+  title: "Talk2Me",
+  description: "Una aplicación de chat moderna en tiempo real que combina mensajería y noticias.",
 };
 
 export default function RootLayout({
@@ -47,60 +27,15 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
           rel="stylesheet"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
-          rel="stylesheet"
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" 
+          rel="stylesheet" 
         />
       </head>
-<<<<<<< HEAD
-      <body className="font-body antialiased text-sm min-h-screen">
-=======
-      <body className="font-body antialiased text-sm min-h-screen bg-sidebar p-4">
-
-        {/* --- 1. GOOGLE ANALYTICS 4 (GA4) - ID: G-5D2K3B1PV9 --- */}
-        {/* Cargar librería externa */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-5D2K3B1PV9"
-          strategy="afterInteractive"
-        />
-        {/* Configuración interna */}
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-5D2K3B1PV9');
-          `}
-        </Script>
-
-        {/* --- 2. GOOGLE TAG MANAGER (GTM) - ID: GTM-PW7FNDDH --- */}
-        <Script id="google-tag-manager" strategy="afterInteractive">
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-PW7FNDDH');
-          `}
-        </Script>
-
-        {/* GTM NoScript (Para navegadores sin JS) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-PW7FNDDH"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
-
-        {/* --- CONTENIDO DE LA APP --- */}
->>>>>>> 8efac0d54c2f1ff072eae86a6c3d87758b510b37
+      <body className="font-body antialiased text-sm min-h-screen bg-background">
         <AppLayout>{children}</AppLayout>
         <Toaster />
       </body>
     </html>
-
   );
 }
