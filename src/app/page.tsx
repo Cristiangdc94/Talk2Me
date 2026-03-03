@@ -1,4 +1,6 @@
+"use client";
 
+<<<<<<< HEAD
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/icons';
@@ -27,6 +29,34 @@ export default function LandingPage() {
     "description": "Plataforma moderna de comunicación en tiempo real que combina chat para amigos y un portal de noticias para empresas."
   };
 
+=======
+// 1. Configuración para evitar errores de compilación con Firebase
+export const dynamic = "force-dynamic";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/firebase";
+// Importamos tu componente que ya tiene el diseño de las tarjetas
+import { NewsPortal } from "@/components/news/news-portal";
+
+export default function Home() {
+  const router = useRouter();
+
+  // 2. Comprobación de seguridad en segundo plano
+  // Si no hay usuario, redirige al login, pero mientras tanto muestra la interfaz
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push("/login");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
+
+  // 3. Renderizado directo (sin pantallas de carga que bloqueen)
+  // Usamos view="general" para que NewsPortal sepa qué noticias mostrar
+>>>>>>> 8efac0d54c2f1ff072eae86a6c3d87758b510b37
   return (
     <main className="min-h-screen bg-zinc-950 text-white selection:bg-blue-500/30">
       <script
