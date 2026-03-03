@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Permitimos el acceso público a la landing page (/)
+// Rutas que no requieren autenticación
 const PUBLIC_ROUTES = ['/', '/login', '/signup'];
 
 const PROTECTED_ROUTES_PREFIX = [
@@ -23,18 +23,27 @@ export function middleware(request: NextRequest) {
 
   const isProtectedRoute = PROTECTED_ROUTES_PREFIX.some(route => pathname.startsWith(route));
   const isAuthRoute = pathname === '/login' || pathname === '/signup';
+  const isLandingPage = pathname === '/';
 
-  // Si el usuario no tiene token y está en una ruta protegida
+  // 1. Si el usuario no tiene token y está en una ruta protegida -> Login
   if (isProtectedRoute && !authToken) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
-  // Si el usuario tiene token e intenta ir al login/signup
+  // 2. Si el usuario TIENE token e intenta ir al login/signup -> App (/friends)
   if (isAuthRoute && authToken) {
     const url = request.nextUrl.clone();
-    url.pathname = '/friends'; // Redirigimos al dashboard (amigos) en lugar de la raíz
+    url.pathname = '/friends';
+    return NextResponse.redirect(url);
+  }
+
+  // 3. Si el usuario TIENE token y visita la landing page -> App (/friends)
+  // Esto asegura que Google vea la landing (sin cookie) pero el usuario logueado entre a la App
+  if (isLandingPage && authToken) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/friends';
     return NextResponse.redirect(url);
   }
 

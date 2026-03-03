@@ -54,7 +54,8 @@ export function SignupForm() {
     // Simulate setting an auth token
     Cookies.set("auth_token", "mock_new_user_token_for_demo", { expires: 1 });
     
-    router.push("/");
+    // Redirect to the App (/friends) instead of landing page (/)
+    router.push("/friends");
     router.refresh();
   }
 
