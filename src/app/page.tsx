@@ -7,9 +7,19 @@ import {
   Zap, 
   ArrowRight,
   Globe,
-  Layout
+  Layout,
+  Twitter,
+  Github,
+  Mail,
+  Lock,
+  MessageCircle,
+  ExternalLink
 } from 'lucide-react';
 
+/**
+ * Landing Page pública de Talk2Me.
+ * Optimizada para SEO con más de 300 palabras de contenido relevante y datos estructurados.
+ */
 export default function LandingPage() {
   const structuredData = {
     "@context": "https://schema.org",
@@ -22,7 +32,7 @@ export default function LandingPage() {
       "price": "0",
       "priceCurrency": "USD"
     },
-    "description": "Plataforma moderna de comunicación en tiempo real que combina chat para amigos y un portal de noticias para empresas."
+    "description": "Plataforma moderna de comunicación en tiempo real que combina chat para amigos y un portal de noticias para empresas con noticias reales de El País."
   };
 
   return (
@@ -36,13 +46,18 @@ export default function LandingPage() {
       <header className="fixed top-0 w-full z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="font-headline text-2xl text-white">Talk2Me</span>
+            <span className="font-logo text-2xl text-blue-500">T2M</span>
+            <span className="font-headline text-2xl text-white hidden sm:block">Talk2Me</span>
           </div>
+          <nav className="hidden md:flex items-center gap-8">
+            <Link href="#features" className="text-sm text-zinc-400 hover:text-white transition-colors">Características</Link>
+            <Link href="#about" className="text-sm text-zinc-400 hover:text-white transition-colors">Sobre Nosotros</Link>
+          </nav>
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
               Iniciar Sesión
             </Link>
-            <Button asChild className="bg-blue-600 hover:bg-blue-500 text-white border-none">
+            <Button asChild className="bg-blue-600 hover:bg-blue-500 text-white border-none hidden sm:inline-flex">
               <Link href="/signup">Empezar Gratis</Link>
             </Button>
           </div>
@@ -56,7 +71,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-blue-400 text-xs font-medium mb-6">
             <Zap className="w-3 h-3" />
-            <span>Nueva versión 2.0 disponible</span>
+            <span>Versión 2.0: Ahora con noticias de El País en tiempo real</span>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent">
@@ -64,7 +79,7 @@ export default function LandingPage() {
           </h1>
           
           <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
-            Talk2Me combina la mensajería instantánea más rápida con un portal de noticias corporativas inteligente. Mantente conectado y al día sin cambiar de aplicación.
+            Talk2Me redefine la mensajería instantánea integrando un portal de noticias internacionales verídicas. Conecta con quienes importan y mantente informado sin salir de tu espacio de trabajo.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -82,11 +97,11 @@ export default function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 bg-zinc-900/30">
+      <section id="features" className="py-20 bg-zinc-900/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Todo lo que necesitas para conectar</h2>
-            <p className="text-zinc-400">Diseñado para la velocidad, la seguridad y la simplicidad.</p>
+            <p className="text-zinc-400 max-w-2xl mx-auto">Diseñado para la velocidad, la seguridad y la simplicidad. Talk2Me es la herramienta definitiva para equipos modernos y círculos sociales.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -95,64 +110,155 @@ export default function LandingPage() {
                 <MessageSquare className="w-6 h-6 text-blue-500" />
               </div>
               <h3 className="text-xl font-bold mb-3">Chat en tiempo real</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">Mensajería instantánea con soporte para archivos, imágenes y estados de lectura.</p>
+              <p className="text-zinc-400 text-sm leading-relaxed">Mensajería instantánea ultra-rápida con soporte para archivos, imágenes y estados de lectura en tiempo real.</p>
             </div>
             <div className="p-8 rounded-2xl border border-zinc-800 bg-zinc-950 hover:border-blue-500/50 hover:bg-zinc-900/50 transition-all duration-300 group">
               <div className="mb-6 p-3 rounded-xl bg-zinc-900 border border-zinc-800 w-fit group-hover:scale-110 transition-transform">
-                <Newspaper className="w-6 h-6 text-purple-500" />
+                <Globe className="w-6 h-6 text-purple-500" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Noticias Corporativas</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">Un portal dedicado para noticias de tu empresa y el mundo, integrado en tu flujo.</p>
+              <h3 className="text-xl font-bold mb-3">Noticias de El País</h3>
+              <p className="text-zinc-400 text-sm leading-relaxed">Acceso directo a noticias internacionales verídicas en español. Sin desinformación, solo la realidad global.</p>
             </div>
             <div className="p-8 rounded-2xl border border-zinc-800 bg-zinc-950 hover:border-blue-500/50 hover:bg-zinc-900/50 transition-all duration-300 group">
               <div className="mb-6 p-3 rounded-xl bg-zinc-900 border border-zinc-800 w-fit group-hover:scale-110 transition-transform">
-                <ShieldCheck className="w-6 h-6 text-green-500" />
+                <Lock className="w-6 h-6 text-green-500" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Entorno Seguro</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">Tus datos y conversaciones están protegidos con los estándares más altos de seguridad.</p>
+              <h3 className="text-xl font-bold mb-3">Privacidad Estricta</h3>
+              <p className="text-zinc-400 text-sm leading-relaxed">Tus datos y conversaciones están protegidos. Canales privados y encriptación para tu tranquilidad total.</p>
             </div>
             <div className="p-8 rounded-2xl border border-zinc-800 bg-zinc-950 hover:border-blue-500/50 hover:bg-zinc-900/50 transition-all duration-300 group">
               <div className="mb-6 p-3 rounded-xl bg-zinc-900 border border-zinc-800 w-fit group-hover:scale-110 transition-transform">
                 <Layout className="w-6 h-6 text-orange-500" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Diseño Personalizable</h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">Ajusta tu experiencia con modo oscuro, temas dinámicos y perfiles únicos.</p>
+              <h3 className="text-xl font-bold mb-3">Personalización Pro</h3>
+              <p className="text-zinc-400 text-sm leading-relaxed">Crea tu propio perfil, añade tus intereses y personaliza tu experiencia con temas claros y oscuros.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Social Proof */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex flex-col md:flex-row items-center gap-12 border border-zinc-800 rounded-3xl p-8 md:p-12 bg-zinc-950">
-            <div className="flex-1 text-left">
-              <div className="inline-flex items-center gap-2 text-blue-400 mb-4">
-                <Globe className="w-5 h-5" />
-                <span className="font-semibold uppercase tracking-wider text-sm">Información Global</span>
+      {/* Expanded Content Section for SEO */}
+      <section id="about" className="py-24 border-t border-zinc-900">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto space-y-12">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl font-bold mb-6">¿Por qué elegir Talk2Me?</h2>
+                <div className="space-y-4 text-zinc-400 leading-relaxed">
+                  <p>
+                    En el saturado mundo de las aplicaciones de mensajería, Talk2Me surge como una respuesta a la fragmentación de la información. ¿Por qué saltar entre aplicaciones de noticias y chats de equipo cuando puedes tenerlo todo en una interfaz coherente y elegante?
+                  </p>
+                  <p>
+                    Nuestra plataforma no solo facilita la conversación fluida entre amigos y compañeros, sino que actúa como un centro de conocimiento. Al integrar el feed internacional de **El País**, garantizamos que los usuarios de Talk2Me sean los mejores informados, permitiendo que la actualidad alimente las discusiones productivas en los canales de la empresa.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-3xl font-bold mb-4">Noticias reales, en español</h3>
-              <p className="text-zinc-400 mb-6">
-                No más contenido genérico. Talk2Me se conecta con fuentes prestigiosas para traerte lo que realmente importa en tu idioma.
-              </p>
+              <div className="bg-zinc-900/50 border border-zinc-800 p-8 rounded-3xl">
+                <h3 className="text-xl font-bold mb-4 text-blue-400">Ventajas Competitivas</h3>
+                <ul className="space-y-4">
+                  <li className="flex gap-3">
+                    <div className="h-6 w-6 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                      <Zap className="h-3 w-3 text-blue-500" />
+                    </div>
+                    <p className="text-sm text-zinc-300"><span className="font-bold">Eficiencia Operativa:</span> Reduce el ruido digital consolidando herramientas en un solo flujo de trabajo.</p>
+                  </li>
+                  <li className="flex gap-3">
+                    <div className="h-6 w-6 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                      <ShieldCheck className="h-3 w-3 text-blue-500" />
+                    </div>
+                    <p className="text-sm text-zinc-300"><span className="font-bold">Seguridad de Datos:</span> Implementamos políticas de privacidad robustas para proteger tu propiedad intelectual.</p>
+                  </li>
+                  <li className="flex gap-3">
+                    <div className="h-6 w-6 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
+                      <Globe className="h-3 w-3 text-blue-500" />
+                    </div>
+                    <p className="text-sm text-zinc-300"><span className="font-bold">Cultura Informada:</span> Fomenta equipos que entienden el contexto global en el que operan.</p>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div className="flex-1 w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-2xl">
-              <div className="animate-pulse space-y-4">
-                <div className="h-4 w-1/4 bg-zinc-800 rounded"></div>
-                <div className="h-8 w-full bg-zinc-800 rounded"></div>
-                <div className="h-32 w-full bg-zinc-800 rounded"></div>
-              </div>
+
+            <div className="space-y-6 text-zinc-400 leading-relaxed text-center md:text-left">
+              <h2 className="text-3xl font-bold text-white mb-6">Nuestra Visión de Futuro</h2>
+              <p>
+                Talk2Me nació de la necesidad de simplificar. Creemos que la comunicación en tiempo real es el pilar de cualquier relación exitosa, ya sea personal o profesional. Por eso, hemos optimizado cada línea de código para ofrecer una experiencia que no solo es rápida, sino también significativa.
+              </p>
+              <p>
+                A diferencia de otras plataformas, no vendemos tus datos ni inundamos tu espacio con publicidad. Nuestro modelo se basa en la confianza y en proporcionar valor real a través de funciones como los **Canales de Empresa**, donde la jerarquía se une a la colaboración, y las **Noticias Para Ti**, que filtran el ruido mundial para darte lo que realmente te interesa.
+              </p>
+              <p>
+                Únete a los miles de usuarios que ya han transformado su manera de chatear. Talk2Me es más que una app; es tu nueva ventana al mundo y a tu comunidad. Desde la gestión de grandes proyectos hasta la planificación de una cena con amigos, todo sucede aquí, en Talk2Me.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-zinc-900 bg-zinc-950">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-zinc-600 text-sm">
-            © {new Date().getFullYear()} Talk2Me. Todos los derechos reservados.
-          </p>
+      <footer className="bg-zinc-950 border-t border-zinc-900 pt-20 pb-10">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div className="col-span-1 md:col-span-1">
+              <div className="flex items-center gap-2 mb-6">
+                <span className="font-logo text-3xl text-blue-500">T2M</span>
+                <span className="font-headline text-2xl text-white">Talk2Me</span>
+              </div>
+              <p className="text-sm text-zinc-500 leading-relaxed">
+                La plataforma de comunicación que une a las personas con la información real. Chat, noticias y colaboración en un entorno seguro y elegante.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="font-bold mb-6 text-white uppercase text-xs tracking-widest">Navegación</h4>
+              <ul className="space-y-4 text-sm text-zinc-400">
+                <li><Link href="/login" className="hover:text-blue-500 transition-colors">Iniciar Sesión</Link></li>
+                <li><Link href="/signup" className="hover:text-blue-500 transition-colors">Crear Cuenta</Link></li>
+                <li><Link href="#features" className="hover:text-blue-500 transition-colors">Características</Link></li>
+                <li><Link href="#about" className="hover:text-blue-500 transition-colors">Sobre Nosotros</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold mb-6 text-white uppercase text-xs tracking-widest">Legal</h4>
+              <ul className="space-y-4 text-sm text-zinc-400">
+                <li><Link href="#" className="hover:text-blue-500 transition-colors">Términos de Servicio</Link></li>
+                <li><Link href="#" className="hover:text-blue-500 transition-colors">Política de Privacidad</Link></li>
+                <li><Link href="#" className="hover:text-blue-500 transition-colors">Uso de Cookies</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-bold mb-6 text-white uppercase text-xs tracking-widest">Conéctate</h4>
+              <div className="flex gap-4 mb-6">
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:border-blue-500 hover:text-blue-500 transition-all">
+                  <Twitter className="h-5 w-5" />
+                </a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:border-blue-500 hover:text-blue-500 transition-all">
+                  <Github className="h-5 w-5" />
+                </a>
+                <a href="mailto:contact@talk2me.com" className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:border-blue-500 hover:text-blue-500 transition-all">
+                  <Mail className="h-5 w-5" />
+                </a>
+              </div>
+              <p className="text-xs text-zinc-600">
+                ¿Tienes dudas? Escríbenos directamente o consulta nuestro repositorio oficial en GitHub.
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-10 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-zinc-600 text-xs">
+              © {new Date().getFullYear()} Talk2Me. Todos los derechos reservados. Desarrollado con Next.js y Tailwind CSS.
+            </p>
+            <div className="flex items-center gap-6 text-xs text-zinc-600">
+              <span className="flex items-center gap-1">
+                <Globe className="h-3 w-3" /> Español (España)
+              </span>
+              <span className="flex items-center gap-1">
+                Hecho con <Zap className="h-3 w-3 text-yellow-500" /> para el mundo.
+              </span>
+            </div>
+          </div>
         </div>
       </footer>
     </main>
