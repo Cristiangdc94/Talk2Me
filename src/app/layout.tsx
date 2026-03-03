@@ -5,8 +5,27 @@ import { AppLayout } from "@/components/app-layout";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Talk2Me",
-  description: "Una aplicación de chat moderna en tiempo real.",
+  title: {
+    template: '%s | Talk2Me',
+    default: 'Talk2Me - La plataforma de comunicación definitiva',
+  },
+  description: 'Conecta con tus amigos y compañeros de trabajo en tiempo real. Descubre noticias, chatea y colabora en un entorno moderno y seguro.',
+  keywords: ['chat', 'mensajería', 'red social corporativa', 'comunicación', 'Talk2Me'],
+  openGraph: {
+    title: 'Talk2Me - Conecta en tiempo real',
+    description: 'La plataforma moderna para hablar con amigos y empresas.',
+    url: 'https://talk2-me-six.vercel.app',
+    siteName: 'Talk2Me',
+    images: [
+      {
+        url: 'https://talk2-me-six.vercel.app/og-image.jpg', // Tendrás que subir una imagen a tu carpeta public/
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'es_ES',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
@@ -77,5 +96,6 @@ export default function RootLayout({
         <Toaster />
       </body>
     </html>
+
   );
 }
