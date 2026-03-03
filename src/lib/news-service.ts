@@ -11,7 +11,11 @@ export async function fetchRealNews(): Promise<NewsArticle[]> {
     const RSS_URL = 'https://elpais.com/rss/internacional/portada.xml';
     const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
 
-    const response = await fetch(API_URL, { cache: 'no-store' });
+    const response = await fetch(API_URL, { 
+      cache: 'no-store',
+      next: { revalidate: 0 } 
+    });
+    
     if (!response.ok) {
         throw new Error('La respuesta de la red no fue satisfactoria');
     }
@@ -26,7 +30,9 @@ export async function fetchRealNews(): Promise<NewsArticle[]> {
       .filter((item: any) => {
         // Filtramos contenidos multimedia que no son imágenes (vídeos .mp4, etc)
         const enclosureUrl = item.enclosure?.link || '';
-        const isVideo = enclosureUrl.toLowerCase().endsWith('.mp4') || enclosureUrl.toLowerCase().endsWith('.m4v');
+        const isVideo = enclosureUrl.toLowerCase().endsWith('.mp4') || 
+                        enclosureUrl.toLowerCase().endsWith('.m4v') ||
+                        enclosureUrl.toLowerCase().includes('video');
         return !isVideo;
       })
       .map((item: any, index: number): NewsArticle => {
@@ -42,7 +48,10 @@ export async function fetchRealNews(): Promise<NewsArticle[]> {
           : (imageMatch ? imageMatch[1] : `https://picsum.photos/seed/${stableId}/600/400`);
         
         // Limpiamos el resumen de etiquetas HTML
-        const summary = (item.description || '').replace(/<[^>]*>?/gm, '').substring(0, 160) + '...';
+        const summary = (item.description || '')
+          .replace(/<[^>]*>?/gm, '')
+          .trim()
+          .substring(0, 160) + '...';
 
         return {
           id: stableId,
