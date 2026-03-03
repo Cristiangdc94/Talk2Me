@@ -1,4 +1,3 @@
-
 import type { NewsArticle } from './types';
 
 /**
@@ -21,7 +20,14 @@ export async function fetchRealNews(): Promise<NewsArticle[]> {
     return data.items.map((item: any, index: number): NewsArticle => {
       // Intentamos extraer una imagen del contenido si no viene en el enclosure
       const imageMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
-      const imageUrl = item.enclosure?.link || (imageMatch ? imageMatch[1] : `https://picsum.photos/seed/news-${index}/600/400`);
+      
+      // Verificamos que el enclosure sea una imagen y no un video
+      const enclosureUrl = item.enclosure?.link;
+      const isVideo = enclosureUrl?.toLowerCase().endsWith('.mp4') || enclosureUrl?.toLowerCase().endsWith('.m4v');
+      
+      const imageUrl = (!isVideo && enclosureUrl) 
+        ? enclosureUrl 
+        : (imageMatch ? imageMatch[1] : `https://picsum.photos/seed/news-${index}-${Date.now()}/600/400`);
       
       // Limpiamos el resumen de etiquetas HTML
       const summary = item.description.replace(/<[^>]*>?/gm, '').substring(0, 160) + '...';

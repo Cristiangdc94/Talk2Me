@@ -28,6 +28,18 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'elpais.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vdmedia.elpais.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
