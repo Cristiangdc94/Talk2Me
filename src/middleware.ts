@@ -1,7 +1,10 @@
+
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const PROTECTED_ROUTES_EXACT: string[] = [];
+// Permitimos el acceso público a la landing page (/)
+const PUBLIC_ROUTES = ['/', '/login', '/signup'];
+
 const PROTECTED_ROUTES_PREFIX = [
   '/channel', 
   '/dm', 
@@ -10,34 +13,28 @@ const PROTECTED_ROUTES_PREFIX = [
   '/friends', 
   '/coworkers', 
   '/settings',
-  '/add-contact'
+  '/add-contact',
+  '/profile'
 ];
-const AUTH_ROUTES = ['/login', '/signup'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const authToken = request.cookies.get('auth_token')?.value;
 
-  const isProtectedRoute =
-    PROTECTED_ROUTES_EXACT.includes(pathname) ||
-    PROTECTED_ROUTES_PREFIX.some(route => pathname.startsWith(route));
-  
-  // Exclude the root path from protected routes logic unless explicitly listed
-  if (pathname === '/') {
-    return NextResponse.next();
-  }
+  const isProtectedRoute = PROTECTED_ROUTES_PREFIX.some(route => pathname.startsWith(route));
+  const isAuthRoute = pathname === '/login' || pathname === '/signup';
 
-  // If user is on a protected route without an auth token, redirect to login
+  // Si el usuario no tiene token y está en una ruta protegida
   if (isProtectedRoute && !authToken) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
-  // If user is on an auth route with an auth token, redirect to home
-  if (AUTH_ROUTES.includes(pathname) && authToken) {
+  // Si el usuario tiene token e intenta ir al login/signup
+  if (isAuthRoute && authToken) {
     const url = request.nextUrl.clone();
-    url.pathname = '/';
+    url.pathname = '/friends'; // Redirigimos al dashboard (amigos) en lugar de la raíz
     return NextResponse.redirect(url);
   }
 
@@ -46,13 +43,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 }
