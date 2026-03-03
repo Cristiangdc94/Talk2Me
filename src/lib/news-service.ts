@@ -21,6 +21,9 @@ export async function fetchRealNews(): Promise<NewsArticle[]> {
       throw new Error('Error al obtener las noticias del feed');
     }
 
+    // Usar una semilla para los IDs que sea consistente durante la sesión
+    const sessionSeed = Math.floor(Math.random() * 1000);
+
     return data.items
       .filter((item: any) => {
         // Filtramos items que no tengan una imagen válida (videos o nulos)
@@ -36,13 +39,13 @@ export async function fetchRealNews(): Promise<NewsArticle[]> {
         
         const imageUrl = enclosureUrl 
           ? enclosureUrl 
-          : (imageMatch ? imageMatch[1] : `https://picsum.photos/seed/news-${index}-${Date.now()}/600/400`);
+          : (imageMatch ? imageMatch[1] : `https://picsum.photos/seed/news-${index}-${sessionSeed}/600/400`);
         
         // Limpiamos el resumen de etiquetas HTML
         const summary = item.description.replace(/<[^>]*>?/gm, '').substring(0, 160) + '...';
 
         return {
-          id: `news-${index}-${Date.now()}`,
+          id: `news-${index}-${item.guid || sessionSeed}`,
           category: 'technology', // Categoría por defecto ya que el RSS es general/internacional
           location: 'global',
           title: item.title,
