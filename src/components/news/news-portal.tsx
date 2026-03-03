@@ -1,12 +1,12 @@
 
 'use client';
 
-import { useState, useEffect, useTransition, useRef } from 'react';
+import { useState, useEffect, useTransition, useRef, useCallback } from 'react';
 import { NewsArticleCard } from './news-article-card';
 import { friendStatuses as initialFriendStatuses, users } from '@/lib/mock-data';
 import type { NewsArticle, FriendStatus } from '@/lib/types';
 import { Button } from '../ui/button';
-import { RefreshCw, Globe, Settings } from 'lucide-react';
+import { RefreshCw, Globe, Settings, Loader2 } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
@@ -36,22 +36,27 @@ export function NewsPortal({ view }: NewsPortalProps) {
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
 
-  useEffect(() => {
-    setIsMounted(true);
-    loadNews();
-  }, []);
-
-  const loadNews = async () => {
+  const loadNews = useCallback(async () => {
+    if (view === 'company') {
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     try {
       const news = await fetchRealNews();
       setAllNews(news);
     } catch (error) {
-      console.error("Error loading news:", error);
+      console.error("Error cargando noticias:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [view]);
+
+  useEffect(() => {
+    setIsMounted(true);
+    loadNews();
+  }, [loadNews]);
 
   const handleRefresh = () => {
     startRefreshing(async () => {
@@ -66,7 +71,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
         toast({
           variant: "destructive",
           title: "Error al actualizar",
-          description: "No se pudieron obtener nuevas noticias en este momento.",
+          description: "No se pudieron obtener nuevas noticias. Revisa tu conexión.",
         });
       }
     });
@@ -98,7 +103,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
     if (isLoading) {
       return (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-80 w-full" />)}
+          {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <Skeleton key={i} className="h-80 w-full" />)}
         </div>
       );
     }
@@ -107,9 +112,13 @@ export function NewsPortal({ view }: NewsPortalProps) {
       return <CompanyNewsPortal />;
     }
 
+    const filteredNews = view === 'foryou' && preferences.length > 0 
+      ? allNews.filter(n => preferences.includes(n.category)) 
+      : allNews;
+
     return (
       <div className="bg-muted/50 rounded-lg p-4">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
           <div className="flex items-center gap-2">
             <Globe className="h-6 w-6 text-blue-500" />
             <h2 className="text-2xl font-bold tracking-tight">
@@ -117,7 +126,7 @@ export function NewsPortal({ view }: NewsPortalProps) {
             </h2>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
+            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing || isLoading}>
               <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
               Actualizar
             </Button>
@@ -127,16 +136,23 @@ export function NewsPortal({ view }: NewsPortalProps) {
             </Button>
           </div>
         </div>
-        {allNews.length > 0 ? (
+        
+        {filteredNews.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {allNews.map((article) => (
+            {filteredNews.map((article) => (
               <NewsArticleCard key={article.id} article={article} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground">No se encontraron noticias internacionales en este momento.</p>
-            <Button variant="link" onClick={loadNews} className="mt-2">Reintentar</Button>
+          <div className="text-center py-20 border-2 border-dashed rounded-lg bg-background/40">
+            {allNews.length === 0 ? (
+              <>
+                <p className="text-muted-foreground">No se pudieron cargar noticias internacionales.</p>
+                <Button variant="link" onClick={loadNews} className="mt-2">Reintentar</Button>
+              </>
+            ) : (
+              <p className="text-muted-foreground">No hay noticias que coincidan con tus preferencias actuales.</p>
+            )}
           </div>
         )}
       </div>
@@ -158,8 +174,8 @@ export function NewsPortal({ view }: NewsPortalProps) {
               <div className="md:col-span-1">
                 <AddStatusCard currentUser={currentUser} onAddStatus={handleAddStatus} />
               </div>
-              <div className="md:col-span-3">
-                 {friendStatuses.length > 0 && (
+              <div className="md:col-span-3 h-full">
+                 {friendStatuses.length > 0 ? (
                     <Carousel
                         opts={{
                             align: "start",
@@ -182,6 +198,10 @@ export function NewsPortal({ view }: NewsPortalProps) {
                         <CarouselPrevious className="-left-4" />
                         <CarouselNext className="-right-4" />
                     </Carousel>
+                 ) : (
+                    <div className="h-full flex items-center justify-center border rounded-lg bg-background/20 p-8 text-muted-foreground">
+                        No hay estados recientes.
+                    </div>
                  )}
               </div>
             </div>
