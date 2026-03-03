@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -43,7 +42,7 @@ export function SidebarNav() {
 
   useEffect(() => {
     setIsMounted(true);
-    const isNewsActive = pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news");
+    const isNewsActive = pathname.startsWith("/news") || pathname.startsWith("/foryou") || pathname.startsWith("/company-news");
     setIsNewsSectionOpen(isNewsActive);
   }, [pathname]);
 
@@ -90,8 +89,8 @@ export function SidebarNav() {
             <CollapsibleContent>
               <SidebarMenu className="pl-6 pb-1">
                 <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={pathname === '/'} tooltip="General">
-                        <Link href="/">
+                    <SidebarMenuButton asChild isActive={pathname === '/news'} tooltip="General">
+                        <Link href="/news">
                           <Newspaper className="w-4 h-4 mr-2" />
                           <span>General</span>
                         </Link>

@@ -2,12 +2,11 @@
 'use client';
 
 import { useState, useEffect, useTransition, useRef } from 'react';
-import Cookies from 'js-cookie';
 import { NewsArticleCard } from './news-article-card';
 import { friendStatuses as initialFriendStatuses, users } from '@/lib/mock-data';
 import type { NewsArticle, FriendStatus } from '@/lib/types';
 import { Button } from '../ui/button';
-import { Loader2, Settings, RefreshCw, Globe } from 'lucide-react';
+import { RefreshCw, Globe, Settings } from 'lucide-react';
 import { NewsPreferencesDialog } from './news-preferences-dialog';
 import { Skeleton } from '../ui/skeleton';
 import { useNewsPreferences } from '@/hooks/use-news-preferences';
@@ -44,9 +43,14 @@ export function NewsPortal({ view }: NewsPortalProps) {
 
   const loadNews = async () => {
     setLoading(true);
-    const news = await fetchRealNews();
-    setAllNews(news);
-    setLoading(false);
+    try {
+      const news = await fetchRealNews();
+      setAllNews(news);
+    } catch (error) {
+      console.error("Error loading news:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRefresh = () => {
@@ -70,7 +74,6 @@ export function NewsPortal({ view }: NewsPortalProps) {
 
   const handleSavePreferences = (newPrefs: string[]) => {
     setPreferences(newPrefs);
-    Cookies.set('news-preferences', JSON.stringify(newPrefs), { expires: 365 });
     setDialogOpen(false);
   };
   
@@ -100,48 +103,44 @@ export function NewsPortal({ view }: NewsPortalProps) {
       );
     }
 
-    switch (view) {
-      case 'company':
-        return <CompanyNewsPortal />;
-      case 'foryou':
-      case 'general':
-        return (
-          <div className="bg-muted/50 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <Globe className="h-6 w-6 text-blue-500" />
-                <h2 className="text-2xl font-bold tracking-tight">
-                  {view === 'foryou' ? 'Noticias Para Ti' : 'Noticias Internacionales'}
-                </h2>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
-                  <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                  Actualizar
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => setDialogOpen(true)}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Preferencias
-                </Button>
-              </div>
-            </div>
-            {allNews.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {allNews.map((article) => (
-                  <NewsArticleCard key={article.id} article={article} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                <p className="text-muted-foreground">No se encontraron noticias internacionales en este momento.</p>
-                <Button variant="link" onClick={loadNews} className="mt-2">Reintentar</Button>
-              </div>
-            )}
-          </div>
-        );
-      default:
-        return null;
+    if (view === 'company') {
+      return <CompanyNewsPortal />;
     }
+
+    return (
+      <div className="bg-muted/50 rounded-lg p-4">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Globe className="h-6 w-6 text-blue-500" />
+            <h2 className="text-2xl font-bold tracking-tight">
+              {view === 'foryou' ? 'Noticias Para Ti' : 'Noticias Internacionales'}
+            </h2>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
+              <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Actualizar
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => setDialogOpen(true)}>
+              <Settings className="mr-2 h-4 w-4" />
+              Preferencias
+            </Button>
+          </div>
+        </div>
+        {allNews.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {allNews.map((article) => (
+              <NewsArticleCard key={article.id} article={article} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 border-2 border-dashed rounded-lg">
+            <p className="text-muted-foreground">No se encontraron noticias internacionales en este momento.</p>
+            <Button variant="link" onClick={loadNews} className="mt-2">Reintentar</Button>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (

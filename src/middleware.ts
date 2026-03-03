@@ -6,6 +6,7 @@ import type { NextRequest } from 'next/server'
 const PUBLIC_ROUTES = ['/', '/login', '/signup'];
 
 const PROTECTED_ROUTES_PREFIX = [
+  '/news',
   '/channel', 
   '/dm', 
   '/foryou', 
@@ -40,7 +41,6 @@ export function middleware(request: NextRequest) {
   }
 
   // 3. Si el usuario TIENE token y visita la landing page -> App (/friends)
-  // Esto asegura que Google vea la landing (sin cookie) pero el usuario logueado entre a la App
   if (isLandingPage && authToken) {
     const url = request.nextUrl.clone();
     url.pathname = '/friends';
