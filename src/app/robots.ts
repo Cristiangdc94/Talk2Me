@@ -5,19 +5,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
-      allow: ['/', '/about', '/demo', '/sponsors', '/login', '/signup'],
-      disallow: [
-        '/channel/', 
-        '/dm/', 
-        '/profile/', 
-        '/settings/', 
-        '/news/',
-        '/friends',
-        '/coworkers',
-        '/foryou',
-        '/company-news',
-        '/add-contact'
-      ],
+      allow: '/',
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   }
