@@ -5,14 +5,21 @@ import { AppLayout } from "@/components/app-layout";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Talk2Me",
-  description: "Una aplicación de chat moderna en tiempo real que combina mensajería y noticias.",
+  metadataBase: new URL('https://talk2-me-six.vercel.app'),
+  title: {
+    default: "Talk2Me - Comunicación y Noticias en Tiempo Real",
+    template: "%s | Talk2Me"
+  },
+  description: "Una aplicación de chat moderna en tiempo real que combina mensajería para equipos y un portal de noticias internacionales verídicas de El País.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: 'Talk2Me - Comunicación en tiempo real',
     description: 'Conecta con tus amigos y mantente al día con tu empresa.',
     url: 'https://talk2-me-six.vercel.app',
     siteName: 'Talk2Me',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630 }], // Necesitarás subir una foto llamada og-image.jpg a tu carpeta /public
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
     type: 'website',
   },
   twitter: {
