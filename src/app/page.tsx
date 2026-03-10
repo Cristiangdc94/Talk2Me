@@ -16,6 +16,7 @@ import {
   Users,
   CheckCircle2,
   TrendingUp,
+  Linkedin,
 } from 'lucide-react';
 import Image from 'next/image';
 import { HelpChatbot } from '@/components/help/help-chatbot';
@@ -137,14 +138,35 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Value Proposition Text Section */}
+      <section className="py-24 bg-zinc-950">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <h2 className="text-3xl md:text-5xl font-bold mb-12 text-center">¿Por qué elegir Talk2Me?</h2>
+          <div className="prose prose-invert max-w-none text-zinc-400 space-y-6 text-lg leading-relaxed">
+            <p>
+              En el ecosistema digital actual, la sobrecarga de información y la fragmentación de las herramientas de comunicación son desafíos constantes para la productividad. <strong>Talk2Me</strong> nace con una visión clara: unificar la interacción humana con el acceso a información verídica y relevante.
+            </p>
+            <p>
+              Nuestra plataforma no es solo otro cliente de chat. Es un centro neurálgico donde la colaboración se encuentra con el conocimiento. Al integrar el feed internacional de <strong>El País</strong>, garantizamos que cada miembro de tu equipo esté al tanto de los acontecimientos globales más importantes sin necesidad de abandonar su flujo de trabajo. Esta integración nativa elimina las "islas de información" y fomenta un equipo más consciente y conectado con la realidad global.
+            </p>
+            <p>
+              La seguridad es el pilar fundamental de nuestra arquitectura. Entendemos que la privacidad de tus conversaciones es innegociable. Por ello, implementamos protocolos de encriptación de última generación y ofrecemos canales privados granulares, permitiendo que la información sensible permanezca exactamente donde debe estar: dentro de tu organización.
+            </p>
+            <p>
+              Además, Talk2Me ofrece una flexibilidad sin precedentes. Ya sea que necesites gestionar un equipo remoto de cientos de personas o simplemente mantenerte en contacto con tus amigos cercanos, nuestra interfaz se adapta a tus necesidades. El modo oscuro nativo, la personalización de perfiles y la gestión inteligente de notificaciones aseguran que la experiencia de usuario sea siempre placentera y eficiente.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Call to Action for About */}
-      <section className="py-24">
+      <section className="py-24 bg-zinc-900/20 border-y border-zinc-900">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">¿Quieres saber más sobre nuestra visión?</h2>
           <p className="text-zinc-400 max-w-2xl mx-auto mb-10">
             Descubre cómo estamos cambiando la forma en que los equipos se comunican y se mantienen informados en el mundo digital actual.
           </p>
-          <Button asChild variant="outline" size="lg" className="border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white">
+          <Button asChild variant="outline" size="lg" className="border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
             <Link href="/about">Leer nuestra historia</Link>
           </Button>
         </div>
@@ -194,6 +216,9 @@ export default function LandingPage() {
                 </a>
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:border-blue-500 hover:text-blue-500 transition-all">
                   <Github className="h-5 w-5" />
+                </a>
+                <a href="https://www.linkedin.com/in/cristian-garc%C3%ADa-de-castro-a3564a10b/" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:border-blue-500 hover:text-blue-500 transition-all">
+                  <Linkedin className="h-5 w-5" />
                 </a>
                 <a href="mailto:contact@talk2me.com" className="h-10 w-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:border-blue-500 hover:text-blue-500 transition-all">
                   <Mail className="h-5 w-5" />
