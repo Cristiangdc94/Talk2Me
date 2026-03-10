@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle2, Globe, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Zap } from 'lucide-react';
+import { HelpChatbot } from '@/components/help/help-chatbot';
 
 export const metadata = {
   title: "Sobre Nosotros",
@@ -12,7 +13,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-white font-body py-20 px-4">
+    <main className="min-h-screen bg-zinc-950 text-white font-body py-20 px-4 relative">
       <div className="container mx-auto max-w-4xl">
         <Button asChild variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
           <Link href="/">
@@ -22,65 +23,53 @@ export default function AboutPage() {
 
         <header className="mb-16">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent">
-            Sobre Nosotros
+            Nuestra Historia
           </h1>
           <p className="text-xl text-zinc-400 leading-relaxed">
-            Talk2Me nació de la necesidad de simplificar. En un mundo saturado de información, creímos que la comunicación debía ser fluida, segura y, sobre todo, informada.
+            Talk2Me nació para unir lo que el trabajo remoto separó: la comunicación fluida y la información verídica.
           </p>
         </header>
 
         <section className="space-y-12 mb-20">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold flex items-center gap-2">
                 <Zap className="text-blue-500 h-6 w-6" /> Nuestra Misión
               </h2>
               <p className="text-zinc-400 leading-relaxed">
-                Nuestra misión es proporcionar a individuos y empresas una plataforma de comunicación unificada que no solo conecte personas, sino que también las mantenga al tanto de la realidad global a través de fuentes de noticias confiables.
+                Queremos que los equipos no solo hablen, sino que estén informados. Al integrar el feed internacional de El País, eliminamos la necesidad de saltar entre apps para saber qué pasa en el mundo.
               </p>
             </div>
             <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-2xl">
-              <h3 className="text-xl font-bold mb-4 text-blue-400">Valores Core</h3>
+              <h3 className="text-xl font-bold mb-4 text-blue-400">¿Por qué Talk2Me?</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3 text-sm text-zinc-300">
                   <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
-                  <span>Transparencia en la información.</span>
+                  <span>Integración nativa con noticias reales.</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-zinc-300">
                   <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
-                  <span>Seguridad de datos de grado militar.</span>
+                  <span>Entorno seguro y privado para empresas.</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-zinc-300">
                   <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
-                  <span>Innovación constante centrada en el usuario.</span>
+                  <span>Diseño intuitivo pensado en la productividad.</span>
                 </li>
               </ul>
             </div>
-          </div>
-
-          <div className="space-y-6 text-zinc-400 leading-relaxed">
-            <h2 className="text-3xl font-bold text-white">¿Por qué Talk2Me?</h2>
-            <p>
-              En el saturado mundo de las aplicaciones de mensajería, Talk2Me surge como una respuesta a la fragmentación de la información. ¿Por qué saltar entre aplicaciones de noticias y chats de equipo cuando puedes tenerlo todo en una interfaz coherente y elegante?
-            </p>
-            <p>
-              Nuestra plataforma no solo facilita la conversación fluida entre amigos y compañeros, sino que actúa como un centro de conocimiento. Al integrar el feed internacional de <strong>El País</strong>, garantizamos que los usuarios de Talk2Me sean los mejores informados, permitiendo que la actualidad alimente las discusiones productivas.
-            </p>
-            <p>
-              La tecnología detrás de Talk2Me está optimizada para ofrecer latencia cero, asegurando que cada mensaje llegue al instante, sin importar en qué parte del mundo se encuentren tus contactos.
-            </p>
           </div>
         </section>
 
         <section className="bg-blue-600/10 border border-blue-500/20 p-10 rounded-3xl text-center">
           <h2 className="text-2xl font-bold mb-4">Únete a la evolución</h2>
-          <p className="text-zinc-400 mb-8 max-w-lg mx-auto">
-            Sé parte de una comunidad informada y conectada. Comienza hoy mismo tu viaje con Talk2Me de forma gratuita.
-          </p>
           <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-500 text-white px-10">
-            <Link href="/signup">Crear Cuenta Ahora</Link>
+            <Link href="/signup">Crear Cuenta Gratis</Link>
           </Button>
         </section>
+      </div>
+
+      <div className="fixed bottom-6 right-6 z-50">
+        <HelpChatbot />
       </div>
     </main>
   );

@@ -6,7 +6,18 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: ['/', '/about', '/demo', '/sponsors', '/login', '/signup'],
-      disallow: ['/channel/', '/dm/', '/profile/', '/settings/', '/news/'],
+      disallow: [
+        '/channel/', 
+        '/dm/', 
+        '/profile/', 
+        '/settings/', 
+        '/news/',
+        '/friends',
+        '/coworkers',
+        '/foryou',
+        '/company-news',
+        '/add-contact'
+      ],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   }

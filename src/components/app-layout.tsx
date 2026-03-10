@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -229,11 +228,13 @@ function MinimizedChatBar() {
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  
+  const publicRoutes = ["/", "/about", "/demo", "/sponsors"];
   const isAuthPage = pathname === "/login" || pathname === "/signup";
-  const isLandingPage = pathname === "/";
+  const isPublicRoute = publicRoutes.includes(pathname);
 
-  // If landing page, render without the app shell and without padding
-  if (isLandingPage) {
+  // If landing or public pages, render without the app shell and without padding
+  if (isPublicRoute) {
     return (
       <ThemeProvider>
         <NewsPreferencesProvider>
