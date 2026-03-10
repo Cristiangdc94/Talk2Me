@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { 
@@ -13,12 +14,17 @@ import {
   Mail,
   Lock,
   MessageCircle,
-  ExternalLink
+  ExternalLink,
+  Users,
+  CheckCircle2,
+  TrendingUp,
+  BarChart3
 } from 'lucide-react';
+import Image from 'next/image';
 
 /**
  * Landing Page pública de Talk2Me.
- * Optimizada para SEO con más de 300 palabras de contenido relevante y datos estructurados.
+ * Optimizada para SEO con más de 400 palabras, demo interactiva y sección de sponsors.
  */
 export default function LandingPage() {
   const structuredData = {
@@ -36,7 +42,7 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white selection:bg-blue-500/30">
+    <main className="min-h-screen bg-zinc-950 text-white selection:bg-blue-500/30 font-body">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -51,7 +57,9 @@ export default function LandingPage() {
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <Link href="#features" className="text-sm text-zinc-400 hover:text-white transition-colors">Características</Link>
+            <Link href="#demo" className="text-sm text-zinc-400 hover:text-white transition-colors">Demo</Link>
             <Link href="#about" className="text-sm text-zinc-400 hover:text-white transition-colors">Sobre Nosotros</Link>
+            <Link href="#sponsors" className="text-sm text-zinc-400 hover:text-white transition-colors">Sponsors</Link>
           </nav>
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
@@ -90,14 +98,159 @@ export default function LandingPage() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="h-12 px-8 border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 text-white w-full sm:w-auto">
-              <Link href="/login">Explorar Demo</Link>
+              <Link href="#demo">Ver Demo en Vivo</Link>
             </Button>
           </div>
         </div>
       </section>
 
+      {/* Sponsors Section / Advertising Scripts Placeholder */}
+      <section id="sponsors" className="py-12 border-y border-zinc-900 bg-zinc-950/50">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-8">Nuestros Patrocinadores y Partners</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-50 hover:opacity-100 transition-opacity">
+            <div className="flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+               <span className="text-2xl font-bold text-zinc-300">TECHCORP</span>
+            </div>
+            <div className="flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+               <span className="text-2xl font-bold text-zinc-300">CLOUDLY</span>
+            </div>
+            <div className="flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+               <span className="text-2xl font-bold text-zinc-300">GENESIS</span>
+            </div>
+            <div className="flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+               <span className="text-2xl font-bold text-zinc-300">FLOWAI</span>
+            </div>
+            <div className="flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+               <span className="text-2xl font-bold text-zinc-300">SECURELINK</span>
+            </div>
+            <div className="flex items-center justify-center grayscale hover:grayscale-0 transition-all">
+               <span className="text-2xl font-bold text-zinc-300">DATANEX</span>
+            </div>
+          </div>
+          
+          {/* Espacio para Scripts de Publicidad / Ad Scripts Placeholders */}
+          <div className="mt-12 p-4 border border-dashed border-zinc-800 rounded-lg max-w-4xl mx-auto bg-zinc-900/20">
+            <p className="text-[10px] text-zinc-600 mb-2 italic">Contenido Patrocinado / Google Ad Manager</p>
+            <div className="h-20 flex items-center justify-center text-zinc-700 text-sm font-medium">
+              {/* AQUÍ PUEDES INSERTAR TUS SCRIPTS DE PUBLICIDAD (Ej. Google AdSense) */}
+              {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> */}
+              Espacio Publicitario Reservado - Talk2Me Network
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Demo Section */}
+      <section id="demo" className="py-24 bg-zinc-950">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Explora la Experiencia</h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto">Prueba las funciones principales de Talk2Me directamente desde aquí. Sin registros, solo la potencia de nuestra plataforma en tus manos.</p>
+          </div>
+
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            {/* Mock Chat Interface */}
+            <div className="lg:col-span-7 bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden shadow-2xl">
+              <div className="bg-zinc-800/50 p-4 border-b border-zinc-700 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold">A</div>
+                  <div>
+                    <p className="text-sm font-bold leading-none">Alice (Demo)</p>
+                    <p className="text-[10px] text-green-500 mt-1">● En línea</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="w-8 h-8 rounded-full bg-zinc-700"></div>
+                  <div className="w-8 h-8 rounded-full bg-zinc-700"></div>
+                </div>
+              </div>
+              <div className="p-6 space-y-4 h-80 overflow-y-auto bg-zinc-900/50">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-zinc-700 shrink-0"></div>
+                  <div className="bg-zinc-800 p-3 rounded-2xl rounded-tl-none text-sm max-w-[80%]">
+                    ¡Hola! ¿Has visto las noticias de hoy en el portal de la empresa?
+                  </div>
+                </div>
+                <div className="flex gap-3 justify-end">
+                  <div className="bg-blue-600 p-3 rounded-2xl rounded-tr-none text-sm max-w-[80%]">
+                    ¡Sí! Me encanta que podamos ver El País directamente desde aquí.
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-zinc-700 shrink-0"></div>
+                  <div className="bg-zinc-800 p-3 rounded-2xl rounded-tl-none text-sm max-w-[80%] text-zinc-400 italic">
+                    Alice está escribiendo...
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 border-t border-zinc-800 flex gap-2">
+                <div className="flex-1 bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2 text-sm text-zinc-500">
+                  Escribe un mensaje de prueba...
+                </div>
+                <Button className="bg-blue-600 h-10 w-10 p-0"><Zap className="w-4 h-4"/></Button>
+              </div>
+            </div>
+
+            {/* Mock News / Feature Highlight */}
+            <div className="lg:col-span-5 space-y-8">
+              <div className="p-6 rounded-3xl border border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900/50 transition-colors">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-2 rounded-xl bg-orange-500/10 text-orange-500">
+                    <Newspaper className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold">Portal de Noticias</h3>
+                </div>
+                <div className="relative h-40 w-full mb-4 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all">
+                  <Image 
+                    src="https://picsum.photos/seed/newsdemo/600/400" 
+                    alt="News Demo" 
+                    fill 
+                    className="object-cover"
+                    data-ai-hint="news media"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent"></div>
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="text-xs font-bold truncate">Crisis global: El impacto en la tecnología...</p>
+                    <p className="text-[10px] text-zinc-400">Vía El País • Hace 5 min</p>
+                  </div>
+                </div>
+                <p className="text-sm text-zinc-400">Accede a información real y verídica. Filtra por categorías y comparte artículos directamente en tus canales de chat.</p>
+              </div>
+
+              <div className="p-6 rounded-3xl border border-zinc-800 bg-zinc-900/30">
+                <h4 className="font-bold mb-4 flex items-center gap-2">
+                   <TrendingUp className="w-4 h-4 text-green-500"/>
+                   Métricas de Adopción
+                </h4>
+                <div className="space-y-4">
+                   <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-zinc-500">Velocidad de Chat</span>
+                        <span className="text-blue-500">99.9%</span>
+                      </div>
+                      <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-blue-600 w-[99%]"></div>
+                      </div>
+                   </div>
+                   <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-zinc-500">Seguridad de Datos</span>
+                        <span className="text-green-500">Militar</span>
+                      </div>
+                      <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-green-500 w-[100%]"></div>
+                      </div>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Grid */}
-      <section id="features" className="py-20 bg-zinc-900/30">
+      <section id="features" className="py-20 bg-zinc-900/30 border-y border-zinc-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Todo lo que necesitas para conectar</h2>
@@ -138,7 +291,7 @@ export default function LandingPage() {
       </section>
 
       {/* Expanded Content Section for SEO */}
-      <section id="about" className="py-24 border-t border-zinc-900">
+      <section id="about" className="py-24">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto space-y-12">
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -150,6 +303,9 @@ export default function LandingPage() {
                   </p>
                   <p>
                     Nuestra plataforma no solo facilita la conversación fluida entre amigos y compañeros, sino que actúa como un centro de conocimiento. Al integrar el feed internacional de **El País**, garantizamos que los usuarios de Talk2Me sean los mejores informados, permitiendo que la actualidad alimente las discusiones productivas en los canales de la empresa.
+                  </p>
+                  <p>
+                    La tecnología detrás de Talk2Me está optimizada para ofrecer latencia cero, asegurando que cada "hola" llegue al instante, sin importar en qué parte del mundo se encuentren tus contactos.
                   </p>
                 </div>
               </div>
@@ -184,11 +340,16 @@ export default function LandingPage() {
                 Talk2Me nació de la necesidad de simplificar. Creemos que la comunicación en tiempo real es el pilar de cualquier relación exitosa, ya sea personal o profesional. Por eso, hemos optimizado cada línea de código para ofrecer una experiencia que no solo es rápida, sino también significativa.
               </p>
               <p>
-                A diferencia de otras plataformas, no vendemos tus datos ni inundamos tu espacio con publicidad. Nuestro modelo se basa en la confianza y en proporcionar valor real a través de funciones como los **Canales de Empresa**, donde la jerarquía se une a la colaboración, y las **Noticias Para Ti**, que filtran el ruido mundial para darte lo que realmente te interesa.
+                A diferencia de otras plataformas, no vendemos tus datos ni inundamos tu espacio con publicidad invasiva. Nuestro modelo se basa en la confianza y en proporcionar valor real a través de funciones como los **Canales de Empresa**, donde la jerarquía se une a la colaboración, y las **Noticias Para Ti**, que filtran el ruido mundial para darte lo que realmente te interesa.
               </p>
               <p>
                 Únete a los miles de usuarios que ya han transformado su manera de chatear. Talk2Me es más que una app; es tu nueva ventana al mundo y a tu comunidad. Desde la gestión de grandes proyectos hasta la planificación de una cena con amigos, todo sucede aquí, en Talk2Me.
               </p>
+              <div className="pt-6">
+                <Button asChild variant="link" className="text-blue-500 p-0 text-lg">
+                  <Link href="/signup">Crea tu cuenta gratuita hoy mismo →</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -214,7 +375,7 @@ export default function LandingPage() {
                 <li><Link href="/login" className="hover:text-blue-500 transition-colors">Iniciar Sesión</Link></li>
                 <li><Link href="/signup" className="hover:text-blue-500 transition-colors">Crear Cuenta</Link></li>
                 <li><Link href="#features" className="hover:text-blue-500 transition-colors">Características</Link></li>
-                <li><Link href="#about" className="hover:text-blue-500 transition-colors">Sobre Nosotros</Link></li>
+                <li><Link href="#demo" className="hover:text-blue-500 transition-colors">Demo Interactiva</Link></li>
               </ul>
             </div>
 
