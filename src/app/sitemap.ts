@@ -1,26 +1,22 @@
 import { MetadataRoute } from 'next'
 
-        export default function sitemap(): MetadataRoute.Sitemap {
-        const baseUrl = 'https://talk2-me-six.vercel.app';
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://talk2-me-six.vercel.app';
+  const lastModified = new Date();
 
-      return [
-        {
-        url: baseUrl,
-        lastModified: new Date(),
-        changeFrequency: 'yearly',
-        priority: 1,
-        },
-        {
-        url: `${baseUrl}/login`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.8,
-        },
-        {
-        url: `${baseUrl}/register`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.8,
-        },
-        ]
-    }
+  const routes = [
+    '',
+    '/about',
+    '/demo',
+    '/sponsors',
+    '/login',
+    '/signup',
+  ];
+
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified,
+    changeFrequency: route === '' ? 'daily' : 'monthly',
+    priority: route === '' ? 1 : 0.8,
+  })) as MetadataRoute.Sitemap;
+}

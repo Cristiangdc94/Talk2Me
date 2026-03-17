@@ -3,8 +3,6 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-// TRUCO: Si la variable no existe (durante el build), usamos "mock_key" para que no dé error.
-// Cuando la web esté publicada y tenga las claves reales, usará las reales.
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY || "mock_key",
   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "mock_domain",

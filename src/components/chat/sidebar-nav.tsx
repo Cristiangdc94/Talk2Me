@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -28,7 +26,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-import { cn } from "@/lib/utils";
 
 const mainNavLinks = [
     { href: "/friends", label: "Amigos", icon: Users },
@@ -43,25 +40,11 @@ export function SidebarNav() {
 
   useEffect(() => {
     setIsMounted(true);
-    const isNewsActive = pathname === "/" || pathname.startsWith("/foryou") || pathname.startsWith("/company-news");
+    const isNewsActive = pathname.startsWith("/news") || pathname.startsWith("/foryou") || pathname.startsWith("/company-news");
     setIsNewsSectionOpen(isNewsActive);
   }, [pathname]);
 
-
-  if (!isMounted) {
-    return (
-        <div className="flex flex-col gap-2">
-            <SidebarGroup>
-                <SidebarGroupLabel className="font-headline text-xl">Menú</SidebarGroupLabel>
-            </SidebarGroup>
-            <SidebarSeparator />
-            <SidebarGroup>
-                <SidebarGroupLabel className="font-headline text-xl">Chats</SidebarGroupLabel>
-            </SidebarGroup>
-        </div>
-    );
-  }
-
+  if (!isMounted) return null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -90,8 +73,8 @@ export function SidebarNav() {
             <CollapsibleContent>
               <SidebarMenu className="pl-6 pb-1">
                 <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={pathname === '/'} tooltip="General">
-                        <Link href="/">
+                    <SidebarMenuButton asChild isActive={pathname === '/news'} tooltip="General">
+                        <Link href="/news">
                           <Newspaper className="w-4 h-4 mr-2" />
                           <span>General</span>
                         </Link>
@@ -142,7 +125,6 @@ export function SidebarNav() {
         </SidebarGroupLabel>
       </SidebarGroup>
       <ChatSidebar />
-
     </div>
   );
 }

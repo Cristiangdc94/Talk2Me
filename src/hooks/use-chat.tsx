@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
@@ -153,8 +152,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       if (existingChat.isMinimized) {
         setActiveChats(prev => prev.map(c => c.id === id ? { ...c, isMinimized: false, hasUnread: false } : c));
       }
-       if (window.location.pathname !== '/') {
-        router.push('/');
+      // Only navigate if we are on the landing page (which has no app shell)
+      if (window.location.pathname === '/') {
+        router.push('/friends');
       }
       return;
     }
@@ -215,8 +215,9 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         }
         return [...prev, { ...newChatState, isMinimized: false, hasUnread: false }];
       });
-      if (window.location.pathname !== '/') {
-        router.push('/');
+      // Only navigate if we are on the landing page (which has no app shell)
+      if (window.location.pathname === '/') {
+        router.push('/friends');
       }
     }
     

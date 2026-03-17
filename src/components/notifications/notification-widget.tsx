@@ -1,20 +1,18 @@
+'use client';
 
-
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Bell, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { NotificationList } from "./notification-list";
 import { ThemeToggle } from "../theme-toggle";
 import { useChat } from "@/hooks/use-chat";
-import type { Notification } from "@/lib/types";
 import { SidebarTrigger } from "../ui/sidebar";
+import { HelpChatbot } from "../help/help-chatbot";
 
 export function NotificationWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const { notifications, setNotifications, openChat } = useChat();
+  const { notifications, setNotifications } = useChat();
 
   const handleNotificationClick = () => {
     setIsOpen(false);
@@ -28,11 +26,13 @@ export function NotificationWidget() {
 
   return (
     <div
-      className="fixed z-50 flex items-center gap-2 bottom-8 right-8"
+      className="fixed z-50 flex items-center gap-3 bottom-8 right-8"
     >
-        <div className="bg-primary text-primary-foreground rounded-full shadow-lg flex items-center">
+        <div className="bg-primary text-primary-foreground rounded-full shadow-lg flex items-center px-2">
             <SidebarTrigger />
             <ThemeToggle />
+            <div className="w-px h-6 bg-primary-foreground/20 mx-1" />
+            <HelpChatbot />
         </div>
         <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>

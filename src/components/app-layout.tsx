@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -13,15 +11,12 @@ import {
   SidebarTrigger,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
-import { AppLogo } from '@/components/icons';
 import { SidebarNav } from '@/components/chat/sidebar-nav';
 import { UserNav } from '@/components/chat/user-nav';
 import { NotificationWidget } from './notifications/notification-widget';
 import { NewsPreferencesProvider } from '@/hooks/use-news-preferences';
 import { ChatProvider, useChat, ChatState } from '@/hooks/use-chat';
 import { cn } from '@/lib/utils';
-import { MainNav } from './main-nav';
-import { HeaderActions } from './header-actions';
 import { Card, CardHeader, CardContent } from './ui/card';
 import { ChatArea } from './chat/chat-area';
 import { users } from '@/lib/mock-data';
@@ -94,7 +89,6 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const staggerOffset = index * 40;
-      // Position relative to the main content area (approximated)
       const sidebarWidth = 256; 
       const defaultX = sidebarWidth + 50 + staggerOffset; 
       const defaultY = 100 + staggerOffset;
@@ -196,13 +190,8 @@ function DraggableChatWidget({ chat, index }: { chat: ChatState, index: number }
 
 function ChatManager() {
   const { activeChats } = useChat();
-
   const openChats = activeChats.filter(chat => !chat.isMinimized);
-
-  if (openChats.length === 0) {
-    return null;
-  }
-
+  if (openChats.length === 0) return null;
   return (
     <>
       {openChats.map((chat, index) => (
@@ -212,15 +201,10 @@ function ChatManager() {
   );
 }
 
-
 function MinimizedChatBar() {
   const { activeChats, toggleMinimizeChat } = useChat();
   const minimizedChats = activeChats.filter(chat => chat.isMinimized);
-
-  if (minimizedChats.length === 0) {
-    return null;
-  }
-
+  if (minimizedChats.length === 0) return null;
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 p-2 flex justify-center items-end gap-2">
       {minimizedChats.map(chat => (
@@ -242,10 +226,27 @@ function MinimizedChatBar() {
   );
 }
 
-
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  
+  const publicRoutes = ["/", "/about", "/demo", "/sponsors"];
   const isAuthPage = pathname === "/login" || pathname === "/signup";
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  // If landing or public pages, render without the app shell and without padding
+  if (isPublicRoute) {
+    return (
+      <ThemeProvider>
+        <NewsPreferencesProvider>
+          <ChatProvider>
+            <main className="min-h-screen bg-zinc-950">
+              {children}
+            </main>
+          </ChatProvider>
+        </NewsPreferencesProvider>
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider>
@@ -254,11 +255,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           {isAuthPage ? (
             <AuthLayout>{children}</AuthLayout>
           ) : (
-            <div className="mx-auto max-w-[1920px] h-full rounded-xl">
-              <SidebarProvider>
-                <div className="h-full flex bg-background rounded-xl">
-                  <div className="border-transparent">
-                    <Sidebar>
+            <div className="bg-sidebar min-h-screen p-4">
+              <div className="mx-auto max-w-[1920px] h-full rounded-xl">
+                <SidebarProvider>
+                  <div className="h-full flex bg-background rounded-xl overflow-hidden shadow-2xl border">
+                    <Sidebar className="border-r">
                       <SidebarHeader className="p-4 flex flex-col gap-4">
                         <div className="flex items-center justify-start gap-4">
                           <h1 className="font-headline text-3xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">
@@ -272,22 +273,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         <SidebarNav />
                       </SidebarContent>
                     </Sidebar>
+                    <div className="flex-1 flex flex-col">
+                      <main className="flex-1 flex flex-col bg-background main-content-fade h-full overflow-hidden">
+                        <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0">
+                          {/* Top header can be expanded here */}
+                        </header>
+                        <div className="flex-1 overflow-auto">
+                          {children}
+                        </div>
+                      </main>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <main className="flex-1 flex flex-col bg-background rounded-r-xl main-content-fade h-full">
-                       <header className="flex h-16 items-center justify-start border-b bg-background px-4 shrink-0">
-                      </header>
-                      <div className="w-full overflow-auto">
-                        {children}
-                      </div>
-                    </main>
-                  </div>
-                </div>
-                 {/* Chat widgets and notifications are now outside the main scrollable area */}
-                <ChatManager />
-                <MinimizedChatBar />
-                <NotificationWidget />
-              </SidebarProvider>
+                  <ChatManager />
+                  <MinimizedChatBar />
+                  <NotificationWidget />
+                </SidebarProvider>
+              </div>
             </div>
           )}
         </ChatProvider>
