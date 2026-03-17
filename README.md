@@ -66,6 +66,10 @@ Talk2Me está construido sobre una arquitectura **Serverless** aprovechando lo m
   * **Firebase Extensions:** Despliegue de funciones IA en la nube sin configurar servidores.
 * **Hosting:** Despliegue continuo gestionado por **Vercel**.
 
+<div align="center">
+  <img src="/Diagrama APP.png" alt="Diagrama de Arquitectura de Talk2Me" width="100%" style="border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);"/>
+</div>
+
 ---
 
 ## 📂 Estructura del Proyecto
@@ -85,3 +89,6 @@ Talk2Me está construido sobre una arquitectura **Serverless** aprovechando lo m
  ┃ ┗ 📜 firebase.ts      # Cliente de inicialización de Firebase
  ┣ 📜 .npmrc             # Resolución de conflictos (legacy-peer-deps)
  ┗ 📜 package.json       # Configuración y dependencias
+
+
+
