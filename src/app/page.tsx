@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { HelpChatbot } from '@/components/help/help-chatbot';
+import { SystemTest } from '@/components/landing/system-test';
 
 /**
  * Landing Page pública de Talk2Me.
@@ -88,16 +89,21 @@ export default function LandingPage() {
             Talk2Me redefine la mensajería instantánea integrando un portal de noticias internacionales verídicas. Conecta con quienes importan y mantente informado.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Button asChild size="lg" className="h-12 px-8 bg-blue-600 hover:bg-blue-500 text-white w-full sm:w-auto">
               <Link href="/signup">
                 Comenzar Gratis
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="h-12 px-8 border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 text-white w-full sm:w-auto">
-              <Link href="/demo">Probar Demo Gratis</Link>
-            </Button>
+            <SystemTest />
+          </div>
+
+          <div className="flex items-center justify-center gap-8 pt-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+             <span className="font-bold text-xl tracking-tighter">TECHCORP</span>
+             <span className="font-bold text-xl tracking-tighter">CLOUDLY</span>
+             <span className="font-bold text-xl tracking-tighter">SECURELINK</span>
+             <span className="font-bold text-xl tracking-tighter hidden sm:block">DATANEX</span>
           </div>
         </div>
       </section>
@@ -166,9 +172,14 @@ export default function LandingPage() {
           <p className="text-zinc-400 max-w-2xl mx-auto mb-10">
             Descubre cómo estamos cambiando la forma en que los equipos se comunican y se mantienen informados en el mundo digital actual.
           </p>
-          <Button asChild variant="outline" size="lg" className="border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
-            <Link href="/about">Leer nuestra historia</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button asChild variant="outline" size="lg" className="border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
+              <Link href="/about">Leer nuestra historia</Link>
+            </Button>
+            <Button asChild variant="link" size="lg" className="text-zinc-500 hover:text-zinc-300">
+              <Link href="/demo">Ver demo interactiva</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
