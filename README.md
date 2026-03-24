@@ -11,7 +11,7 @@
 [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-<img src="/public/og-image.jpg" alt="Talk2Me Banner" width="100%" style="border-radius: 15px; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);"/>
+<img src="/public/banner.png" alt="Talk2Me Banner" width="100%" style="border-radius: 15px; margin-top: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);"/>
 
 *Conecta con tus amigos, mantente al día con las noticias de tu empresa y chatea con nuestra IA integrada.*
 
@@ -46,7 +46,7 @@
 ## 📸 Vistazo a la App
 
 <div align="center">
-  <img src="/public/dashboard.png" alt="Dashboard View" width="48%">
+  <img src="/public/Dashboard.png" alt="Dashboard View" width="48%">
   <img src="/public/chatbot.png" alt="Chatbot View" width="48%">
 </div>
 
