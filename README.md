@@ -65,7 +65,7 @@ Talk2Me está construido sobre una arquitectura **Serverless** aprovechando lo m
 * **Hosting:** Despliegue continuo gestionado por **Vercel**.
 
 <div align="center">
-  <img src="/Diagrama APP.png" alt="Diagrama de Arquitectura de Talk2Me" width="100%" style="border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);"/>
+  <img src="/DiagramaAPP.png" alt="Diagrama de Arquitectura de Talk2Me" width="100%" style="border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);"/>
 </div>
 
 ---
