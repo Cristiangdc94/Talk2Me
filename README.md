@@ -45,11 +45,9 @@
 
 ## 📸 Vistazo a la App
 
-> **Nota para el desarrollador:** *Sube un par de capturas de tu app a la carpeta `/public` y cambia los nombres de los archivos aquí abajo para que se muestren.*
-
 <div align="center">
-  <img src="https://via.placeholder.com/400x250/18181B/FFFFFF?text=Dashboard+General" alt="Dashboard View" width="48%">
-  <img src="https://via.placeholder.com/400x250/18181B/FFFFFF?text=Chatbot+IA+View" alt="Chatbot View" width="48%">
+  <img src="/public/dashboard.png" alt="Dashboard View" width="48%">
+  <img src="/public/chatbot.png" alt="Chatbot View" width="48%">
 </div>
 
 ---
